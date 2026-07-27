@@ -494,7 +494,30 @@ python -m pytest --cov=src
 
 ### Type Checking
 
-> **TODO:** The architecture doc does not specify a type checker. If `mypy` or `pyright` is adopted, add the command and configuration here.
+Use **mypy** with the Pydantic plugin for static type checking. Mypy is preferred over pyright here because Pydantic v2 ships a first-party mypy plugin (`pydantic.mypy`) that validates `Field()` constraints, model inheritance, and config classes — all of which are central to this codebase.
+
+```bash
+# Run type checking
+mypy src/ --strict
+```
+
+Add to `pyproject.toml`:
+
+```toml
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
+warn_return_any = true
+warn_unused_configs = true
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+```
+
+Add `mypy` to `requirements.txt` (pinned, e.g., `mypy==1.11.x`).
 
 ### Code Generation
 
