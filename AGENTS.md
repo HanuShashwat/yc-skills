@@ -564,7 +564,7 @@ tests/
 
 ### Coverage Expectations
 
-> **TODO:** Minimum coverage threshold not specified in architecture doc. Recommend 80% line coverage for `src/` excluding `cli.py`. Maintainer should confirm.
+- Recommend 80% line coverage for `src/` excluding `cli.py`.
 
 ### Integration Testing
 
