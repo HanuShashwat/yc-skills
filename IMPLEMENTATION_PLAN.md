@@ -562,18 +562,18 @@
 | **Title** | Milestone 3 Review — Content Ingestion |
 
 **Verification Checklist:**
-- [ ] Library scraper downloads and parses HTML correctly (tested with mocks)
-- [ ] Content IDs use `lib_{sha256(url)[:12]}` (not slug)
-- [ ] YouTube downloader uses exact `yt-dlp` command flags from architecture doc
-- [ ] Rate limiting: `time.sleep(2)` between scraping requests
-- [ ] User-Agent: `YC-Skills-Forge/1.0 (Research Project; contact@example.com)`
-- [ ] Speaker extraction with `known_authors.py` fallback
-- [ ] NULL speaker → state `discovered` (not `downloaded`)
-- [ ] URL deduplication enforced
-- [ ] CLI commands `ingest-library` and `ingest-youtube` work
-- [ ] All SQL uses parameterized queries
-- [ ] `python -m pytest` passes
-- [ ] `ruff check src/` passes
+- [x] Library scraper downloads and parses HTML correctly (tested with mocks)
+- [x] Content IDs use `lib_{sha256(url)[:12]}` (not slug)
+- [x] YouTube downloader uses exact `yt-dlp` command flags from architecture doc
+- [x] Rate limiting: `time.sleep(2)` between scraping requests
+- [x] User-Agent: `YC-Skills-Forge/1.0 (Research Project; contact@example.com)`
+- [x] Speaker extraction with `known_authors.py` fallback
+- [x] NULL speaker → state `discovered` (not `downloaded`)
+- [x] URL deduplication enforced
+- [x] CLI commands `ingest-library` and `ingest-youtube` work
+- [x] All SQL uses parameterized queries
+- [x] `python -m pytest` passes
+- [x] `ruff check src/` passes
 
 ---
 
