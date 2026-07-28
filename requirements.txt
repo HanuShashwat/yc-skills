@@ -1,6 +1,6 @@
 requests==2.32.5
 beautifulsoup4==4.12.3
-yt-dlp==2025.1.9
+yt-dlp==2025.12.8
 pydantic==2.9.2
 PyYAML==6.0.2
 sentence-transformers==2.7.0
