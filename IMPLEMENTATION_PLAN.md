@@ -190,17 +190,17 @@
 | **Goal** | Verify scaffolding is complete and correct before proceeding. |
 
 **Verification Checklist:**
-- [ ] Every directory from architecture doc Section 2 exists
-- [ ] All Python packages have `__init__.py`
-- [ ] All 8 skill categories have directories under `skills/`
-- [ ] `requirements.txt` pins exact versions for all dependencies in architecture doc Section 3
-- [ ] `pip install -r requirements.txt` succeeds in a clean Python 3.11 venv
-- [ ] `pyproject.toml` contains ruff, mypy, pytest configurations
-- [ ] `.gitignore` excludes correct paths
-- [ ] `.env.example` contains all required placeholders
-- [ ] `ruff check src/` passes
-- [ ] No production logic has been written
-- [ ] No files outside the architecture doc have been created
+- [x] Every directory from architecture doc Section 2 exists
+- [x] All Python packages have `__init__.py`
+- [x] All 8 skill categories have directories under `skills/`
+- [x] `requirements.txt` pins exact versions for all dependencies in architecture doc Section 3
+- [x] `pip install -r requirements.txt` succeeds in a clean Python 3.11 venv
+- [x] `pyproject.toml` contains ruff, mypy, pytest configurations
+- [x] `.gitignore` excludes correct paths
+- [x] `.env.example` contains all required placeholders
+- [x] `ruff check src/` passes
+- [x] No production logic has been written
+- [x] No files outside the architecture doc have been created
 
 ---
 
