@@ -1,0 +1,56 @@
+providers:
+  deepseek:
+    api_key: ${DEEPSEEK_API_KEY}
+    base_url: "https://api.deepseek.com/v1"
+    model: "deepseek-chat"
+    daily_token_limit: 1_000_000
+    daily_request_limit: 100
+    priority: 1
+    timeout: 120
+    max_retries: 3
+
+  kimi:
+    api_key: ${KIMI_API_KEY}
+    base_url: "https://api.moonshot.cn/v1"
+    model: "moonshot-v1-8k"
+    daily_token_limit: 500_000
+    daily_request_limit: 50
+    priority: 2
+    timeout: 120
+    max_retries: 3
+
+  glm:
+    api_key: ${GLM_API_KEY}
+    base_url: "https://open.bigmodel.cn/api/paas/v4"
+    model: "glm-4-flash"
+    daily_token_limit: 500_000
+    daily_request_limit: 50
+    priority: 3
+    timeout: 120
+    max_retries: 3
+
+  gemini:
+    api_key: ${GEMINI_API_KEY}
+    base_url: "https://generativelanguage.googleapis.com/v1beta/openai/"
+    model: "gemini-1.5-flash"
+    daily_token_limit: 1_500_000
+    daily_request_limit: 150
+    priority: 4
+    timeout: 120
+    max_retries: 3
+
+rotation_strategy:
+  mode: "round_robin_quota"
+  fallback_local: false
+
+quotas:
+  reset_utc_hour: 0
+  buffer_percent: 10
+
+validation:
+  dedicated_validator:
+    provider: "gemini"
+    model: "gemini-1.5-flash"
+    max_tokens: 2000
+    temperature: 0.0
+    fallback_behavior: "fail_open"

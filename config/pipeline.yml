@@ -1,0 +1,50 @@
+chunking:
+  essay:
+    min_words: 200
+    max_words: 800
+    target_words: 600
+    overlap_sentences: 1
+    split_header: "## "
+
+  transcript:
+    min_words: 400
+    max_words: 800
+    target_words: 600
+    merge_same_speaker: true
+    split_on_speaker_change: true
+
+clustering:
+  embedding_model: "all-MiniLM-L6-v2"
+  algorithm: "agglomerative"
+  distance_threshold: 0.18
+  metric: "cosine"
+  linkage: "average"
+  min_cluster_size: 2
+
+extraction:
+  min_items_per_chunk: 1
+  max_items_per_chunk: 20
+  temperature: 0.3
+  max_tokens: 8000
+
+synthesis:
+  temperature: 0.3
+  max_tokens: 8000
+  min_confidence: 0.55
+  max_quotes: 3
+
+linking:
+  max_related_skills: 3
+  similarity_threshold: 0.65
+
+validation:
+  quote_fuzzy_ratio: 70
+  quote_fuzzy_partial_ratio: 85
+  quote_warning_threshold: 70
+  hallucination_check: true
+
+export:
+  formats:
+    - mcp
+    - openai
+    - hermes

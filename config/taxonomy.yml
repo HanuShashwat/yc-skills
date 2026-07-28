@@ -1,0 +1,62 @@
+taxonomy:
+  fundraising:
+    description: Raising capital from investors
+    subcategories:
+      - seed-round
+      - series-a
+      - pitch-deck
+      - investor-relations
+      - valuation
+      - term-sheets
+  hiring:
+    description: Building the team
+    subcategories:
+      - first-hires
+      - technical-hiring
+      - culture-fit
+      - compensation
+      - firing
+  product:
+    description: Product development and management
+    subcategories:
+      - mvp
+      - product-market-fit
+      - user-research
+      - roadmap
+      - design
+  growth:
+    description: Acquiring and retaining users
+    subcategories:
+      - marketing
+      - sales
+      - retention
+      - pricing
+      - distribution
+  culture:
+    description: Company culture and operations
+    subcategories:
+      - mission
+      - values
+      - remote-work
+      - communication
+  strategy:
+    description: High-level company decisions
+    subcategories:
+      - pivoting
+      - competition
+      - market-sizing
+      - monetization
+  founder-mental-models:
+    description: Psychological and decision-making frameworks
+    subcategories:
+      - motivation
+      - burnout
+      - decision-making
+      - leadership
+  technical:
+    description: Engineering and infrastructure
+    subcategories:
+      - architecture
+      - scaling
+      - security
+      - ai-ml
