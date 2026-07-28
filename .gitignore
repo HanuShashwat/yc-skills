@@ -1,0 +1,21 @@
+# Python cache and artifacts
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+
+# Virtual environments and secrets
+.venv/
+.env
+
+# Tool caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Data artifacts (Gitignored per architecture)
+data/raw/
+data/chunks/
+data/registry.db
+data/errors/
