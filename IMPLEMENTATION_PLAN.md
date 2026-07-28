@@ -385,18 +385,18 @@
 | **Title** | Milestone 2 Review — Core Data Layer |
 
 **Verification Checklist:**
-- [ ] `src/models.py` contains all Pydantic models from the architecture doc
-- [ ] Skill ID regex `^yc-[a-z]+(-[a-z]+){1,6}$` is enforced
-- [ ] `src/config.py` loads all 3 YAML files with env var substitution
-- [ ] `config/taxonomy.yml` matches architecture doc Section 6.1 exactly
-- [ ] `config/providers.yml` matches architecture doc Section 9.1 exactly
-- [ ] `config/pipeline.yml` matches architecture doc Appendix C.3 exactly
-- [ ] `src/migrations/001_init.sql` matches architecture doc Section 4.1 exactly
-- [ ] `python -m src.cli init-db` works and is idempotent
-- [ ] `python -m pytest` passes all model and config tests
-- [ ] `ruff check src/` passes
-- [ ] No Layer 1 module imports from Layer 2 or Layer 3
-- [ ] All public functions have docstrings
+- [x] `src/models.py` contains all Pydantic models from the architecture doc
+- [x] Skill ID regex `^yc-[a-z]+(-[a-z]+){1,6}$` is enforced
+- [x] `src/config.py` loads all 3 YAML files with env var substitution
+- [x] `config/taxonomy.yml` matches architecture doc Section 6.1 exactly
+- [x] `config/providers.yml` matches architecture doc Section 9.1 exactly
+- [x] `config/pipeline.yml` matches architecture doc Appendix C.3 exactly
+- [x] `src/migrations/001_init.sql` matches architecture doc Section 4.1 exactly
+- [x] `python -m src.cli init-db` works and is idempotent
+- [x] `python -m pytest` passes all model and config tests
+- [x] `ruff check src/` passes
+- [x] No Layer 1 module imports from Layer 2 or Layer 3
+- [x] All public functions have docstrings
 
 ---
 
