@@ -57,6 +57,44 @@ def init_db(args: argparse.Namespace) -> None:
         logger.error("Unexpected error: %s", e)
         sys.exit(1)
 
+def ingest_library_cmd(args: argparse.Namespace) -> None:
+    """Handle the ingest-library command."""
+    from src.ingest.library_scraper import process_urls
+    
+    urls = []
+    if args.url:
+        urls.append(args.url)
+    if args.urls:
+        urls.extend(args.urls)
+        
+    logger.info("Starting ingest-library for %d URL(s)...", len(urls))
+    try:
+        process_urls(urls, DB_PATH)
+        logger.info("ingest-library complete.")
+    except Exception as e:
+        logger.error("Error during ingest-library: %s", e)
+        sys.exit(1)
+
+
+def ingest_youtube_cmd(args: argparse.Namespace) -> None:
+    """Handle the ingest-youtube command."""
+    from src.ingest.youtube_downloader import process_urls
+    
+    urls = []
+    if args.url:
+        urls.append(args.url)
+    if args.urls:
+        urls.extend(args.urls)
+        
+    logger.info("Starting ingest-youtube for %d URL(s)...", len(urls))
+    try:
+        process_urls(urls, DB_PATH)
+        logger.info("ingest-youtube complete.")
+    except Exception as e:
+        logger.error("Error during ingest-youtube: %s", e)
+        sys.exit(1)
+
+
 def main() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="YC Skills Forge CLI")
@@ -69,11 +107,17 @@ def main() -> None:
     # Stubs for future commands
     # ingest-library
     ingest_lib_parser = subparsers.add_parser("ingest-library", help="Ingest YC Library essay")
-    ingest_lib_parser.add_argument("--url", required=True, help="URL of the essay")
+    lib_group = ingest_lib_parser.add_mutually_exclusive_group(required=True)
+    lib_group.add_argument("--url", help="URL of the essay")
+    lib_group.add_argument("--urls", nargs="+", help="Multiple URLs of the essays")
+    ingest_lib_parser.set_defaults(func=ingest_library_cmd)
     
     # ingest-youtube
     ingest_yt_parser = subparsers.add_parser("ingest-youtube", help="Ingest YouTube video")
-    ingest_yt_parser.add_argument("--url", required=True, help="URL of the video")
+    yt_group = ingest_yt_parser.add_mutually_exclusive_group(required=True)
+    yt_group.add_argument("--url", help="URL of the video")
+    yt_group.add_argument("--urls", nargs="+", help="Multiple URLs of the videos")
+    ingest_yt_parser.set_defaults(func=ingest_youtube_cmd)
     
     # chunk
     chunk_parser = subparsers.add_parser("chunk", help="Chunk downloaded content")
