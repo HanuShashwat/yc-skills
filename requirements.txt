@@ -1,0 +1,15 @@
+requests==2.32.5
+beautifulsoup4==4.12.3
+yt-dlp==2025.1.9
+pydantic==2.9.2
+PyYAML==6.0.2
+sentence-transformers==2.7.0
+rapidfuzz==3.9.7
+openai==1.40.8
+Jinja2==3.1.6
+pytest==8.3.5
+ruff==0.6.9
+markdownify==0.13.1
+scikit-learn==1.9.0
+mypy==1.11.2
+pytest-cov==7.1.0
