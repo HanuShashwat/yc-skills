@@ -703,17 +703,17 @@
 | **Title** | Milestone 4 Review — Content Chunking |
 
 **Verification Checklist:**
-- [ ] Essay chunker splits by `## ` headers
-- [ ] Word count bounds: essays 200–800, transcripts 400–800
-- [ ] Overlap: last sentence of previous chunk at start of next (essays)
-- [ ] Chunk IDs follow `{content_id}_{chunk_index:04d}` format
-- [ ] Uses `chunk_index` not `index`
-- [ ] Chunks saved as JSON to `data/chunks/{source_type}/`
-- [ ] Chunks inserted into `chunks` table
-- [ ] Content state transitions `downloaded` → `chunked`
-- [ ] Parameters read from `config/pipeline.yml`
-- [ ] `python -m pytest` passes
-- [ ] `ruff check src/` passes
+- [x] Essay chunker splits by `## ` headers
+- [x] Word count bounds: essays 200–800, transcripts 400–800
+- [x] Overlap: last sentence of previous chunk at start of next (essays)
+- [x] Chunk IDs follow `{content_id}_{chunk_index:04d}` format
+- [x] Uses `chunk_index` not `index`
+- [x] Chunks saved as JSON to `data/chunks/{source_type}/`
+- [x] Chunks inserted into `chunks` table
+- [x] Content state transitions `downloaded` → `chunked`
+- [x] Parameters read from `config/pipeline.yml`
+- [x] `python -m pytest` passes
+- [x] `ruff check src/` passes
 
 ---
 
