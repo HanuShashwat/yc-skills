@@ -1,7 +1,6 @@
 """
 Transcript chunker for YC Skills Forge.
 """
-import json
 import logging
 import os
 import re
