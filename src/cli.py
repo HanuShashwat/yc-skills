@@ -95,6 +95,51 @@ def ingest_youtube_cmd(args: argparse.Namespace) -> None:
         sys.exit(1)
 
 
+def chunk_cmd(args: argparse.Namespace) -> None:
+    """Handle the chunk command."""
+    if not args.all:
+        logger.error("Currently only --all is supported for the chunk command.")
+        sys.exit(1)
+        
+    from src.chunker.essay_chunker import chunk_essay
+    from src.chunker.transcript_chunker import chunk_transcript
+    
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT content_id, source_type, file_path, speaker FROM content WHERE state = 'downloaded'")
+            records = cursor.fetchall()
+            
+        if not records:
+            logger.info("No downloaded content found to chunk.")
+            return
+            
+        logger.info("Found %d downloaded items to chunk.", len(records))
+        
+        success_count = 0
+        for record in records:
+            content_id, source_type, file_path, speaker = record
+            
+            try:
+                if source_type == 'library':
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        markdown_text = f.read()
+                    chunk_essay(content_id, markdown_text, speaker, DB_PATH)
+                elif source_type == 'youtube':
+                    chunk_transcript(content_id, file_path, speaker, DB_PATH)
+                else:
+                    logger.warning("Unknown source_type %s for %s", source_type, content_id)
+                    continue
+                success_count += 1
+            except Exception as e:
+                logger.error("Failed to chunk %s: %s", content_id, e)
+                
+        logger.info("Chunking complete. Successfully chunked %d/%d items.", success_count, len(records))
+    except sqlite3.Error as e:
+        logger.error("Database error during chunking: %s", e)
+        sys.exit(1)
+
+
 def main() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="YC Skills Forge CLI")
@@ -122,6 +167,7 @@ def main() -> None:
     # chunk
     chunk_parser = subparsers.add_parser("chunk", help="Chunk downloaded content")
     chunk_parser.add_argument("--all", action="store_true", help="Chunk all unchunked content")
+    chunk_parser.set_defaults(func=chunk_cmd)
     
     # forge
     forge_parser = subparsers.add_parser("forge", help="Run core forge pipeline")
