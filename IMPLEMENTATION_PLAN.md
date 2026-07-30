@@ -877,16 +877,16 @@
 | **Title** | Milestone 5 Review — Forge Foundation |
 
 **Verification Checklist:**
-- [ ] `LLMClient` is the ONLY module with `import openai`
-- [ ] Provider rotation follows priority order with quota awareness
-- [ ] Usage logged to `usage_log` table on every call (success and failure)
-- [ ] Prompt templates match architecture doc verbatim
-- [ ] Batcher enforces min batch size 5, max 20
-- [ ] Batcher transitions state `chunked` → `extracting`
-- [ ] Reaper recovers items after 2 hours, fails after 3 retries
-- [ ] No API keys hardcoded anywhere
-- [ ] All tests pass with mocked LLM calls
-- [ ] `ruff check src/` passes
+- [x] `LLMClient` is the ONLY module with `import openai`
+- [x] Provider rotation follows priority order with quota awareness
+- [x] Usage logged to `usage_log` table on every call (success and failure)
+- [x] Prompt templates match architecture doc verbatim
+- [x] Batcher enforces min batch size 5, max 20
+- [x] Batcher transitions state `chunked` → `extracting`
+- [x] Reaper recovers items after 2 hours, fails after 3 retries
+- [x] No API keys hardcoded anywhere
+- [x] All tests pass with mocked LLM calls
+- [x] `ruff check src/` passes
 
 ---
 
@@ -978,14 +978,14 @@
 | **Title** | Milestone 6 Review — Forge Extraction |
 
 **Verification Checklist:**
-- [ ] Extractor renders Jinja2 template (not f-string construction)
-- [ ] `in_batch_index` is preserved in `extracted_items` table
-- [ ] State transition: `extracting` → `extracted` (only after successful insertion)
-- [ ] JSON parse failures logged to `data/errors/` and retried with `temperature=0.1`
-- [ ] LLM called via `LLMClient`, not direct `openai`
-- [ ] `forge` CLI command works with `--topic` and `--batch-size`
-- [ ] All tests pass with mocked LLM
-- [ ] `ruff check src/` passes
+- [x] Extractor renders Jinja2 template (not f-string construction)
+- [x] `in_batch_index` is preserved in `extracted_items` table
+- [x] State transition: `extracting` → `extracted` (only after successful insertion)
+- [x] JSON parse failures logged to `data/errors/` and retried with `temperature=0.1`
+- [x] LLM called via `LLMClient`, not direct `openai`
+- [x] `forge` CLI command works with `--topic` and `--batch-size`
+- [x] All tests pass with mocked LLM
+- [x] `ruff check src/` passes
 
 ---
 
@@ -1069,15 +1069,15 @@
 | **Title** | Milestone 7 Review — Forge Clustering |
 
 **Verification Checklist:**
-- [ ] No LLM calls in clusterer
-- [ ] Uses exact `AgglomerativeClustering` parameters from architecture doc
-- [ ] `sentence-transformers` import only in `clusterer.py`
-- [ ] Clusters with < 2 items rejected
-- [ ] Escape hatch after 3 retries with `computed_confidence = 0.55`
-- [ ] `avg_similarity` computed correctly
-- [ ] State transition: `extracted` → `clustered`
-- [ ] Tests pass
-- [ ] `ruff check src/` passes
+- [x] No LLM calls in clusterer
+- [x] Uses exact `AgglomerativeClustering` parameters from architecture doc
+- [x] `sentence-transformers` import only in `clusterer.py`
+- [x] Clusters with < 2 items rejected
+- [x] Escape hatch after 3 retries with `computed_confidence = 0.55`
+- [x] `avg_similarity` computed correctly
+- [x] State transition: `extracted` → `clustered`
+- [x] Tests pass
+- [x] `ruff check src/` passes
 
 ---
 
