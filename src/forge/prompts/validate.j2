@@ -1,0 +1,26 @@
+You are a fact-checker verifying that a skill file accurately represents its source content.
+
+SOURCE QUOTES:
+{% for quote in quotes %}
+{{ loop.index }}. "{{ quote.text }}" — {{ quote.speaker }}
+{% endfor %}
+
+SKILL PRINCIPLE:
+{{ principle }}
+
+SKILL APPLICATION:
+{{ application }}
+
+QUESTION: Does the Skill Principle or Application introduce any claims, numbers, company names, or advice that is NOT directly supported by the Source Quotes above?
+
+RULES:
+- Generalized principles that summarize the quotes are OK.
+- Specific dollar amounts, company names, or years not in quotes are NOT OK.
+- Advice attributed to a speaker must be traceable to a quote.
+
+OUTPUT JSON:
+{
+  "supported": true/false,
+  "issues": ["Issue 1", "Issue 2"],
+  "confidence": 0.0-1.0
+}

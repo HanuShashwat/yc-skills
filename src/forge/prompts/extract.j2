@@ -1,0 +1,61 @@
+You are an expert research analyst extracting actionable startup advice from Y Combinator content.
+
+TASK: Analyze the {{ chunks|length }} content segments below and extract EVERY piece of actionable advice, framework, mental model, or warning.
+
+RULES:
+1. Preserve quotes EXACTLY as written or spoken. Do not change a single word.
+2. If the quote is truncated in the chunk, mark it as "partial" and include the full available text.
+3. For each item, identify the speaker and their exact designation (e.g., "Paul Graham, Founder of YC").
+4. Classify each item:
+   - "framework": A repeatable mental model or methodology
+   - "warning": A common mistake or pitfall
+   - "advice": General actionable recommendation
+   - "story": A specific company anecdote (extract the lesson, not the narrative)
+5. Tag each item with ONE topic from this exact list: {{ topics|join(', ') }}
+6. If multiple speakers disagree on the same topic, note the contradiction using the IN-BATCH INDEX numbers (1-based) shown below.
+
+CONTENT SEGMENTS:
+{% for chunk in chunks %}
+--- SEGMENT {{ loop.index }} ---
+In-Batch Index: {{ loop.index }}
+Source: {{ chunk.content_id }}
+URL: {{ chunk.url }}
+Speaker: {{ chunk.speaker }}
+Designation: {{ chunk.designation }}
+Timestamp: {{ chunk.timestamp_start }} - {{ chunk.timestamp_end }}
+Text:
+{{ chunk.text }}
+
+{% endfor %}
+
+OUTPUT FORMAT: Return a single JSON object with this exact structure:
+{
+  "extracted_items": [
+    {
+      "in_batch_index": 1,
+      "quote": "exact verbatim quote",
+      "speaker": "Full Name",
+      "designation": "Title, Organization",
+      "source_id": "content_id",
+      "source_url": "https://...",
+      "timestamp": "00:04:32",
+      "topic": "fundraising",
+      "type": "framework",
+      "context": "1-2 sentences of surrounding context",
+      "is_partial": false
+    }
+  ],
+  "contradictions": [
+    {
+      "topic": "fundraising",
+      "in_batch_indices": [1, 3],
+      "summary": "Speaker A says X, Speaker B says Y"
+    }
+  ]
+}
+
+CONSTRAINTS:
+- Minimum 3 items per content segment if advice exists. Maximum 20 per segment.
+- If a segment contains no actionable advice, return an empty items array for that segment but explain why in a "notes" field.
+- Do not invent speakers. If speaker is unknown, use "Unknown Speaker" and flag for review.
+- Use ONLY the In-Batch Index numbers (1, 2, 3...) to reference items in contradictions. Do NOT use UUIDs or made-up IDs.

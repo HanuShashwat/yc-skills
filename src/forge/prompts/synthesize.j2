@@ -1,0 +1,53 @@
+You are creating a narrow, composable skill file for AI agents based on Y Combinator advice.
+
+CLUSTER TOPIC: {{ topic }}
+NUMBER OF SOURCE ITEMS: {{ items|length }}
+AVERAGE PAIRWISE SIMILARITY: {{ avg_similarity }}
+
+EXTRACTED QUOTES:
+{% for item in items %}
+{{ loop.index }}. "{{ item.quote }}"
+   — {{ item.speaker }}, {{ item.designation }}
+   Source: {{ item.source_url }} at {{ item.timestamp }}
+   Type: {{ item.type }}
+
+{% endfor %}
+
+TASK:
+1. Write a unified principle (2-4 sentences) that captures the consensus. If sources disagree, present the majority view and note the dissenting view.
+2. Select the 2-3 strongest exact quotes to preserve verbatim.
+3. Write a "Personalized Application" section: specific instructions for how an AI agent should apply this advice when a founder asks a related question. Include 2-3 contextual follow-up questions the agent should ask.
+4. Identify 1-2 edge cases or exceptions.
+5. List related skill IDs ONLY if you are absolutely certain they already exist in the repository. Use the taxonomy: yc-{category}-{subcategory}-{descriptor}. If unsure, leave empty array.
+
+OUTPUT FORMAT: Return JSON with this exact structure:
+{
+  "skill_id": "yc-{{ topic }}-{{ descriptor }}",
+  "name": "Human-Readable Skill Name",
+  "category": "{{ category }}",
+  "principle": "Unified principle text...",
+  "quotes": [
+    {
+      "text": "exact quote",
+      "speaker": "Name",
+      "designation": "Title",
+      "source_url": "https://...",
+      "timestamp": "00:04:32"
+    }
+  ],
+  "application": {
+    "when_to_use": "Description of when this skill applies",
+    "follow_up_questions": ["Question 1?", "Question 2?"],
+    "actions": ["Action 1", "Action 2"]
+  },
+  "edge_cases": ["Edge case 1", "Edge case 2"],
+  "related_skills": [],
+  "confidence": 0.0
+}
+
+RULES:
+- skill_id must follow pattern: yc-{category}-{descriptor} (max 6 words after category)
+- Set confidence to 0.0. It will be overwritten by the pipeline based on cluster metrics.
+- Do NOT invent quotes. Every quote must be from the EXTRACTED QUOTES list above.
+- Do NOT invent speakers. Use only speakers from the extracted items.
+- related_skills: ONLY include IDs you are 100% certain exist. Prefer empty array.
