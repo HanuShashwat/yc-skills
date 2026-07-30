@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-07-12T00:00:00Z",
+  "skills": ["yc-fundraising-seed-round-timing", "yc-fundraising-seed-round-valuation"],
+  "matrix": [
+    [1.0, 0.85],
+    [0.85, 1.0]
+  ],
+  "tag_index": {
+    "seed": ["yc-fundraising-seed-round-timing", "yc-fundraising-seed-round-valuation"],
+    "runway": ["yc-fundraising-seed-round-timing"]
+  }
+}

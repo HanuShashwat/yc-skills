@@ -1220,16 +1220,16 @@
 | **Title** | Milestone 8 Review — Forge Synthesis & Linking |
 
 **Verification Checklist:**
-- [ ] Confidence computed from cluster metrics, not LLM output
-- [ ] `related_skills` set to `[]` by synthesizer, populated by linker only
-- [ ] Skill files match Section 10.1 format exactly
-- [ ] Linker uses similarity matrix, not LLM
-- [ ] Skill ID uniqueness enforced (appends `_v2`, `_v3`)
-- [ ] `forge` CLI runs full pipeline: batch → extract → cluster → synthesize
-- [ ] `link` CLI runs deferred linking separately
-- [ ] State transitions: `clustered` → `synthesized` → `linked`
-- [ ] Golden fixtures pass Pydantic validation
-- [ ] All tests pass
+- [x] Confidence computed from cluster metrics, not LLM output
+- [x] `related_skills` set to `[]` by synthesizer, populated by linker only
+- [x] Skill files match Section 10.1 format exactly
+- [x] Linker uses similarity matrix, not LLM
+- [x] Skill ID uniqueness enforced (appends `_v2`, `_v3`)
+- [x] `forge` CLI runs full pipeline: batch → extract → cluster → synthesize
+- [x] `link` CLI runs deferred linking separately
+- [x] State transitions: `clustered` → `synthesized` → `linked`
+- [x] Golden fixtures pass Pydantic validation
+- [x] All tests pass
 
 ---
 

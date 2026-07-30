@@ -21,7 +21,7 @@ class Provenance(BaseModel):
     """Provenance tracking for a generated skill."""
     batch_id: str = Field(..., description="ID of the batch run")
     pipeline_run_date: datetime = Field(..., description="Date the pipeline was run")
-    github_run_url: Optional[HttpUrl] = Field(None, description="GitHub Actions run URL")
+    github_run_url: Optional[str] = Field("", description="GitHub Actions run URL")
     sources: List[ProvenanceSource] = Field(default_factory=list, description="List of sources")
 
 

@@ -1,0 +1,39 @@
+skill_id: yc-fundraising-seed-round-timing
+name: Seed Round Timing
+version: "1.0.0"
+category: fundraising
+tags:
+  - seed
+  - runway
+  - leverage
+  - investors
+  - timing
+source_count: 12
+quote_count: 3
+related_skills:
+  - yc-fundraising-seed-round-valuation
+  - yc-fundraising-investor-update-emails
+  - yc-founder-mental-models-default-alive-dead
+confidence: 0.92
+provenance:
+  batch_id: "550e8400-e29b-41d4-a716-446655440000"
+  pipeline_run_date: "2026-07-12T00:00:00Z"
+  github_run_url: ""
+  sources:
+    - content_id: "lib_a1b2c3d4e5f6"
+      title: "How to convince investors"
+      speaker: "Paul Graham"
+      designation: "Founder of YC"
+      url: "https://paulgraham.com/convince.html"
+      contribution: "3 quotes, 1 framework"
+    - content_id: "yt_abc123def45"
+      title: "Office Hours: Fundraising"
+      speaker: "Garry Tan"
+      designation: "CEO of YC"
+      url: "https://youtube.com/watch?v=abc123def45"
+      contribution: "2 quotes, 1 warning"
+validation:
+  quote_verified: true
+  schema_valid: true
+  hallucination_check: true
+  human_review: false

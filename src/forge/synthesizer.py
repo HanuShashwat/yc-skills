@@ -315,8 +315,20 @@ def run_synthesis(cluster_id: str, db_path: str = "data/registry.db") -> None:
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """, (
                 skill_id, category, parsed.name, "1.0.0", filepath, len(source_rows), len(items),
-                None, round(computed_confidence, 2), "draft", now_iso, now_iso
+                None, round(computed_confidence, 2), "synthesized", now_iso, now_iso
             ))
+            
+            # Update content state to synthesized
+            cursor.execute("""
+                UPDATE content SET state = 'synthesized' WHERE content_id IN (
+                    SELECT DISTINCT ch.content_id
+                    FROM cluster_items ci
+                    JOIN extracted_items ei ON ci.item_id = ei.item_id
+                    JOIN chunks ch ON ei.chunk_id = ch.chunk_id
+                    WHERE ci.cluster_id = ?
+                )
+            """, (cluster_id,))
+            
     except sqlite3.Error as e:
         logger.error("Failed to insert skill %s into db: %s", skill_id, e)
         raise

@@ -153,11 +153,25 @@ def reaper_cmd(args: argparse.Namespace) -> None:
         sys.exit(1)
 
 
+def link_cmd(args: argparse.Namespace) -> None:
+    """Handle the link command."""
+    from src.forge.linker import run_linker
+    
+    logger.info("Starting deferred link pass...")
+    try:
+        run_linker(DB_PATH)
+        logger.info("Deferred link pass complete.")
+    except Exception as e:
+        logger.error("Error during deferred link pass: %s", e)
+        sys.exit(1)
+
+
 def forge_cmd(args: argparse.Namespace) -> None:
     """Handle the forge command."""
     from src.forge.batcher import select_batch
     from src.forge.extractor import run_extraction
     from src.forge.clusterer import run_clustering
+    from src.forge.synthesizer import run_synthesis
     
     logger.info("Starting forge pipeline...")
     try:
@@ -169,6 +183,17 @@ def forge_cmd(args: argparse.Namespace) -> None:
         
         run_clustering(batch_id, DB_PATH)
         logger.info("Forge clustering complete for batch %s.", batch_id)
+        
+        with sqlite3.connect(DB_PATH) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT cluster_id FROM clusters WHERE batch_id = ?", (batch_id,))
+            cluster_ids = [row[0] for row in cursor.fetchall()]
+            
+        logger.info("Found %d clusters for synthesis.", len(cluster_ids))
+        for cid in cluster_ids:
+            run_synthesis(cid, DB_PATH)
+            
+        logger.info("Forge synthesis complete for batch %s.", batch_id)
         
     except Exception as e:
         logger.error("Error during forge pipeline: %s", e)
@@ -213,6 +238,7 @@ def main() -> None:
     # link
     link_parser = subparsers.add_parser("link", help="Run deferred link pass")
     link_parser.add_argument("--topic", help="Topic to scope linking")
+    link_parser.set_defaults(func=link_cmd)
     
     # validate
     validate_parser = subparsers.add_parser("validate", help="Validate generated skills")
