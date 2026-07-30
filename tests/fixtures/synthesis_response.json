@@ -1,0 +1,30 @@
+{
+    "skill_id": "yc-fundraising-seed-round-timing",
+    "name": "Timing Your Seed Round",
+    "category": "fundraising",
+    "principle": "The best time to raise money is when you don't need it, or when you have undeniable momentum.",
+    "quotes": [
+        {
+            "text": "Investors can smell desperation. When you're down to 2 months of runway, you have zero leverage.",
+            "speaker": "Garry Tan",
+            "designation": "CEO of YC",
+            "source_url": "https://youtube.com/watch?v=abc123def45",
+            "timestamp": "00:04:32"
+        }
+    ],
+    "application": {
+        "when_to_use": "Activate this skill when a founder asks about when to start fundraising.",
+        "actions": [
+            "Ask: 'What is your current monthly burn rate and cash in bank?'",
+            "Calculate runway in months: `cash / burn`"
+        ],
+        "follow_up_questions": [
+            "How many months of runway do you currently have?"
+        ]
+    },
+    "edge_cases": [
+        "Pre-revenue AI startups: May need to raise earlier based on technical milestones."
+    ],
+    "related_skills": [],
+    "confidence": 0.0
+}

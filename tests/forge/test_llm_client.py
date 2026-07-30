@@ -1,11 +1,9 @@
 """
 Tests for LLMClient.
 """
-import os
 import sqlite3
 from unittest.mock import MagicMock, patch
 
-import openai
 import pytest
 
 from src.config import ProviderConfig

@@ -2,7 +2,6 @@
 Tests for Library Scraper.
 """
 import hashlib
-import os
 import sqlite3
 from unittest.mock import MagicMock, patch
 

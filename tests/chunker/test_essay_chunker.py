@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.chunker.essay_chunker import chunk_essay, get_sentences, get_word_count
+from src.chunker.essay_chunker import chunk_essay, get_sentences
 
 
 @pytest.fixture

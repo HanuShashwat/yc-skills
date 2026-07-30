@@ -15,7 +15,7 @@ sys.modules['sklearn.metrics'] = MagicMock()
 sys.modules['sklearn.metrics.pairwise'] = MagicMock()
 
 # Now we can import
-from src.forge.clusterer import run_clustering
+from src.forge.clusterer import run_clustering  # noqa: E402
 
 
 @pytest.fixture
