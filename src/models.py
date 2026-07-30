@@ -2,7 +2,7 @@
 Pydantic v2 data models for YC Skills Forge.
 """
 
-from typing import List, Optional, Dict, Literal
+from typing import List, Optional, Dict, Literal, Any
 from datetime import datetime
 from pydantic import BaseModel, Field, HttpUrl
 
@@ -82,8 +82,8 @@ class SynthesisResponse(BaseModel):
     name: str = Field(..., max_length=100, description="Skill name")
     category: str = Field(..., description="Skill category")
     principle: str = Field(..., description="Core principle taught by the skill")
-    quotes: List[str] = Field(default_factory=list, description="Quotes supporting the principle")
-    application: Dict[str, str] = Field(default_factory=dict, description="How to apply the skill")
+    quotes: List[Dict[str, str]] = Field(default_factory=list, description="Quotes supporting the principle")
+    application: Dict[str, Any] = Field(default_factory=dict, description="How to apply the skill")
     edge_cases: List[str] = Field(default_factory=list, description="Edge cases or exceptions")
     related_skills: List[str] = Field(default_factory=list, description="Related skill IDs")
     confidence: float = Field(..., ge=0.0, le=1.0, description="Confidence score")
