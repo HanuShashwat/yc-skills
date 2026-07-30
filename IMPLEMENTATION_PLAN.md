@@ -1265,7 +1265,52 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M9-T1. Create `src/exporter/mcp_exporter.py` that reads skill Markdown files and generates MCP spec JSON files matching architecture doc Section 11.1 exactly. Every spec must include the `fallback` block with `use_agent_knowledge: true` and `invent_quotes: false`. Save to `specs/mcp/{skill_id}.json`. Create tests. Files you must NOT modify: `AGENTS.md`, `src/forge/*.py`. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M9-T1 for the YC Skills Forge project.
+>
+> **Objective:** Create `src/exporter/mcp_exporter.py` that reads skill Markdown files from the `skills/` directory, parses their YAML frontmatter and Markdown body, and generates MCP (Model Context Protocol) spec JSON files. Create `tests/exporter/test_mcp_exporter.py` with comprehensive tests.
+>
+> **Exact output JSON structure (from architecture doc Section 11.1):** Each generated file must match this template:
+> ```json
+> {
+>   "name": "{skill_id with hyphens replaced by underscores}",
+>   "description": "YC advice on {topic}. Sources: {speaker1} ({designation1}), {speaker2} ({designation2}). {summary of what the skill provides}.",
+>   "inputSchema": {
+>     "type": "object",
+>     "properties": { ... derived from skill's Personalized Application section ... },
+>     "required": [ ... ]
+>   },
+>   "handler": {
+>     "type": "file",
+>     "path": "skills/{category}/{skill_id}.md"
+>   },
+>   "tags": [ ... from frontmatter tags ... ],
+>   "fallback": {
+>     "mode": "closest_skills",
+>     "count": 3,
+>     "use_agent_knowledge": true,
+>     "invent_quotes": false
+>   }
+> }
+> ```
+>
+> **Implementation details:**
+> 1. Create a function `export_mcp(skill_path: str, output_dir: str = "specs/mcp") -> str` that processes a single skill file and returns the output path.
+> 2. Create a function `export_all_mcp(skills_dir: str = "skills", output_dir: str = "specs/mcp") -> list[str]` that processes all `.md` files recursively under `skills/`.
+> 3. Parse YAML frontmatter using `PyYAML`. Extract `skill_id`, `name`, `category`, `tags`, and `provenance.sources` for the description.
+> 4. Generate `inputSchema` properties from the skill's "When to Use This Skill" and "Follow-Up Questions" sections. Include a `question` property (type: string, required) at minimum.
+> 5. The `handler.path` must be the relative path from repository root: `skills/{category}/{skill_id}.md`.
+> 6. The `fallback` block is MANDATORY and must contain exactly: `mode: "closest_skills"`, `count: 3`, `use_agent_knowledge: true`, `invent_quotes: false`.
+> 7. Output file: `specs/mcp/{skill_id}.json` with 2-space indented JSON.
+> 8. Create `specs/mcp/` directory if it doesn't exist.
+>
+> **Files to create:** `src/exporter/mcp_exporter.py`, `tests/exporter/test_mcp_exporter.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
+>
+> **Rules:** Follow `AGENTS.md` Sections 4 (layering — exporter is Layer 2, may import from Layer 1 only), 5 (coding standards). Use `logging` module, not `print()`. Docstrings on all public functions. No bare `Exception`. Read export formats from `config/pipeline.yml` (`export.formats` list) to verify MCP is enabled.
+>
+> **Tests must cover:** Valid skill file → correct JSON output structure, `fallback` block presence and exact values, `handler.path` correctness, `name` field uses underscores not hyphens, `tags` array matches frontmatter, missing frontmatter fields → graceful error. Min 3 test cases. Use the `tests/fixtures/sample_skill.md` fixture from M8-T4.
+>
+> **Self-review before completion:** Run `ruff check src/exporter/mcp_exporter.py` and `python -m pytest tests/exporter/test_mcp_exporter.py`. Verify the output JSON matches the architecture doc Section 11.1 example. Stop after completing ONLY this task.
 
 ---
 
@@ -1285,7 +1330,54 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M9-T2. Create `src/exporter/openai_exporter.py` generating OpenAI function schema JSONs matching architecture doc Section 11.2. Include `metadata.fallback` with `invent_quotes: false`. Save to `specs/openai/{skill_id}.json`. Create tests. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M9-T2 for the YC Skills Forge project.
+>
+> **Objective:** Create `src/exporter/openai_exporter.py` that reads skill Markdown files and generates OpenAI function schema JSON files. Create `tests/exporter/test_openai_exporter.py` with comprehensive tests.
+>
+> **Exact output JSON structure (from architecture doc Section 11.2):** Each generated file must match this template:
+> ```json
+> {
+>   "type": "function",
+>   "function": {
+>     "name": "{skill_id with hyphens replaced by underscores}",
+>     "description": "YC advice on {topic}. Sources: {speaker1} ({designation1}), ...",
+>     "parameters": {
+>       "type": "object",
+>       "properties": { ... derived from skill content ... },
+>       "required": [ ... ]
+>     }
+>   },
+>   "metadata": {
+>     "skill_file": "skills/{category}/{skill_id}.md",
+>     "category": "{category}",
+>     "tags": [ ... from frontmatter ... ],
+>     "fallback": {
+>       "mode": "closest_skills",
+>       "count": 3,
+>       "use_agent_knowledge": true,
+>       "invent_quotes": false
+>     }
+>   }
+> }
+> ```
+>
+> **Implementation details:**
+> 1. Create a function `export_openai(skill_path: str, output_dir: str = "specs/openai") -> str` that processes a single skill file.
+> 2. Create a function `export_all_openai(skills_dir: str = "skills", output_dir: str = "specs/openai") -> list[str]` that processes all skills.
+> 3. The top-level object MUST have `"type": "function"` as the first key — this is the OpenAI function calling schema standard.
+> 4. The `function.parameters` block mirrors the MCP `inputSchema` — generate properties from the skill's usage triggers and follow-up questions. Always include a `question` property (type: string, required).
+> 5. The `metadata` block is a non-standard extension containing: `skill_file` (relative path), `category`, `tags`, and `fallback`.
+> 6. The `metadata.fallback` block MUST contain exactly: `mode: "closest_skills"`, `count: 3`, `use_agent_knowledge: true`, `invent_quotes: false`.
+> 7. Output file: `specs/openai/{skill_id}.json` with 2-space indented JSON.
+>
+> **Files to create:** `src/exporter/openai_exporter.py`, `tests/exporter/test_openai_exporter.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
+>
+> **Rules:** Follow `AGENTS.md` Sections 4, 5. Layer 2 module — may import from Layer 1 only. Use `logging`, docstrings on all public functions. No bare `Exception`. Consider sharing utility functions with `mcp_exporter.py` (e.g., frontmatter parsing) via an `__init__.py` or a shared helper — but do not import from MCP exporter directly.
+>
+> **Tests must cover:** Valid skill file → correct JSON structure with `type: function` wrapper, `metadata.fallback` block presence and exact values, `metadata.skill_file` correctness, `function.name` uses underscores, `metadata.tags` matches frontmatter. Min 3 test cases.
+>
+> **Self-review before completion:** Run `ruff check src/exporter/openai_exporter.py` and `python -m pytest tests/exporter/test_openai_exporter.py`. Verify the output JSON matches the architecture doc Section 11.2 example. Stop after completing ONLY this task.
 
 ---
 
@@ -1305,7 +1397,66 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M9-T3. Create `src/exporter/hermes_exporter.py` generating plain-text system prompt fragments matching architecture doc Section 11.3. Use `[SKILL: ...]` / `[END SKILL]` delimiters. Include FALLBACK instruction. Save to `specs/hermes/{skill_id}.txt`. Create tests. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M9-T3 for the YC Skills Forge project.
+>
+> **Objective:** Create `src/exporter/hermes_exporter.py` that reads skill Markdown files and generates plain-text system prompt fragments for local models (llama.cpp, Ollama, etc.). Create `tests/exporter/test_hermes_exporter.py` with comprehensive tests.
+>
+> **Exact output text format (from architecture doc Section 11.3):** Each generated file must match this template:
+> ```text
+> [SKILL: {skill_id}]
+> NAME: {name}
+> CATEGORY: {category}
+> TAGS: {comma-separated tags}
+>
+> PRINCIPLE: {principle text from ## Principle section}
+>
+> VERBATIM QUOTES:
+> - "{quote1}" — {speaker1}, {designation1}
+> - "{quote2}" — {speaker2}, {designation2}
+> ...
+>
+> WHEN TO USE: {summary from ## Personalized Application > ### When to Use This Skill}
+>
+> AGENT PROTOCOL:
+> 1. {step1}
+> 2. {step2}
+> ...
+>
+> FOLLOW-UP QUESTIONS:
+> - {question1}
+> - {question2}
+> ...
+>
+> EDGE CASES:
+> - {edge_case1}
+> - {edge_case2}
+> ...
+>
+> FALLBACK: If query does not match, return 3 closest skills and use general knowledge. DO NOT invent YC quotes.
+>
+> RELATED SKILLS: {comma-separated related_skills from frontmatter}
+> [END SKILL]
+> ```
+>
+> **Implementation details:**
+> 1. Create a function `export_hermes(skill_path: str, output_dir: str = "specs/hermes") -> str` that processes a single skill file.
+> 2. Create a function `export_all_hermes(skills_dir: str = "skills", output_dir: str = "specs/hermes") -> list[str]` that processes all skills.
+> 3. Parse the Markdown body to extract content from each section: `## Principle`, `## Verbatim Quotes`, `## Personalized Application`, `## Edge Cases`, `## Related Skills`.
+> 4. For VERBATIM QUOTES: extract blockquotes (`> "..."`) and their attribution lines (`> — **Speaker**, Designation`).
+> 5. For AGENT PROTOCOL: extract the numbered steps from `### Agent Protocol` subsection.
+> 6. For FOLLOW-UP QUESTIONS: extract from `### Follow-Up Questions` subsection.
+> 7. The FALLBACK line is MANDATORY and must read exactly: `FALLBACK: If query does not match, return 3 closest skills and use general knowledge. DO NOT invent YC quotes.`
+> 8. The `[SKILL: ...]` and `[END SKILL]` delimiters are required — they enable agents to parse skill boundaries when multiple specs are concatenated into a single system prompt.
+> 9. Output file: `specs/hermes/{skill_id}.txt` (plain text, UTF-8, LF line endings).
+>
+> **Files to create:** `src/exporter/hermes_exporter.py`, `tests/exporter/test_hermes_exporter.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
+>
+> **Rules:** Follow `AGENTS.md` Sections 4, 5. Layer 2 module. Use `logging`. Docstrings on all public functions. No bare `Exception`. The output is `.txt` not `.json` — this is the only exporter that produces non-JSON output.
+>
+> **Tests must cover:** Valid skill file → correct text output with all sections present, `[SKILL: ...]` / `[END SKILL]` delimiters present, FALLBACK line contains exact `DO NOT invent YC quotes` text, VERBATIM QUOTES section correctly extracts quotes and attributions, RELATED SKILLS line matches frontmatter. Min 3 test cases.
+>
+> **Self-review before completion:** Run `ruff check src/exporter/hermes_exporter.py` and `python -m pytest tests/exporter/test_hermes_exporter.py`. Compare a generated output file against the architecture doc Section 11.3 example line by line. Stop after completing ONLY this task.
 
 ---
 
@@ -1324,7 +1475,33 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M9-T4. Add the `export` subcommand to `src/cli.py` that accepts `--all` and calls all three exporters (MCP, OpenAI, Hermes) for every skill file in `skills/`. Files you may modify: `src/cli.py` ONLY. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M9-T4 for the YC Skills Forge project.
+>
+> **Objective:** Add the `export` subcommand to `src/cli.py` that generates spec files in all three formats (MCP, OpenAI, Hermes) for skill files.
+>
+> **CLI interface:**
+> - `python -m src.cli export --all` — export all skills in `skills/` to all 3 formats.
+> - `python -m src.cli export --format mcp` — export only MCP format.
+> - `python -m src.cli export --format openai` — export only OpenAI format.
+> - `python -m src.cli export --format hermes` — export only Hermes format.
+> - `python -m src.cli export --skill-id <id>` — export a single skill to all formats.
+>
+> **Implementation details:**
+> 1. Add `export` subparser to the argparse CLI in `src/cli.py`.
+> 2. Accept `--all` flag (boolean), `--format` (optional, choices: mcp/openai/hermes), `--skill-id` (optional string).
+> 3. When `--all` is specified: scan `skills/` recursively for `.md` files, call all three exporters for each.
+> 4. When `--format` is specified: call only the matching exporter.
+> 5. When `--skill-id` is specified: find the skill file by ID and export only that skill.
+> 6. Log summary: number of skills exported, number of spec files generated, output directories.
+> 7. Import from `src/exporter/mcp_exporter`, `src/exporter/openai_exporter`, `src/exporter/hermes_exporter`.
+> 8. Create output directories (`specs/mcp/`, `specs/openai/`, `specs/hermes/`) if they don't exist.
+>
+> **Files you may modify:** `src/cli.py` ONLY.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/exporter/*.py`, `src/models.py`.
+>
+> **Rules:** CLI is Layer 3 — may import from Layer 2 (exporters) and Layer 1 (models, config). Use `logging` for output. Handle errors gracefully (e.g., missing skill files, invalid frontmatter). The `--help` text should clearly explain what each flag does.
+>
+> **Self-review before completion:** Run `python -m src.cli export --help` and verify the help text is clear. Run `ruff check src/cli.py`. Stop after completing ONLY this task.
 
 ---
 
@@ -1381,7 +1558,40 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T1. Create `src/validator/quote_verifier.py` implementing the dual fuzzy match algorithm from architecture doc Section 14.1. Use `rapidfuzz.fuzz.ratio` AND `rapidfuzz.fuzz.partial_ratio`. Thresholds: ratio ≥ 70 AND partial_ratio ≥ 85 = PASS. ratio < 70 but partial_ratio ≥ 85 = WARNING. partial_ratio < 70 = FAIL. Fallback to `data/raw/` if chunk not found. Create tests with known-good, modified, and fabricated quotes. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M10-T1 for the YC Skills Forge project.
+>
+> **Objective:** Create `src/validator/quote_verifier.py` implementing the dual fuzzy match quote verification algorithm from architecture doc Section 14.1. Create `tests/validator/test_quote_verifier.py` with comprehensive tests.
+>
+> **Algorithm (exact, from architecture doc Section 14.1):**
+> 1. Load a skill file and extract all blockquotes matching the pattern `> "..."` (lines starting with `>` that contain quoted text).
+> 2. For each extracted quote, identify the source content_id from the skill's `provenance.sources` frontmatter.
+> 3. Load the corresponding source chunks from `data/chunks/` (JSON files matching `{content_id}_*.json`).
+> 4. For each quote, compute BOTH similarity scores against the chunk text:
+>    - `rapidfuzz.fuzz.ratio(quote, chunk_text)` — strict, length-normalized Levenshtein similarity.
+>    - `rapidfuzz.fuzz.partial_ratio(quote, chunk_text)` — lenient, finds best matching substring.
+> 5. Compare each quote against ALL chunks from its source and take the BEST match.
+> 6. **Decision thresholds (from `config/pipeline.yml` validation section):**
+>    - `ratio >= 70` AND `partial_ratio >= 85` → **PASS** (quote is verified)
+>    - `ratio < 70` BUT `partial_ratio >= 85` → **WARNING** (possible truncation or minor formatting change — flag for human review)
+>    - `partial_ratio < 70` → **FAIL** (quote cannot be verified — block commit)
+> 7. **Fallback:** If no chunk files exist for a source content_id, search in `data/raw/` (the full Markdown or transcript file) with the same dual fuzzy logic.
+>
+> **Why dual matching:** `ratio()` catches rewording that happens to share words. `partial_ratio()` catches truncation where the quote is a subset of a longer chunk. Both are needed for the exact quote fidelity constraint.
+>
+> **Implementation details:**
+> 1. Create a class `QuoteVerifier` with `__init__(self, chunks_dir, raw_dir, config)` and `verify_skill(self, skill_path) -> QuoteVerificationResult`.
+> 2. `QuoteVerificationResult` should contain: `skill_id`, `status` (pass/warning/fail), `quote_results` (list of per-quote results with quote text, best_ratio, best_partial_ratio, matched_chunk_id, status).
+> 3. Read validation thresholds from `config/pipeline.yml` (`validation.quote_fuzzy_ratio: 70`, `validation.quote_fuzzy_partial_ratio: 85`) — do NOT hardcode them.
+> 4. Handle edge cases: skill file with zero quotes (warning, not error), chunk directory missing (fall back to raw), quote with special characters or line breaks.
+>
+> **Files to create:** `src/validator/quote_verifier.py`, `tests/validator/test_quote_verifier.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
+>
+> **Rules:** Follow `AGENTS.md` Sections 4 (layering — validator is Layer 2), 5 (coding standards), 8 (security — this is a trust boundary component). Use `logging`. Docstrings on all public functions. No bare `Exception`. Import `rapidfuzz` only in this module. Read thresholds from config, not hardcoded.
+>
+> **Tests must cover:** Known-good quote from fixture (exact match → PASS), slightly truncated quote (high partial_ratio but low ratio → WARNING), completely fabricated quote (both scores low → FAIL), quote with formatting differences (Markdown artifacts), missing chunk fallback to raw. Min 5 test cases. Use `tests/fixtures/sample_skill.md` as a fixture.
+>
+> **Self-review before completion:** Run `ruff check src/validator/quote_verifier.py` and `python -m pytest tests/validator/test_quote_verifier.py`. Verify threshold values match `config/pipeline.yml`. Stop after completing ONLY this task.
 
 ---
 
@@ -1401,7 +1611,39 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T2. Create `src/validator/schema_validator.py` implementing architecture doc Section 14.2. Parse YAML frontmatter, validate against `SkillFrontmatter` Pydantic model. Check skill_id matches filename, related_skills exist as files, tags are lowercase/no spaces/max 20 chars. Create tests. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M10-T2 for the YC Skills Forge project.
+>
+> **Objective:** Create `src/validator/schema_validator.py` implementing the Pydantic-based schema validation from architecture doc Section 14.2. Create `tests/validator/test_schema_validator.py` with comprehensive tests.
+>
+> **Algorithm (exact, from architecture doc Section 14.2):**
+> 1. Read the skill Markdown file and extract the YAML frontmatter (content between `---` delimiters at the top of the file).
+> 2. Parse the YAML with `PyYAML` (`yaml.safe_load`).
+> 3. Validate the parsed YAML against the `SkillFrontmatter` Pydantic model from `src/models.py`. This enforces:
+>    - `skill_id` matches regex `^yc-[a-z]+(-[a-z]+){1,6}$`
+>    - `version` matches regex `^\d+\.\d+\.\d+$`
+>    - `tags` has 1–10 items
+>    - `source_count >= 1`, `quote_count >= 1`
+>    - `confidence` is between 0.0 and 1.0
+>    - `provenance` and `validation` sub-objects are valid
+> 4. Check that `skill_id` matches the filename (e.g., `yc-fundraising-seed-round-timing.md` → skill_id must be `yc-fundraising-seed-round-timing`).
+> 5. Check that every entry in `related_skills` exists as an actual `.md` file in the `skills/` directory tree. If a related skill ID doesn't correspond to an existing file, flag it as FAIL.
+> 6. Check that all `tags` are lowercase, contain no spaces, and are max 20 characters each.
+> 7. Check that `category` from frontmatter matches the parent directory name (e.g., file in `skills/fundraising/` → category must be `fundraising`).
+>
+> **Implementation details:**
+> 1. Create a class `SchemaValidator` with `__init__(self, skills_dir, config)` and `validate_skill(self, skill_path) -> SchemaValidationResult`.
+> 2. `SchemaValidationResult` should contain: `skill_id`, `status` (pass/fail), `errors` (list of validation error messages), `warnings` (list).
+> 3. On Pydantic `ValidationError`: capture all error messages and return them in the result — do not raise.
+> 4. Handle edge cases: malformed YAML (not valid YAML at all), missing frontmatter delimiters, empty frontmatter, filename with wrong extension.
+>
+> **Files to create:** `src/validator/schema_validator.py`, `tests/validator/test_schema_validator.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/models.py`, `src/forge/*.py`, `src/cli.py`.
+>
+> **Rules:** Follow `AGENTS.md` Sections 4, 5. Layer 2 module — may import `SkillFrontmatter` from `src/models.py` (Layer 1). Use `logging`. Docstrings on all public functions. No bare `Exception`. Import Pydantic `ValidationError` for structured error handling.
+>
+> **Tests must cover:** Valid frontmatter from fixture → PASS, invalid skill_id (uppercase, too many words, missing yc- prefix) → FAIL with specific error, missing required fields (source_count, quote_count) → FAIL, broken related_skills (references non-existent skill) → FAIL, tags validation (uppercase tag, tag with spaces, tag > 20 chars) → FAIL, category mismatch between frontmatter and directory → FAIL, skill_id mismatch with filename → FAIL. Min 5 test cases.
+>
+> **Self-review before completion:** Run `ruff check src/validator/schema_validator.py` and `python -m pytest tests/validator/test_schema_validator.py`. Verify all Pydantic constraints from `src/models.py` are actually exercised by the tests. Stop after completing ONLY this task.
 
 ---
 
@@ -1421,7 +1663,39 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T3. Create `src/validator/hallucination_guard.py` implementing architecture doc Section 14.3. CRITICAL: The hallucination guard uses ONLY the `dedicated_validator` config from `providers.yml` (gemini-1.5-flash at temperature=0.0). It does NOT use the rotating provider pool. If Gemini quota is exhausted, SKIP the LLM-as-judge step and log a warning — do NOT fall back to another provider. This is a security boundary. Import `LLMClient` from `src/forge/llm_client.py` but use the dedicated validator config. Create tests. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M10-T3 for the YC Skills Forge project.
+>
+> **Objective:** Create `src/validator/hallucination_guard.py` implementing the multi-step hallucination detection algorithm from architecture doc Section 14.3. This is a **security-critical** component — a trust boundary between LLM-generated content and published output. Create `tests/validator/test_hallucination_guard.py` with comprehensive tests.
+>
+> **Algorithm (exact, from architecture doc Section 14.3):**
+> 1. **Speaker Verification:** Extract all `(Name, Designation)` pairs from the skill file (from `> — **Name**, Designation` attribution lines). Cross-reference each speaker against the `content` table in `data/registry.db`. If a speaker appears in a skill but NEVER appears in the batch sources for that skill, return FAIL.
+> 2. **Source Cross-Reference:** For each `content_id` in the skill's `provenance.sources`, verify it exists in the `content` table and has a non-null `speaker` field matching the attributed speaker.
+> 3. **Unsupported Claims Detection:** Scan the `## Principle` and `## Personalized Application` sections for specific factual claims: years (e.g., "2022"), dollar amounts (e.g., "$1M"), company names, and percentages. For each such claim, verify it appears in at least one of the source chunks from `data/chunks/`. Flag unverified specific claims as potential hallucinations.
+> 4. **LLM-as-Judge (dedicated validator, NOT rotating pool):** Send the skill's principle, application, and quotes to the LLM with the prompt from `src/forge/prompts/validate.j2`. The prompt asks: "Does the Principle or Application introduce any claims not supported by the Source Quotes?"
+>
+> **CRITICAL SECURITY CONSTRAINTS for LLM-as-Judge (step 4):**
+> - Uses ONLY the `validation.dedicated_validator` config block from `config/providers.yml`.
+> - Provider: `gemini`, Model: `gemini-1.5-flash`, Temperature: `0.0`, Max tokens: `2000`.
+> - This does NOT use the rotating provider pool. Do NOT call `LLMClient.get_provider()` with the normal rotation logic.
+> - Instead, create a separate method or client instance that reads only the `dedicated_validator` config and calls Gemini directly.
+> - **If Gemini quota is exhausted:** SKIP the LLM-as-judge step entirely. Log a warning: `"LLM-as-judge skipped due to quota exhaustion."` Rely on steps 1–3 only. Do NOT substitute another provider. This is the `fallback_behavior: "fail_open"` strategy.
+> - The LLM must return JSON: `{"supported": true/false, "issues": [...], "confidence": 0.0-1.0}`. If `supported` is `false`, the skill FAILS validation.
+>
+> **Implementation details:**
+> 1. Create a class `HallucinationGuard` with `__init__(self, db_path, chunks_dir, config)` and `check_skill(self, skill_path) -> HallucinationCheckResult`.
+> 2. `HallucinationCheckResult` should contain: `skill_id`, `status` (pass/fail/skipped), `speaker_check` (pass/fail), `claim_check` (pass/fail with flagged claims), `llm_check` (pass/fail/skipped with issues list).
+> 3. Import `LLMClient` from `src/forge/llm_client.py` — this is explicitly allowed for the hallucination guard per AGENTS.md Section 4.
+> 4. Render the validation prompt using Jinja2 from `src/forge/prompts/validate.j2`.
+> 5. Use parameterized SQL queries for all database access.
+>
+> **Files to create:** `src/validator/hallucination_guard.py`, `tests/validator/test_hallucination_guard.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/forge/prompts/validate.j2`, `src/models.py`, `src/cli.py`.
+>
+> **Rules:** Follow `AGENTS.md` Sections 4 (layering — hallucination_guard is the ONLY validator module allowed to import `LLMClient`), 5 (coding standards), 8 (security). This is a TRUST BOUNDARY — the hallucination guard is the last line of defense before publishing. Use `logging`. Docstrings. No bare `Exception`. Parameterized SQL.
+>
+> **Tests must cover:** Valid skill with matching speakers → speaker check PASS, skill with unknown speaker not in batch sources → FAIL, skill with unsupported year claim → claim check FAIL, mocked LLM returning `{"supported": true}` → PASS, mocked LLM returning `{"supported": false, "issues": [...]}` → FAIL, mocked Gemini quota exhaustion → LLM check SKIPPED (but steps 1-3 still run), verify the guard does NOT fall back to another provider. Min 5 test cases.
+>
+> **Self-review before completion:** Run `ruff check src/validator/hallucination_guard.py` and `python -m pytest tests/validator/test_hallucination_guard.py`. Verify the dedicated_validator config is read correctly from `config/providers.yml`. Verify NO fallback to other providers occurs. Stop after completing ONLY this task.
 
 ---
 
@@ -1440,7 +1714,34 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T4. Create `src/validator/run.py` as the entry point for `python -m src.validator.run --all`. It should run all 3 validators (quote, schema, hallucination) against all skill files in `skills/`. Report results per skill. Move failed skills to `skills/_failed/`. Exit code 0 = all pass, 1 = any fail. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M10-T4 for the YC Skills Forge project.
+>
+> **Objective:** Create `src/validator/run.py` as the unified entry point that orchestrates all three validators. This file must be runnable as `python -m src.validator.run --all`.
+>
+> **Implementation details:**
+> 1. Create a `main()` function that accepts CLI arguments via `argparse`.
+> 2. Accept `--all` flag (validate all skills in `skills/`) and `--skill-id <id>` (validate a single skill).
+> 3. For each skill file being validated, run all three validators IN ORDER:
+>    a. **Schema validation** (fast, no IO beyond file read) — run first to catch malformed files early.
+>    b. **Quote verification** (requires `data/chunks/` access) — run second.
+>    c. **Hallucination guard** (requires DB access and potentially LLM call) — run last (most expensive).
+> 4. If any validator returns FAIL for a skill: set the skill's state to `failed` in the `skills` DB table, move the file to `skills/_failed/{skill_id}.md`. Create the `skills/_failed/` directory if it doesn't exist.
+> 5. Print a summary table to stdout (via logging) showing each skill and its validation status:
+>    ```
+>    Skill ID                              | Schema | Quotes | Hallucination | Result
+>    yc-fundraising-seed-round-timing      | PASS   | PASS   | PASS          | ✓ PASS
+>    yc-hiring-first-engineer              | PASS   | WARN   | SKIP          | ⚠ WARNING
+>    yc-product-mvp-scope                  | FAIL   | -      | -             | ✗ FAIL
+>    ```
+> 6. Return exit code 0 if ALL skills pass (warnings are OK), exit code 1 if ANY skill fails.
+> 7. Add `if __name__ == "__main__":` block so the file is runnable as a module.
+>
+> **Files to create:** `src/validator/run.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/validator/quote_verifier.py`, `src/validator/schema_validator.py`, `src/validator/hallucination_guard.py`, `src/cli.py`.
+>
+> **Rules:** Follow `AGENTS.md` Sections 4, 5. This is a Layer 2 module that orchestrates other Layer 2 modules (validators). Use `logging` for output. Use `shutil.move()` for moving failed files. Handle the case where `skills/` is empty gracefully. Parameterized SQL for DB state updates.
+>
+> **Self-review before completion:** Run `ruff check src/validator/run.py`. Verify `python -m src.validator.run --help` shows correct usage. Stop after completing ONLY this task.
 
 ---
 
@@ -1459,7 +1760,27 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T5. Add the `validate` subcommand to `src/cli.py` that accepts `--all` and invokes `src/validator/run.py`. Files you may modify: `src/cli.py` ONLY. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M10-T5 for the YC Skills Forge project.
+>
+> **Objective:** Add the `validate` subcommand to the CLI entry point at `src/cli.py`.
+>
+> **CLI interface:**
+> - `python -m src.cli validate --all` — validates all skill files in `skills/` using all 3 validators.
+> - `python -m src.cli validate --skill-id <id>` — validates a single skill.
+>
+> **Implementation details:**
+> 1. Add `validate` subparser to the argparse CLI.
+> 2. Accept `--all` flag (boolean) and `--skill-id` (optional string). At least one must be provided.
+> 3. Import and call `src/validator/run.py`'s main validation function, passing the arguments through.
+> 4. Propagate the exit code from the validator runner — if validation fails, the CLI should exit with code 1.
+> 5. Add clear `--help` text: "Validate skill files against the three-layer validation suite (schema, quotes, hallucination guard)."
+>
+> **Files you may modify:** `src/cli.py` ONLY.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/validator/*.py`, `src/models.py`.
+>
+> **Rules:** CLI is Layer 3 — may import from Layer 2 (validator) and Layer 1. Use `logging`. Handle the case where `--all` and `--skill-id` are both missing with a clear error message.
+>
+> **Self-review before completion:** Run `python -m src.cli validate --help` and verify the help text. Run `ruff check src/cli.py`. Stop after completing ONLY this task.
 
 ---
 
@@ -1515,7 +1836,47 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M11-T1. Create `src/retrieval/resolver.py` implementing architecture doc Sections 12.2 and 13.1. This is a BUILD-TIME ONLY module. It generates `skills-index.json` and `data/similarity_matrix.json`. Implement the `SignalResolver` class with `resolve(query)` supporting all 4 resolution types. `sentence-transformers` import is allowed here. Create tests. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M11-T1 for the YC Skills Forge project.
+>
+> **Objective:** Create `src/retrieval/resolver.py` implementing the build-time-only signal resolution system from architecture doc Sections 12.2 and 13.1. This module generates `skills-index.json` (committed to repo root) and `data/similarity_matrix.json` (committed to `data/`). Create `tests/retrieval/test_resolver.py` with comprehensive tests.
+>
+> **CRITICAL CONSTRAINT: This module is BUILD-TIME ONLY.** End-user agents NEVER run this code. They consume the pre-computed `skills-index.json` and `data/similarity_matrix.json` as static files. No other `src/` module may import from `src/retrieval/`. This is the only module (along with `clusterer.py` and `linker.py`) allowed to import `sentence-transformers`.
+>
+> **`SignalResolver` class (from architecture doc Section 12.2):**
+> 1. `__init__(self, skills_dir: str = "skills")` — calls `_build_index()` to pre-compute all indices.
+> 2. `resolve(self, query: str) -> dict` — resolves a query using the following priority:
+>    a. **Exact skill ID match:** If query starts with `yc-`, look up directly in `by_id` index. Return `{"type": "exact", "skill": skill_id, "path": path}`.
+>    b. **Category filter `/`:** If query starts with `/`, strip the prefix and look up in `by_category` index. If the path is a directory, list all skills in it. Return `{"type": "category", "category": category_path, "skills": [...]}`.
+>    c. **Tag filter `%`:** If query starts with `%`, split by commas, look up each tag in `by_tag` index, AND the results (intersection). Return `{"type": "tags", "tags": [...], "skills": [...]}`.
+>    d. **Fuzzy embedding search (no prefix):** Embed the query with `sentence-transformers`, compute cosine similarity against all skill embeddings, return top 3. Return `{"type": "closest", "query": query, "skills": [...], "similarities": [...]}`.
+> 3. `_build_index(self) -> dict` — walks `skills/` recursively, parses YAML frontmatter from each `.md` file, builds four indices: `by_id` (skill_id → path), `by_tag` (tag → [skill_ids]), `by_category` (category → [skill_ids]), `embeddings` (skill_id → embedding vector). Embeds `name + principle` text for each skill.
+> 4. `_embed(self, text: str) -> list` — uses `SentenceTransformer('all-MiniLM-L6-v2').encode(text).tolist()`. Cache the model instance to avoid reloading.
+> 5. `_cosine_sim(self, a: list, b: list) -> float` — manual cosine similarity computation.
+>
+> **`skills-index.json` generation:**
+> Create a function `generate_index(skills_dir: str = "skills", output_path: str = "skills-index.json")` that writes the index to the repo root. The format should include: all skill IDs, their categories, tags, and file paths.
+>
+> **`data/similarity_matrix.json` generation (from architecture doc Section 13.1):**
+> Create a function `generate_similarity_matrix(skills_dir: str = "skills", output_path: str = "data/similarity_matrix.json")` that writes the matrix. The exact format:
+> ```json
+> {
+>   "version": "1.0.0",
+>   "generated_at": "2026-07-12T00:00:00Z",
+>   "skills": ["yc-fundraising-seed-round-timing", ...],
+>   "matrix": [[1.0, 0.85, ...], [0.85, 1.0, ...], ...],
+>   "tag_index": {"seed": ["yc-fundraising-seed-round-timing", ...], ...}
+> }
+> ```
+> The matrix is an NxN cosine similarity matrix where N is the number of skills. `skills` is the ordered list of skill IDs that corresponds to matrix row/column indices. `tag_index` maps each tag to all skill IDs that have that tag.
+>
+> **Files to create:** `src/retrieval/resolver.py`, `tests/retrieval/test_resolver.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/forge/*.py`, `src/validator/*.py`, `src/models.py`, `src/cli.py`.
+>
+> **Rules:** Follow `AGENTS.md` Sections 4 (layering — retrieval is Layer 2, build-time only, must NOT be imported by other Layer 2 modules), 5 (coding standards). `sentence-transformers` import is allowed in this module. Use `logging`. Docstrings on all public functions. No bare `Exception`. Cache the `SentenceTransformer` model instance to avoid reloading on every call.
+>
+> **Tests must cover:** Exact skill ID resolution (existing ID → exact match), category filter resolution (`/fundraising` → list of skills), tag filter resolution (`%seed,runway` → AND intersection), multi-tag filter with no matches → empty list, fuzzy embedding search → returns top 3 with similarities, `skills-index.json` output format verification, `data/similarity_matrix.json` output format verification (matrix dimensions match skill count, diagonal is 1.0, symmetric). Min 6 test cases. Use fixture skill files from M8-T4.
+>
+> **Self-review before completion:** Run `ruff check src/retrieval/resolver.py` and `python -m pytest tests/retrieval/test_resolver.py`. Verify no other `src/` module imports from `src/retrieval/`. Stop after completing ONLY this task.
 
 ---
 
@@ -1533,7 +1894,29 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M11-T2. Add the `index` subcommand to `src/cli.py` that invokes `src/retrieval/resolver.py` to generate `skills-index.json` and `data/similarity_matrix.json`. Files you may modify: `src/cli.py` ONLY. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M11-T2 for the YC Skills Forge project.
+>
+> **Objective:** Add the `index` subcommand to the CLI entry point at `src/cli.py` that generates the pre-computed similarity index and matrix.
+>
+> **CLI interface:**
+> - `python -m src.cli index` — generates both `skills-index.json` (repo root) and `data/similarity_matrix.json`.
+>
+> **Implementation details:**
+> 1. Add `index` subparser to the argparse CLI. This command takes no required arguments.
+> 2. Import `generate_index` and `generate_similarity_matrix` from `src/retrieval/resolver.py`.
+> 3. Call both functions in sequence. Log the number of skills indexed and output file paths.
+> 4. Create `data/` directory if it doesn't exist.
+> 5. Add `--help` text: "Generate skills-index.json and data/similarity_matrix.json from all published skills. This is a build-time operation."
+> 6. Log a warning if no skill files are found in `skills/`.
+>
+> **Important context:** This command MUST be run after synthesizing new skills (`forge`) and before committing. The generated files are committed to the repository. Forgetting to run `index` causes stale `related_skills` in subsequent link passes (see AGENTS.md Section 15, Common Pitfall #12).
+>
+> **Files you may modify:** `src/cli.py` ONLY.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/retrieval/resolver.py`, `src/models.py`.
+>
+> **Rules:** CLI is Layer 3 — may import from Layer 2 (retrieval) and Layer 1. Use `logging`. Note: this is the ONLY place in the CLI that imports from `src/retrieval/`.
+>
+> **Self-review before completion:** Run `python -m src.cli index --help` and verify the help text. Run `ruff check src/cli.py`. Stop after completing ONLY this task.
 
 ---
 
@@ -1584,7 +1967,44 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M12-T1. Add the `quota` subcommand to `src/cli.py` that queries `usage_log` for today's usage and displays remaining quota per provider. Files you may modify: `src/cli.py` ONLY. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M12-T1 for the YC Skills Forge project.
+>
+> **Objective:** Add the `quota` subcommand to the CLI at `src/cli.py` that displays current LLM provider quota usage and remaining capacity.
+>
+> **CLI interface:**
+> - `python -m src.cli quota` — displays quota usage for all providers for today (UTC).
+>
+> **Implementation details:**
+> 1. Add `quota` subparser to the argparse CLI. This command takes no arguments.
+> 2. Connect to `data/registry.db` and query the `usage_log` table for today's date (UTC: `datetime.now(timezone.utc).strftime("%Y-%m-%d")`).
+> 3. For each provider, compute:
+>    - Total tokens used today: `SUM(total_tokens) WHERE provider = ? AND date(timestamp) = ?`
+>    - Total requests today: `COUNT(*) WHERE provider = ? AND date(timestamp) = ?`
+>    - Successful calls: `COUNT(*) WHERE provider = ? AND date(timestamp) = ? AND success = 1`
+>    - Failed calls: `COUNT(*) WHERE provider = ? AND date(timestamp) = ? AND success = 0`
+> 4. Load provider config from `config/providers.yml` to get `daily_token_limit` and `daily_request_limit` for each provider.
+> 5. Compute remaining capacity with 10% buffer (matching the `LLMClient.get_provider()` logic): `effective_remaining = (daily_limit - used) * 0.9`.
+> 6. Display a formatted table:
+>    ```
+>    Provider    | Tokens Used  | Token Limit  | Remaining | Requests | Req Limit | Status
+>    ------------|--------------|--------------|-----------|----------|-----------|-------
+>    deepseek    | 45,000       | 500,000      | 409,500   | 12       | 100       | ✓ OK
+>    kimi        | 0            | 1,000,000    | 900,000   | 0        | 100       | ✓ OK
+>    glm         | 480,000      | 500,000      | 18,000    | 48       | 50        | ⚠ LOW
+>    gemini      | 1,500,000    | 1,500,000    | 0         | 150      | 150       | ✗ EXHAUSTED
+>    ```
+> 7. Status thresholds: `OK` if > 20% remaining, `LOW` if 1-20% remaining, `EXHAUSTED` if 0% remaining.
+> 8. After the table, display: `Quotas reset at UTC midnight. Current UTC time: {now}`.
+> 9. If `data/registry.db` doesn't exist, print a helpful error: "Database not found. Run 'python -m src.cli init-db' first."
+>
+> **Files you may modify:** `src/cli.py` ONLY.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/models.py`.
+>
+> **Rules:** CLI is Layer 3. Use `logging` for output. Use parameterized SQL queries. Handle the case where `usage_log` is empty (first run) gracefully — show all providers with 0 usage.
+>
+> **Tests must cover:** Seeded `usage_log` data → correct computation of remaining quota, empty usage_log → all providers show full quota, provider with exhausted quota shows correct status. Min 1 test case with in-memory SQLite.
+>
+> **Self-review before completion:** Run `python -m src.cli quota --help` and verify the help text. Run `ruff check src/cli.py`. Stop after completing ONLY this task.
 
 ---
 
@@ -1603,7 +2023,30 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M12-T2. Add the `backfill` subcommand to `src/cli.py` that accepts `--start-date` and orchestrates historical content ingestion. Files you may modify: `src/cli.py` ONLY. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M12-T2 for the YC Skills Forge project.
+>
+> **Objective:** Add the `backfill` subcommand to the CLI at `src/cli.py` that orchestrates historical content ingestion for bulk processing of YC content.
+>
+> **CLI interface:**
+> - `python -m src.cli backfill --start-date 2020-01-01` — ingest all known YC Library essays and YouTube videos published since the given date.
+> - `python -m src.cli backfill --start-date 2020-01-01 --source library` — library essays only.
+> - `python -m src.cli backfill --start-date 2020-01-01 --source youtube` — YouTube videos only.
+>
+> **Implementation details:**
+> 1. Add `backfill` subparser to the argparse CLI.
+> 2. Accept `--start-date` (required, format: YYYY-MM-DD), `--source` (optional, choices: library/youtube, default: both).
+> 3. For library backfill: this is a placeholder that logs the intent and suggests the user provide a list of URLs (since the YC Library doesn't have a public date-based API). Log: "Library backfill requires a URL list. Use 'ingest-library --urls' with a file of URLs."
+> 4. For YouTube backfill: this is a placeholder that logs the intent and suggests using YouTube channel URLs or playlist URLs with `ingest-youtube`. Log: "YouTube backfill: use 'ingest-youtube --url <playlist_url>' for bulk ingestion."
+> 5. The backfill command is primarily an orchestration wrapper — it validates the date format, logs the scope, and delegates to the existing ingest commands.
+> 6. Validate that `--start-date` is a valid date and is not in the future.
+> 7. Log a summary of what would be backfilled and the date range.
+>
+> **Files you may modify:** `src/cli.py` ONLY.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, `src/ingest/*.py`, `src/models.py`.
+>
+> **Rules:** CLI is Layer 3. Use `logging`. Validate date format with `datetime.strptime`. Handle invalid dates gracefully with a clear error message. The `--help` text should explain the cold-start warning from architecture doc Section 17: "Warning: A fresh clone has no registry.db history. Scope your first run to avoid duplicating existing skills."
+>
+> **Self-review before completion:** Run `python -m src.cli backfill --help` and verify the help text includes the cold-start warning. Run `ruff check src/cli.py`. Stop after completing ONLY this task.
 
 ---
 
@@ -1622,7 +2065,50 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M12-T3. Review `src/cli.py` and ensure all 12 commands are present with correct arguments, help text, and error handling. Run `python -m src.cli --help` and verify output. Add any missing commands. Write comprehensive CLI smoke tests. Files you may modify: `src/cli.py` ONLY. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M12-T3 for the YC Skills Forge project.
+>
+> **Objective:** Perform a final review and polish of `src/cli.py` to ensure all 12 CLI commands are present, correctly wired, have consistent help text, and handle errors gracefully. Create `tests/test_cli.py` with comprehensive smoke tests for every command.
+>
+> **Complete list of 12 required commands (from architecture doc Section 16.4):**
+> 1. `init-db` — Initialize SQLite database
+> 2. `ingest-library --url <url>` — Ingest a YC Library essay
+> 3. `ingest-youtube --url <url>` — Ingest a YouTube video transcript
+> 4. `chunk --all` — Chunk all downloaded content
+> 5. `forge --topic <topic> --batch-size 15` — Run the forge pipeline
+> 6. `link --topic <topic>` — Run the deferred link pass
+> 7. `validate --all` — Validate all skill files
+> 8. `export --all` — Export specs in all formats
+> 9. `index` — Generate similarity matrix and skills-index.json
+> 10. `reaper` — Reset stale extracting items
+> 11. `quota` — Display provider quota usage
+> 12. `backfill --start-date YYYY-MM-DD` — Historical content ingestion
+>
+> **Review checklist:**
+> 1. Verify all 12 commands exist as subparsers.
+> 2. Verify each command has a descriptive `help=` string.
+> 3. Verify each command's arguments have correct types, defaults, and `help=` text.
+> 4. Verify error handling is consistent: no bare `Exception`, all errors log descriptive messages.
+> 5. Verify all imports follow layering rules (CLI is Layer 3 → may import Layer 2 and Layer 1).
+> 6. Verify no `print()` statements — all output goes through `logging`.
+> 7. Verify `python -m src.cli --help` shows all 12 commands with descriptions.
+> 8. Add a top-level description to the argparse ArgumentParser: "YC Skills Forge — Static skill file generator for AI agents."
+>
+> **Test file `tests/test_cli.py`:**
+> Write smoke tests that verify:
+> 1. `python -m src.cli --help` exits with code 0 and contains all 12 command names.
+> 2. Each command's `--help` exits with code 0 (no import errors).
+> 3. `init-db` creates the database (with in-memory SQLite or temp dir).
+> 4. Commands that require the database (forge, validate, quota, reaper) print a clear error if DB doesn't exist.
+> 5. Invalid arguments (e.g., `forge --batch-size abc`) produce clear error messages.
+> Min 12 test cases (1 per command for `--help` verification).
+>
+> **Files you may modify:** `src/cli.py`.
+> **Files to create:** `tests/test_cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, any `src/` module other than `src/cli.py`.
+>
+> **Rules:** Follow `AGENTS.md` Sections 4, 5, 17 (Completion Checklist). Use `subprocess.run` or `argparse` parsing in tests to verify CLI behavior. No bare `Exception`. Consistent `logging` usage.
+>
+> **Self-review before completion:** Run `python -m src.cli --help` and verify all 12 commands appear. Run `ruff check src/cli.py` and `python -m pytest tests/test_cli.py`. Stop after completing ONLY this task.
 
 ---
 
@@ -1676,7 +2162,50 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T1. Create `.github/workflows/validate.yml` matching architecture doc Section 14.4 exactly. Triggers on PR to `skills/**` and `specs/**`. Runs validation and tests ONLY — never generation. No `schedule:` triggers. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M13-T1 for the YC Skills Forge project.
+>
+> **Objective:** Create `.github/workflows/validate.yml` — the ONLY GitHub Actions workflow for this project. It validates skill and spec files on pull requests. It NEVER generates, synthesizes, or modifies any content.
+>
+> **Exact YAML content (from architecture doc Section 14.4):**
+> ```yaml
+> name: Validate Skills
+> on:
+>   pull_request:
+>     paths:
+>       - 'skills/**'
+>       - 'specs/**'
+> jobs:
+>   validate:
+>     runs-on: ubuntu-latest
+>     steps:
+>       - uses: actions/checkout@v4
+>       - uses: actions/setup-python@v5
+>         with:
+>           python-version: '3.11'
+>       - run: pip install -r requirements.txt
+>       - run: python -m src.validator.run --all
+>       - run: python -m pytest tests/validator/
+> ```
+>
+> **CRITICAL CONSTRAINTS (from architecture doc Section 0 and AGENTS.md Section 15, Pitfall #4):**
+> 1. **No `schedule:` triggers.** The architecture explicitly forbids scheduled CI/CD. This workflow triggers on PRs only.
+> 2. **No `workflow_dispatch` for generation.** While `workflow_dispatch` is acceptable for validation, NEVER add a generation step.
+> 3. **No `push:` trigger to `main`.** The workflow runs on PRs only.
+> 4. **Path filtering is mandatory:** The workflow ONLY runs when files under `skills/**` or `specs/**` are changed. It does NOT run on code changes to `src/`.
+> 5. **The workflow runs validation and tests ONLY.** It must not: run `forge`, `export`, `index`, `link`, or any pipeline stage. It must not write to the repository. It must not generate any files.
+> 6. **Python 3.11 specifically** — not 3.12 or `3.x`.
+>
+> **Additional best practices to include:**
+> - Add `pip install --upgrade pip` before `pip install -r requirements.txt`.
+> - Add a linting step: `ruff check src/` before validation.
+> - Consider adding `--tb=short` to pytest for cleaner CI output.
+>
+> **Files to create:** `.github/workflows/validate.yml`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, any `src/` file.
+>
+> **Rules:** Follow `AGENTS.md` Sections 7 (Testing), 15 (Common Pitfall #4 — no scheduled GitHub Actions). This is the ONLY workflow file allowed in `.github/workflows/`. If any other workflow exists, flag it for removal.
+>
+> **Self-review before completion:** Verify the YAML is valid. Verify there are NO `schedule:` triggers. Verify it only runs on PR, only on `skills/**` and `specs/**` paths. Verify it does NOT run any pipeline commands. Stop after completing ONLY this task.
 
 ---
 
@@ -1695,7 +2224,29 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T2. Create `README.md` with project overview, quickstart guide, CLI command reference, and links to detailed docs. Base content on architecture doc Section 1 (overview) and Section 16 (setup). Include license info (MIT for code, CC BY-SA 4.0 for generated content). Follow `AGENTS.md`. Do NOT overwrite the existing README if one exists with meaningful content — update it instead. Stop after completing ONLY this task.
+> You are implementing Task M13-T2 for the YC Skills Forge project.
+>
+> **Objective:** Create (or update) `README.md` as the primary entry point for the repository. It should give a reader complete understanding of what the project does, how to set it up, how to use it, and where to find detailed documentation.
+>
+> **Sections to include (in this order):**
+> 1. **Project Title & Badges:** "YC Skills Forge" with brief tagline: "A static-file generator that converts Y Combinator knowledge into composable skill files for AI agents."
+> 2. **Overview:** Based on architecture doc Section 1. Explain: what it does (ingests YC content, extracts advice, clusters into skills, emits static files), who it's for (AI agents — Claude, GPT, local models), what makes it different (zero-cost static files, exact quote fidelity, no runtime dependencies).
+> 3. **How It Works:** Brief description of the pipeline: Discover → Download → Chunk → Extract → Cluster → Synthesize → Link → Export → Validate → Commit → Tag. Include the ASCII diagram from architecture doc Section 1.
+> 4. **For AI Agent Consumers:** Link to `docs/CONSUMPTION.md`. Brief example of loading a skill. Mention all 3 spec formats (MCP, OpenAI, Hermes).
+> 5. **Quickstart (Contributors):** Based on architecture doc Section 16.2. Include: prerequisites (Python 3.11+, Git, yt-dlp), setup steps (clone, venv, pip install, model download, init-db, .env), first pipeline run example.
+> 6. **CLI Command Reference:** Table of all 12 commands from Section 16.4 with brief descriptions and example usage.
+> 7. **Project Structure:** Simplified directory tree showing key directories and their purpose.
+> 8. **Skill File Format:** Brief example of a skill file (from Section 10.1), linking to full spec.
+> 9. **Contributing:** Link to `AGENTS.md` for coding agents, brief human contribution guidelines, mention PR validation workflow.
+> 10. **License:** MIT for code, CC BY-SA 4.0 for generated skill content. Include the legal review note from architecture doc Section 18.4.
+> 11. **Links:** `docs/CONSUMPTION.md`, `docs/BYOK.md`, `docs/TAXONOMY.md`, `AGENTS.md`.
+>
+> **Files to create (or update):** `README.md`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, any `src/` file.
+>
+> **Rules:** Follow `AGENTS.md` Section 13 (Documentation Policy). If a `README.md` already exists with meaningful content, update it rather than overwriting. Use proper Markdown formatting with headers, code blocks, and tables. Include the cold-start warning from architecture doc Section 17 in the quickstart section. Do NOT include any API keys or credentials.
+>
+> **Self-review before completion:** Read the README end-to-end as if you were a new user. Verify all CLI commands match Section 16.4. Verify quickstart steps match Section 16.2. Verify license info matches Section 18.4. Stop after completing ONLY this task.
 
 ---
 
@@ -1715,7 +2266,47 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T3. Create `docs/CONSUMPTION.md` (how to use skills in agents — cover MCP, OpenAI, Hermes formats), `docs/BYOK.md` (fork and run yourself — based on architecture doc Section 17, include cold-start warning), `docs/TAXONOMY.md` (human-readable category tree from `config/taxonomy.yml`). Follow `AGENTS.md` Section 13 (Documentation Policy). Stop after completing ONLY this task.
+> You are implementing Task M13-T3 for the YC Skills Forge project.
+>
+> **Objective:** Create three detailed documentation files in `docs/`. Each document serves a different audience and must be comprehensive enough to be used without reading the architecture doc.
+>
+> **File 1: `docs/CONSUMPTION.md`**
+> Audience: AI agent developers who want to USE the published skills.
+> Content must include:
+> 1. **Overview:** Skills are static Markdown files with YAML frontmatter. No runtime, no API keys, no dependencies needed.
+> 2. **MCP Format (Claude Code):** How to load specs from `specs/mcp/`. Example of using a skill in Claude Code. Explain the `inputSchema`, `handler`, `tags`, and `fallback` fields. Show the exact JSON structure from architecture doc Section 11.1.
+> 3. **OpenAI Format (GPT / Function Calling):** How to load specs from `specs/openai/`. Example of registering a skill as a function tool. Show the exact JSON structure from architecture doc Section 11.2. Explain the `metadata.fallback` block.
+> 4. **Hermes Format (Local Models):** How to load specs from `specs/hermes/`. Example of concatenating `.txt` files into a system prompt. Show the `[SKILL: ...]` / `[END SKILL]` delimiter format from architecture doc Section 11.3.
+> 5. **Fallback Behavior:** Explain the fallback protocol: return 3 closest skills, use agent's own knowledge, NEVER invent YC quotes. This is critical for agent safety.
+> 6. **Signal Resolution:** How to query skills: exact ID (`yc-fundraising-...`), category filter (`/fundraising`), tag filter (`%seed,runway`), fuzzy search. Explain that resolution uses the pre-computed `skills-index.json` and `data/similarity_matrix.json`.
+> 7. **skills-index.json:** How to parse and use the machine-readable index file.
+>
+> **File 2: `docs/BYOK.md`**
+> Audience: Contributors who want to fork and generate their own skills.
+> Content must match architecture doc Section 17 exactly, including:
+> 1. **Fork & Setup:** Step-by-step (fork, clone, setup.sh, .env).
+> 2. **Ingest New Content:** `ingest-library` and `ingest-youtube` examples.
+> 3. **Run Forge:** `forge --topic <topic> --batch-size 15`, then `link --topic <topic>`.
+> 4. **Validate & Export:** `validate --all`, `export --all`, `index`.
+> 5. **Cold-Start Warning (CRITICAL):** `data/registry.db` is gitignored. A fresh clone has no history. Running `forge` without scoping `--topic` or `--urls` may regenerate `_v2` duplicates of existing skills. Always scope the first run.
+> 6. **Quota Management:** `python -m src.cli quota` to check usage.
+> 7. **Adding New Providers:** Edit `config/providers.yml` and add a new block.
+> 8. **Adding New Categories:** Add to `config/taxonomy.yml`, create `skills/{category}/` directory, update `docs/TAXONOMY.md`.
+>
+> **File 3: `docs/TAXONOMY.md`**
+> Audience: Both consumers and contributors.
+> Content must document the complete category tree from `config/taxonomy.yml`:
+> 1. **Overview:** Skills are organized into 8 categories, each with subcategories.
+> 2. **Category Tree:** Render the full taxonomy as a readable tree with descriptions for each category and subcategory. The 8 categories are: fundraising, hiring, product, growth, culture, strategy, founder-mental-models, technical.
+> 3. **How Skills Map to Categories:** Explain that `skill_id` starts with `yc-{category}-...` and files live in `skills/{category}/`.
+> 4. **Adding New Categories:** Requires a PR modifying `config/taxonomy.yml`, creating the directory, and updating this doc.
+>
+> **Files to create:** `docs/CONSUMPTION.md`, `docs/BYOK.md`, `docs/TAXONOMY.md`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, any `src/` file, `config/taxonomy.yml`.
+>
+> **Rules:** Follow `AGENTS.md` Section 13 (Documentation Policy — these docs must stay synchronized with their source files). Use proper Markdown formatting. Include code blocks for all CLI commands and JSON/YAML examples. The cold-start warning in BYOK.md is non-negotiable — it must be prominently displayed (use an admonition or bold text).
+>
+> **Self-review before completion:** Read each doc as if you were the target audience with no prior context. Verify all CLI commands match Section 16.4. Verify spec format examples match Sections 11.1–11.3. Verify the taxonomy matches `config/taxonomy.yml`. Stop after completing ONLY this task.
 
 ---
 
@@ -1735,7 +2326,88 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T4. Create `scripts/setup.sh` matching architecture doc Section 16.2 exactly. Create `scripts/backfill.sh` that wraps the backfill CLI command. Both scripts must have `#!/bin/bash` and `set -e`. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M13-T4 for the YC Skills Forge project.
+>
+> **Objective:** Create two shell scripts in the `scripts/` directory. These are convenience wrappers for local development setup and historical data backfill.
+>
+> **File 1: `scripts/setup.sh` (exact content from architecture doc Section 16.2):**
+> ```bash
+> #!/bin/bash
+> set -e
+>
+> echo "YC Skills Forge - Local Setup"
+>
+> # 1. Clone (skip if already in repo)
+> if [ ! -d ".git" ]; then
+>   git clone https://github.com/yourname/yc-skills-forge.git
+>   cd yc-skills-forge
+> fi
+>
+> # 2. Create venv
+> python3.11 -m venv .venv
+> source .venv/bin/activate
+>
+> # 3. Install dependencies
+> pip install --upgrade pip
+> pip install -r requirements.txt
+>
+> # 4. Download embedding model (cached locally)
+> python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
+>
+> # 5. Initialize database
+> python -m src.cli init-db
+>
+> # 6. Copy environment template
+> if [ ! -f ".env" ]; then
+>   cp .env.example .env
+>   echo "Created .env from template. Edit it with your API keys."
+> else
+>   echo ".env already exists. Skipping copy."
+> fi
+>
+> echo ""
+> echo "Setup complete!"
+> echo "Next steps:"
+> echo "  1. Edit .env with your API keys"
+> echo "  2. Run: python -m src.cli --help"
+> ```
+>
+> **File 2: `scripts/backfill.sh`:**
+> ```bash
+> #!/bin/bash
+> set -e
+>
+> # Backfill historical YC content
+> # Usage: bash scripts/backfill.sh [start-date]
+> # Example: bash scripts/backfill.sh 2020-01-01
+>
+> START_DATE=${1:-"2020-01-01"}
+>
+> echo "YC Skills Forge - Historical Backfill"
+> echo "Start date: $START_DATE"
+> echo ""
+>
+> # Activate venv if not active
+> if [ -z "$VIRTUAL_ENV" ]; then
+>   source .venv/bin/activate
+> fi
+>
+> python -m src.cli backfill --start-date "$START_DATE"
+> ```
+>
+> **Implementation details:**
+> 1. Both scripts must start with `#!/bin/bash` and `set -e` (exit on error).
+> 2. `setup.sh` must match the architecture doc Section 16.2 steps exactly: clone, venv, pip install, model download, init-db, copy .env.
+> 3. Add defensive checks: skip clone if `.git` exists, skip `.env` copy if `.env` already exists.
+> 4. `backfill.sh` accepts an optional positional argument for start date, defaults to `2020-01-01`.
+> 5. `backfill.sh` activates the venv if not already active.
+>
+> **Files to create:** `scripts/setup.sh`, `scripts/backfill.sh`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, any `src/` file.
+>
+> **Rules:** Follow `AGENTS.md`. Shell scripts only (bash). Use `set -e` for safety. Include comments explaining each step. Use `echo` for user-facing output (these are shell scripts, not Python — `logging` doesn't apply here).
+>
+> **Self-review before completion:** Verify `setup.sh` steps match architecture doc Section 16.2 exactly. Verify both scripts have `#!/bin/bash` and `set -e`. Verify `backfill.sh` delegates to the CLI command correctly. Stop after completing ONLY this task.
 
 ---
 
@@ -1754,7 +2426,71 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T5. Create `tests/test_integration.py` that exercises the full pipeline end-to-end with fixture data. Mock ALL external calls (HTTP requests, LLM calls, yt-dlp subprocess). Use in-memory SQLite. Verify: skill files created in correct Markdown format, spec files generated in all 3 formats, similarity matrix generated, validation passes. This test should be self-contained and not require any API keys or network access. Follow `AGENTS.md`. Stop after completing ONLY this task.
+> You are implementing Task M13-T5 for the YC Skills Forge project.
+>
+> **Objective:** Create `tests/test_integration.py` — a comprehensive end-to-end integration test that exercises the full pipeline from ingestion to validation using fixture data and mocked external calls. This test proves the entire system works together.
+>
+> **Pipeline stages to test (in order):**
+> 1. **init-db:** Create an in-memory (or temp dir) SQLite database with the full schema.
+> 2. **Ingest (library):** Mock `requests.get()` to return a sample HTML essay. Verify content is saved to `data/raw/library/` and inserted into `content` table with state `downloaded`.
+> 3. **Chunk:** Run the essay chunker on the ingested content. Verify chunks are created in `data/chunks/library/` and inserted into `chunks` table. Verify content state transitions to `chunked`.
+> 4. **Forge — Batch:** Run the batcher. Verify batch_id is generated, content state transitions to `extracting`.
+> 5. **Forge — Extract:** Mock `LLMClient.call()` to return a fixture `ExtractionResponse` JSON. Verify extracted items are inserted into `extracted_items` table. Verify content state transitions to `extracted`.
+> 6. **Forge — Cluster:** Run the clusterer (with real `sentence-transformers` if available, or mock the embeddings). Verify clusters are created in `clusters` and `cluster_items` tables. Verify `avg_similarity` is computed.
+> 7. **Forge — Synthesize:** Mock `LLMClient.call()` to return a fixture `SynthesisResponse` JSON. Verify skill Markdown file is created in `skills/{category}/`. Verify `confidence` is computed from cluster metrics (NOT from LLM response). Verify `related_skills` is empty `[]`.
+> 8. **Link:** Run the linker (mock or use real embeddings). Verify `related_skills` is populated in the skill file frontmatter.
+> 9. **Export:** Run all 3 exporters. Verify spec files are generated in `specs/mcp/`, `specs/openai/`, `specs/hermes/`. Verify MCP JSON has `fallback.invent_quotes: false`. Verify Hermes text has `DO NOT invent YC quotes`.
+> 10. **Validate:** Run the validator suite. Mock the hallucination guard's LLM call. Verify quote verification passes (quotes match fixture chunks). Verify schema validation passes. Verify the skill is NOT moved to `skills/_failed/`.
+>
+> **Test structure:**
+> ```python
+> import tempfile
+> import os
+> import pytest
+>
+> class TestFullPipeline:
+>     @pytest.fixture(autouse=True)
+>     def setup_temp_workspace(self, tmp_path):
+>         # Create temp dirs mirroring repo structure
+>         # Set up in-memory or temp SQLite DB
+>         # Create necessary config files
+>         ...
+>
+>     def test_full_pipeline_produces_valid_skill(self):
+>         # Run all 10 stages in sequence
+>         # Assert final state is correct
+>         ...
+> ```
+>
+> **Mocking requirements:**
+> - `requests.get` — return fixture HTML for library scraper.
+> - `subprocess.run` — return fixture output for yt-dlp (if YouTube path is tested).
+> - `LLMClient.call` — return fixture JSON responses for extraction, synthesis, and hallucination guard.
+> - `SentenceTransformer.encode` — optionally mock if model download is impractical in CI. If mocking, return consistent numpy arrays of correct dimensionality (384 for all-MiniLM-L6-v2).
+>
+> **Fixture data to use:**
+> - `tests/fixtures/sample_skill.md` (from M8-T4) for validation reference.
+> - `tests/fixtures/extraction_response.json` (from M6-T1) for extraction mock.
+> - `tests/fixtures/synthesis_response.json` (from M8-T1) for synthesis mock.
+> - Create a `tests/fixtures/sample_essay.html` if one doesn't exist.
+>
+> **Assertions to verify:**
+> - Skill file exists at expected path under `skills/{category}/`.
+> - Skill file YAML frontmatter passes `SkillFrontmatter` Pydantic validation.
+> - `confidence` is in range [0.55, 0.99] and was NOT taken from LLM response.
+> - `related_skills` is a non-empty list (after linking).
+> - 3 spec files exist (MCP JSON, OpenAI JSON, Hermes TXT).
+> - `skills-index.json` exists and contains the skill ID.
+> - `data/similarity_matrix.json` exists and has correct dimensions.
+> - No files in `skills/_failed/` (validation passed).
+> - Database state is consistent: content state progressed through all stages.
+>
+> **Files to create:** `tests/test_integration.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `yc-skills-forge-architecture-v1.1.md`, any `src/` file.
+>
+> **Rules:** Follow `AGENTS.md` Section 7 (Testing). This test must be SELF-CONTAINED — no API keys, no network access, no external dependencies beyond the locked requirements. Use `pytest` fixtures and `tmp_path` for isolation. Use `unittest.mock.patch` for mocking. The test must be deterministic and repeatable.
+>
+> **Self-review before completion:** Run `python -m pytest tests/test_integration.py -v` and verify it passes. Verify no network calls are made (check for unmocked HTTP or subprocess calls). Verify the test runs in < 60 seconds (excluding model download). Stop after completing ONLY this task.
 
 ---
 
