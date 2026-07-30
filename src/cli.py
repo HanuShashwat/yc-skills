@@ -153,6 +153,24 @@ def reaper_cmd(args: argparse.Namespace) -> None:
         sys.exit(1)
 
 
+def forge_cmd(args: argparse.Namespace) -> None:
+    """Handle the forge command."""
+    from src.forge.batcher import select_batch
+    from src.forge.extractor import run_extraction
+    
+    logger.info("Starting forge pipeline...")
+    try:
+        batch_id, content_ids = select_batch(DB_PATH, topic=args.topic, batch_size=args.batch_size)
+        logger.info("Batch %s selected with %d items.", batch_id, len(content_ids))
+        
+        run_extraction(batch_id, content_ids, DB_PATH)
+        logger.info("Forge extraction complete for batch %s.", batch_id)
+        
+    except Exception as e:
+        logger.error("Error during forge pipeline: %s", e)
+        sys.exit(1)
+
+
 def main() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="YC Skills Forge CLI")
@@ -186,6 +204,7 @@ def main() -> None:
     forge_parser = subparsers.add_parser("forge", help="Run core forge pipeline")
     forge_parser.add_argument("--topic", help="Topic to scope extraction")
     forge_parser.add_argument("--batch-size", type=int, default=15, help="Batch size")
+    forge_parser.set_defaults(func=forge_cmd)
     
     # link
     link_parser = subparsers.add_parser("link", help="Run deferred link pass")
