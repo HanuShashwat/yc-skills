@@ -157,6 +157,7 @@ def forge_cmd(args: argparse.Namespace) -> None:
     """Handle the forge command."""
     from src.forge.batcher import select_batch
     from src.forge.extractor import run_extraction
+    from src.forge.clusterer import run_clustering
     
     logger.info("Starting forge pipeline...")
     try:
@@ -165,6 +166,9 @@ def forge_cmd(args: argparse.Namespace) -> None:
         
         run_extraction(batch_id, content_ids, DB_PATH)
         logger.info("Forge extraction complete for batch %s.", batch_id)
+        
+        run_clustering(batch_id, DB_PATH)
+        logger.info("Forge clustering complete for batch %s.", batch_id)
         
     except Exception as e:
         logger.error("Error during forge pipeline: %s", e)
