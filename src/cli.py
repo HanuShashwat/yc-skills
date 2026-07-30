@@ -140,6 +140,19 @@ def chunk_cmd(args: argparse.Namespace) -> None:
         sys.exit(1)
 
 
+def reaper_cmd(args: argparse.Namespace) -> None:
+    """Handle the reaper command."""
+    from src.forge.reaper import run_reaper
+    
+    logger.info("Starting reaper...")
+    try:
+        count = run_reaper(DB_PATH)
+        logger.info("Reaper completed. Recovered/failed %d item(s).", count)
+    except Exception as e:
+        logger.error("Error during reaper execution: %s", e)
+        sys.exit(1)
+
+
 def main() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="YC Skills Forge CLI")
@@ -190,7 +203,8 @@ def main() -> None:
     subparsers.add_parser("index", help="Generate index and similarity matrix")
     
     # reaper
-    subparsers.add_parser("reaper", help="Reset stale extracting items")
+    reaper_parser = subparsers.add_parser("reaper", help="Reset stale extracting items")
+    reaper_parser.set_defaults(func=reaper_cmd)
     
     # quota
     subparsers.add_parser("quota", help="Check provider quota usage")
