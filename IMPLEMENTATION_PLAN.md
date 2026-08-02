@@ -1513,13 +1513,13 @@
 | **Title** | Milestone 9 Review — Exporters |
 
 **Verification Checklist:**
-- [ ] MCP JSON matches architecture doc Section 11.1
-- [ ] OpenAI JSON matches Section 11.2
-- [ ] Hermes text matches Section 11.3
-- [ ] All specs include `fallback` with `invent_quotes: false`
-- [ ] `export --all` generates specs for all skill files
-- [ ] No manual editing of `specs/` directory
-- [ ] Tests pass
+- [x] MCP JSON matches architecture doc Section 11.1
+- [x] OpenAI JSON matches Section 11.2
+- [x] Hermes text matches Section 11.3
+- [x] All specs include `fallback` with `invent_quotes: false`
+- [x] `export --all` generates specs for all skill files
+- [x] No manual editing of `specs/` directory
+- [x] Tests pass
 
 ---
 
