@@ -200,6 +200,80 @@ def forge_cmd(args: argparse.Namespace) -> None:
         sys.exit(1)
 
 
+def export_cmd(args: argparse.Namespace) -> None:
+    """Handle the export command."""
+    from src.exporter.mcp_exporter import export_mcp, export_all_mcp
+    from src.exporter.openai_exporter import export_openai, export_all_openai
+    from src.exporter.hermes_exporter import export_hermes, export_all_hermes
+    import os
+    from pathlib import Path
+    
+    os.makedirs("specs/mcp", exist_ok=True)
+    os.makedirs("specs/openai", exist_ok=True)
+    os.makedirs("specs/hermes", exist_ok=True)
+    
+    if not args.all and not args.skill_id:
+        logger.error("Must specify either --all or --skill-id")
+        sys.exit(1)
+        
+    formats_to_run = ["mcp", "openai", "hermes"]
+    if args.format:
+        formats_to_run = [args.format]
+        
+    generated_count = 0
+    skills_processed = set()
+    
+    try:
+        if args.skill_id:
+            # Find specific skill file
+            skill_files = list(Path("skills").rglob(f"{args.skill_id}.md"))
+            if not skill_files:
+                logger.error("Skill %s not found in skills/ directory.", args.skill_id)
+                sys.exit(1)
+            skill_path = str(skill_files[0])
+            
+            if "mcp" in formats_to_run:
+                export_mcp(skill_path)
+                generated_count += 1
+                skills_processed.add(skill_path)
+            if "openai" in formats_to_run:
+                export_openai(skill_path)
+                generated_count += 1
+                skills_processed.add(skill_path)
+            if "hermes" in formats_to_run:
+                export_hermes(skill_path)
+                generated_count += 1
+                skills_processed.add(skill_path)
+        elif args.all:
+            # Process all skills
+            if "mcp" in formats_to_run:
+                generated = export_all_mcp()
+                generated_count += len(generated)
+                skills_processed.update(generated)  # Note: this adds output paths, but we just want count of unique skills if possible. Actually, let's just count files.
+            if "openai" in formats_to_run:
+                generated = export_all_openai()
+                generated_count += len(generated)
+                skills_processed.update(generated)
+            if "hermes" in formats_to_run:
+                generated = export_all_hermes()
+                generated_count += len(generated)
+                skills_processed.update(generated)
+                
+            # Count distinct input skills (number of markdown files) if we did all
+            md_files = list(Path("skills").rglob("*.md"))
+            skills_processed = set(md_files)
+                
+        logger.info(
+            "Export complete. Processed %d skills, generated %d spec files across: %s",
+            len(skills_processed),
+            generated_count,
+            ", ".join([f"specs/{f}" for f in formats_to_run])
+        )
+    except Exception as e:
+        logger.error("Error during export: %s", e)
+        sys.exit(1)
+
+
 def main() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="YC Skills Forge CLI")
@@ -245,8 +319,11 @@ def main() -> None:
     validate_parser.add_argument("--all", action="store_true", help="Validate all skills")
     
     # export
-    export_parser = subparsers.add_parser("export", help="Export specs")
+    export_parser = subparsers.add_parser("export", help="Export specs in MCP, OpenAI, and Hermes formats")
     export_parser.add_argument("--all", action="store_true", help="Export all valid skills")
+    export_parser.add_argument("--format", choices=["mcp", "openai", "hermes"], help="Export a specific format")
+    export_parser.add_argument("--skill-id", type=str, help="Export a single skill by ID")
+    export_parser.set_defaults(func=export_cmd)
     
     # index
     subparsers.add_parser("index", help="Generate index and similarity matrix")
