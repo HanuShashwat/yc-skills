@@ -5,14 +5,11 @@ Reads generated skills and exports MCP JSON spec files.
 import os
 import json
 import logging
-import re
 from typing import List
 from pathlib import Path
-import yaml
-from pydantic import ValidationError
 
 from src.config import load_config
-from src.models import SkillFrontmatter
+from src.exporter.utils import parse_skill_file, extract_skill_metadata
 
 logger = logging.getLogger(__name__)
 
@@ -30,89 +27,22 @@ def export_mcp(skill_path: str, output_dir: str = "specs/mcp") -> str:
     Raises:
         ValueError: If the skill file cannot be parsed or is invalid.
     """
-    try:
-        with open(skill_path, "r", encoding="utf-8") as f:
-            content = f.read()
-    except Exception as e:
-        logger.error("Failed to read file %s: %s", skill_path, e)
-        raise ValueError(f"Could not read {skill_path}: {e}") from e
-
-    # Split frontmatter
-    parts = content.split("---")
-    if len(parts) < 3:
-        raise ValueError(f"Missing valid YAML frontmatter in {skill_path}")
-        
-    try:
-        frontmatter_dict = yaml.safe_load(parts[1])
-    except Exception as e:
-        raise ValueError(f"Failed to parse YAML frontmatter in {skill_path}: {e}") from e
-        
-    if not frontmatter_dict:
-        raise ValueError(f"Empty YAML frontmatter in {skill_path}")
-        
-    # Validate with Pydantic model
-    try:
-        frontmatter = SkillFrontmatter(**frontmatter_dict)
-    except ValidationError as e:
-        raise ValueError(f"Invalid frontmatter schema in {skill_path}: {e}") from e
-        
-    # Parse markdown body
-    body = "---".join(parts[2:])
-    
-    # Extract Principle section for summary
-    principle_match = re.search(r"## Principle\s+(.+?)(?=## |\Z)", body, re.DOTALL)
-    if principle_match:
-        summary = principle_match.group(1).strip()
-    else:
-        summary = "A precise skill providing YC guidance and verifiable quotes"
-        
-    # Extract properties for inputSchema based on When to Use This Skill and Follow-Up Questions
-    # We will build a basic static schema since extracting dynamic properties reliably from prose is LLM territory.
-    input_properties = {
-        "question": {
-            "type": "string",
-            "description": f"The specific question or context regarding {frontmatter.name} to evaluate against this skill."
-        }
-    }
-    
-    # Simple keyword based extraction from 'Follow-Up Questions'
-    follow_up_match = re.search(r"### Follow-Up Questions\s+(.+?)(?=## |\Z)", body, re.DOTALL)
-    if follow_up_match:
-        questions_text = follow_up_match.group(1).strip()
-        if "runway" in questions_text.lower():
-            input_properties["runway_months"] = {
-                "type": "integer",
-                "description": "Current runway in months (if known)"
-            }
-        if "burn" in questions_text.lower():
-            input_properties["monthly_burn"] = {
-                "type": "number",
-                "description": "Current monthly burn rate (if known)"
-            }
+    frontmatter, body = parse_skill_file(skill_path)
+    metadata = extract_skill_metadata(frontmatter, body)
     
     input_schema = {
         "type": "object",
-        "properties": input_properties,
+        "properties": metadata["input_properties"],
         "required": ["question"]
     }
     
     mcp_name = frontmatter.skill_id.replace("-", "_")
     
-    speaker_details = []
-    for s in frontmatter.provenance.sources:
-        speaker = s.speaker or "Unknown"
-        desig = s.designation or "Unknown"
-        speaker_details.append(f"{speaker} ({desig})")
-        
-    sources_str = ", ".join(speaker_details)
-    
-    description = f"YC advice on {frontmatter.name}. Sources: {sources_str}. {summary}."
-    
     handler_path = f"skills/{frontmatter.category}/{frontmatter.skill_id}.md"
     
     mcp_json = {
         "name": mcp_name,
-        "description": description,
+        "description": metadata["description"],
         "inputSchema": input_schema,
         "handler": {
             "type": "file",
