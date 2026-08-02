@@ -1792,14 +1792,14 @@
 | **Title** | Milestone 10 Review — Validation Suite |
 
 **Verification Checklist:**
-- [ ] Quote verifier uses BOTH `ratio ≥ 70` AND `partial_ratio ≥ 85`
-- [ ] Schema validator uses Pydantic `SkillFrontmatter` model
-- [ ] Hallucination guard uses dedicated validator config ONLY
-- [ ] Hallucination guard skips (not falls back) on quota exhaustion
-- [ ] Failed skills moved to `skills/_failed/`
-- [ ] `validate --all` returns correct exit code
-- [ ] No cross-stage imports in validator modules (except `LLMClient` for hallucination guard, which is explicitly allowed)
-- [ ] All tests pass
+- [x] Quote verifier uses BOTH `ratio ≥ 70` AND `partial_ratio ≥ 85`
+- [x] Schema validator uses Pydantic `SkillFrontmatter` model
+- [x] Hallucination guard uses dedicated validator config ONLY
+- [x] Hallucination guard skips (not falls back) on quota exhaustion
+- [x] Failed skills moved to `skills/_failed/`
+- [x] `validate --all` returns correct exit code
+- [x] No cross-stage imports in validator modules (except `LLMClient` for hallucination guard, which is explicitly allowed)
+- [x] All tests pass
 
 ---
 
