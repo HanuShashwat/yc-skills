@@ -200,6 +200,36 @@ def forge_cmd(args: argparse.Namespace) -> None:
         sys.exit(1)
 
 
+def validate_cmd(args: argparse.Namespace) -> None:
+    """Handle the validate command."""
+    from src.validator.run import main as validator_main
+    import sys
+    
+    if not getattr(args, "all", False) and not getattr(args, "skill_id", None):
+        logger.error("Must specify either --all or --skill-id")
+        sys.exit(1)
+        
+    # Patch sys.argv for the validator's argparse
+    patched_argv = ["src.validator.run"]
+    if getattr(args, "all", False):
+        patched_argv.append("--all")
+    if getattr(args, "skill_id", None):
+        patched_argv.extend(["--skill-id", args.skill_id])
+        
+    original_argv = sys.argv.copy()
+    try:
+        sys.argv = patched_argv
+        validator_main()
+    except SystemExit as e:
+        # Propagate the exit code
+        sys.exit(e.code)
+    except Exception as e:
+        logger.error("Error during validation: %s", e)
+        sys.exit(1)
+    finally:
+        sys.argv = original_argv
+
+
 def export_cmd(args: argparse.Namespace) -> None:
     """Handle the export command."""
     from src.exporter.mcp_exporter import export_mcp, export_all_mcp
@@ -315,8 +345,10 @@ def main() -> None:
     link_parser.set_defaults(func=link_cmd)
     
     # validate
-    validate_parser = subparsers.add_parser("validate", help="Validate generated skills")
+    validate_parser = subparsers.add_parser("validate", help="Validate skill files against the three-layer validation suite (schema, quotes, hallucination guard).")
     validate_parser.add_argument("--all", action="store_true", help="Validate all skills")
+    validate_parser.add_argument("--skill-id", type=str, help="Validate a single skill by ID")
+    validate_parser.set_defaults(func=validate_cmd)
     
     # export
     export_parser = subparsers.add_parser("export", help="Export specs in MCP, OpenAI, and Hermes formats")
