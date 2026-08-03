@@ -2120,11 +2120,11 @@
 | **Title** | Milestone 12 Review — CLI Assembly |
 
 **Verification Checklist:**
-- [ ] All 12 CLI commands present and working
-- [ ] `--help` text is clear for every command
-- [ ] Error handling is consistent (no bare Exception)
-- [ ] CLI is Layer 3 — imports from Layer 2 and Layer 1 only
-- [ ] No duplicate or conflicting subcommands
+- [x] All 12 CLI commands present and working
+- [x] `--help` text is clear for every command
+- [x] Error handling is consistent (no bare Exception)
+- [x] CLI is Layer 3 — imports from Layer 2 and Layer 1 only
+- [x] No duplicate or conflicting subcommands
 
 ---
 
