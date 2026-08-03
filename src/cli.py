@@ -143,7 +143,13 @@ def chunk_cmd(args: argparse.Namespace) -> None:
 def reaper_cmd(args: argparse.Namespace) -> None:
     """Handle the reaper command."""
     from src.forge.reaper import run_reaper
+    from pathlib import Path
+    import sys
     
+    if not Path(DB_PATH).exists():
+        logger.error("Database not found. Run 'python -m src.cli init-db' first.")
+        sys.exit(1)
+        
     logger.info("Starting reaper...")
     try:
         count = run_reaper(DB_PATH)
@@ -172,7 +178,13 @@ def forge_cmd(args: argparse.Namespace) -> None:
     from src.forge.extractor import run_extraction
     from src.forge.clusterer import run_clustering
     from src.forge.synthesizer import run_synthesis
+    from pathlib import Path
+    import sys
     
+    if not Path(DB_PATH).exists():
+        logger.error("Database not found. Run 'python -m src.cli init-db' first.")
+        sys.exit(1)
+        
     logger.info("Starting forge pipeline...")
     try:
         batch_id, content_ids = select_batch(DB_PATH, topic=args.topic, batch_size=args.batch_size)
@@ -203,7 +215,12 @@ def forge_cmd(args: argparse.Namespace) -> None:
 def validate_cmd(args: argparse.Namespace) -> None:
     """Handle the validate command."""
     from src.validator.run import main as validator_main
+    from pathlib import Path
     import sys
+    
+    if not Path(DB_PATH).exists():
+        logger.error("Database not found. Run 'python -m src.cli init-db' first.")
+        sys.exit(1)
     
     if not getattr(args, "all", False) and not getattr(args, "skill_id", None):
         logger.error("Must specify either --all or --skill-id")
@@ -428,7 +445,7 @@ def export_cmd(args: argparse.Namespace) -> None:
 
 def main() -> None:
     """Main CLI entry point."""
-    parser = argparse.ArgumentParser(description="YC Skills Forge CLI")
+    parser = argparse.ArgumentParser(description="YC Skills Forge — Static skill file generator for AI agents.")
     subparsers = parser.add_subparsers(dest="command", required=True, help="Available commands")
     
     # init-db
