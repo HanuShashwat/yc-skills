@@ -261,6 +261,66 @@ def index_cmd(args: argparse.Namespace) -> None:
         sys.exit(1)
 
 
+def quota_cmd(args: argparse.Namespace) -> None:
+    """Handle the quota command."""
+    import sqlite3
+    import sys
+    from datetime import datetime, timezone
+    from pathlib import Path
+    from src.config import load_config
+    
+    db_path = Path(DB_PATH)
+    if not db_path.exists():
+        logger.error("Database not found. Run 'python -m src.cli init-db' first.")
+        sys.exit(1)
+        
+    config = load_config().providers
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            
+            logger.info("%-11s | %-12s | %-12s | %-9s | %-8s | %-9s | %s", "Provider", "Tokens Used", "Token Limit", "Remaining", "Requests", "Req Limit", "Status")
+            logger.info("------------|--------------|--------------|-----------|----------|-----------|-------")
+            
+            for provider_name, provider_config in config.providers.items():
+                cursor.execute(
+                    "SELECT SUM(total_tokens), COUNT(*) FROM usage_log WHERE provider = ? AND date(timestamp) = ?",
+                    (provider_name, today)
+                )
+                row = cursor.fetchone()
+                
+                tokens_used = row[0] if row[0] is not None else 0
+                requests_used = row[1] if row[1] is not None else 0
+                
+                token_limit = provider_config.daily_token_limit
+                req_limit = provider_config.daily_request_limit
+                
+                effective_remaining = int((token_limit - tokens_used) * 0.9)
+                if effective_remaining < 0:
+                    effective_remaining = 0
+                    
+                remaining_pct = (token_limit - tokens_used) / token_limit if token_limit > 0 else 0
+                
+                if effective_remaining == 0 or requests_used >= req_limit:
+                    status = "✗ EXHAUSTED"
+                elif remaining_pct > 0.2:
+                    status = "✓ OK"
+                else:
+                    status = "⚠ LOW"
+                    
+                logger.info("%-11s | %-12s | %-12s | %-9s | %-8s | %-9s | %s", 
+                            provider_name, f"{tokens_used:,}", f"{token_limit:,}", f"{effective_remaining:,}", f"{requests_used:,}", f"{req_limit:,}", status)
+                
+            now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+            logger.info("")
+            logger.info("Quotas reset at UTC midnight. Current UTC time: %s", now)
+    except sqlite3.Error as e:
+        logger.error("Database error: %s", e)
+        sys.exit(1)
+
+
 def export_cmd(args: argparse.Namespace) -> None:
     """Handle the export command."""
     from src.exporter.mcp_exporter import export_mcp, export_all_mcp
@@ -397,7 +457,8 @@ def main() -> None:
     reaper_parser.set_defaults(func=reaper_cmd)
     
     # quota
-    subparsers.add_parser("quota", help="Check provider quota usage")
+    quota_parser = subparsers.add_parser("quota", help="Display current LLM provider quota usage and remaining capacity.")
+    quota_parser.set_defaults(func=quota_cmd)
     
     # backfill
     backfill_parser = subparsers.add_parser("backfill", help="Historical content ingestion")
