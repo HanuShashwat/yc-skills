@@ -1928,12 +1928,12 @@
 | **Title** | Milestone 11 Review — Retrieval & Indexing |
 
 **Verification Checklist:**
-- [ ] `src/retrieval/` is NOT imported by any other `src/` module (build-time only)
-- [ ] `skills-index.json` format matches architecture doc
-- [ ] `data/similarity_matrix.json` format matches Section 13.1
-- [ ] Signal resolution works for all prefix types
-- [ ] `sentence-transformers` import only in allowed modules
-- [ ] Tests pass
+- [x] `src/retrieval/` is NOT imported by any other `src/` module (build-time only)
+- [x] `skills-index.json` format matches architecture doc
+- [x] `data/similarity_matrix.json` format matches Section 13.1
+- [x] Signal resolution works for all prefix types
+- [x] `sentence-transformers` import only in allowed modules
+- [x] Tests pass
 
 ---
 
