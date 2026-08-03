@@ -230,6 +230,37 @@ def validate_cmd(args: argparse.Namespace) -> None:
         sys.argv = original_argv
 
 
+def index_cmd(args: argparse.Namespace) -> None:
+    """Handle the index command."""
+    from src.retrieval.resolver import generate_index, generate_similarity_matrix
+    from pathlib import Path
+    import json
+    import sys
+    
+    skills_dir = Path("skills")
+    # Check if there are any .md files ignoring _failed
+    valid_skills = [f for f in skills_dir.rglob("*.md") if f.parent.name != "_failed"]
+    if not skills_dir.exists() or not valid_skills:
+        logger.warning("No valid skill files found in skills/")
+        
+    Path("data").mkdir(exist_ok=True)
+    
+    logger.info("Generating skills index and similarity matrix...")
+    try:
+        generate_index()
+        generate_similarity_matrix()
+        
+        with open("skills-index.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+            num_skills = len(data.get("by_id", {}))
+            
+        logger.info("Successfully indexed %d skills.", num_skills)
+        logger.info("Output paths: skills-index.json, data/similarity_matrix.json")
+    except Exception as e:
+        logger.error("Failed to generate index: %s", e)
+        sys.exit(1)
+
+
 def export_cmd(args: argparse.Namespace) -> None:
     """Handle the export command."""
     from src.exporter.mcp_exporter import export_mcp, export_all_mcp
@@ -358,7 +389,8 @@ def main() -> None:
     export_parser.set_defaults(func=export_cmd)
     
     # index
-    subparsers.add_parser("index", help="Generate index and similarity matrix")
+    index_parser = subparsers.add_parser("index", help="Generate skills-index.json and data/similarity_matrix.json from all published skills. This is a build-time operation.")
+    index_parser.set_defaults(func=index_cmd)
     
     # reaper
     reaper_parser = subparsers.add_parser("reaper", help="Reset stale extracting items")
