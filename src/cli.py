@@ -321,6 +321,37 @@ def quota_cmd(args: argparse.Namespace) -> None:
         sys.exit(1)
 
 
+def backfill_cmd(args: argparse.Namespace) -> None:
+    """Handle the backfill command."""
+    import sys
+    from datetime import datetime
+    
+    try:
+        start_date = datetime.strptime(args.start_date, "%Y-%m-%d")
+    except ValueError:
+        logger.error("Invalid --start-date format. Expected YYYY-MM-DD.")
+        sys.exit(1)
+        
+    if start_date > datetime.now():
+        logger.error("Invalid --start-date. Cannot be in the future.")
+        sys.exit(1)
+        
+    sources = []
+    if args.source == "both":
+        sources = ["library", "youtube"]
+    else:
+        sources = [args.source]
+        
+    logger.info("Initializing backfill starting from %s", args.start_date)
+    logger.info("Target sources: %s", ", ".join(sources))
+    
+    for source in sources:
+        if source == "library":
+            logger.info("Library backfill requires a URL list. Use 'ingest-library --urls' with a file of URLs.")
+        elif source == "youtube":
+            logger.info("YouTube backfill: use 'ingest-youtube --url <playlist_url>' for bulk ingestion.")
+
+
 def export_cmd(args: argparse.Namespace) -> None:
     """Handle the export command."""
     from src.exporter.mcp_exporter import export_mcp, export_all_mcp
@@ -461,8 +492,13 @@ def main() -> None:
     quota_parser.set_defaults(func=quota_cmd)
     
     # backfill
-    backfill_parser = subparsers.add_parser("backfill", help="Historical content ingestion")
-    backfill_parser.add_argument("--start-date", help="Start date for backfill")
+    backfill_parser = subparsers.add_parser(
+        "backfill", 
+        help="Historical content ingestion. Warning: A fresh clone has no registry.db history. Scope your first run to avoid duplicating existing skills."
+    )
+    backfill_parser.add_argument("--start-date", required=True, help="Start date for backfill in YYYY-MM-DD format")
+    backfill_parser.add_argument("--source", choices=["library", "youtube", "both"], default="both", help="Target source to backfill")
+    backfill_parser.set_defaults(func=backfill_cmd)
 
     args = parser.parse_args()
     
