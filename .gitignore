@@ -20,3 +20,4 @@ data/raw/
 data/chunks/
 data/registry.db
 data/errors/
+IMPLEMENTATION_PLAN.md
