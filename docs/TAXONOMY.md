@@ -1,4 +1,4 @@
-# YC Skills Taxonomy — Complete Category & Subcategory Reference
+# OpenYC Skills Taxonomy — Complete Category & Subcategory Reference
 
 > **The authoritative map of how all startup advice skills are organized. Every skill in this repository belongs to exactly one category and maps to one or more subcategories.**
 
@@ -32,7 +32,7 @@
 
 ## What Is the Taxonomy?
 
-The taxonomy is the **fixed organizational structure** that determines how every skill in YC Skills Forge is categorized and filed. Think of it like a filing cabinet with 8 labeled drawers, where each drawer has several labeled folders inside it.
+The taxonomy is the **fixed organizational structure** that determines how every skill in OpenOpenYC Skills is categorized and filed. Think of it like a filing cabinet with 8 labeled drawers, where each drawer has several labeled folders inside it.
 
 - **Categories** = the 8 drawers (e.g., `fundraising`, `hiring`, `product`)
 - **Subcategories** = the folders inside each drawer (e.g., `seed-round`, `series-a`, `pitch-deck` inside `fundraising`)

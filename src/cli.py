@@ -492,7 +492,7 @@ def export_cmd(args: argparse.Namespace) -> None:
 def main() -> None:
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(
-        description="YC Skills Forge — Static skill file generator for AI agents."
+        description="OpenOpenYC Skills — Static skill file generator for AI agents."
     )
     subparsers = parser.add_subparsers(
         dest="command", required=True, help="Available commands"

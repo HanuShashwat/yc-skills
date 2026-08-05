@@ -1,5 +1,5 @@
 """
-Batch selector for YC Skills Forge.
+Batch selector for OpenOpenYC Skills.
 """
 
 import logging

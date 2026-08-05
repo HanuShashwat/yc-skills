@@ -1,5 +1,5 @@
 """
-Tests for YC Skills Forge CLI.
+Tests for OpenOpenYC Skills CLI.
 """
 import pytest
 import subprocess
@@ -30,7 +30,7 @@ def test_cli_help():
     """Verify python -m src.cli --help exits with code 0 and contains all 12 command names."""
     res = run_cli("--help")
     assert res.returncode == 0
-    assert "YC Skills Forge — Static skill file generator for AI agents." in res.stdout
+    assert "OpenOpenYC Skills — Static skill file generator for AI agents." in res.stdout
     for cmd in COMMANDS:
         assert cmd in res.stdout
 

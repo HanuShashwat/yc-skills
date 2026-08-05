@@ -1,5 +1,5 @@
 """
-Reaper for YC Skills Forge.
+Reaper for OpenOpenYC Skills.
 Recovers stale items stuck in the 'extracting' state.
 """
 

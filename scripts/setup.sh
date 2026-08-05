@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-echo "YC Skills Forge - Local Setup"
+echo "OpenOpenYC Skills - Local Setup"
 
 # 1. Clone (skip if already in repo)
 if [ ! -d ".git" ]; then
-  git clone https://github.com/yourname/yc-skills-forge.git
-  cd yc-skills-forge
+  git clone https://github.com/yourname/openopenyc-skills.git
+  cd openopenyc-skills
 fi
 
 # 2. Create venv

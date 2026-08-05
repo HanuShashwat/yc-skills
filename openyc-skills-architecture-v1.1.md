@@ -1,4 +1,4 @@
-# YC Skills Forge: Complete Technical Architecture Specification
+# OpenOpenYC Skills: Complete Technical Architecture Specification
 
 **Version:** 1.1.0  
 **Date:** 2026-07-16
@@ -21,7 +21,7 @@
 
 ## 1. System Overview
 
-The YC Skills Forge is a static-file generator. It ingests content from Y Combinator's Library and YouTube channels, extracts actionable advice, clusters it into narrow principles, and emits versioned skill files (Markdown + YAML) and agent spec files (JSON). The output is a GitHub repository that AI agents consume directly.
+The OpenOpenYC Skills is a static-file generator. It ingests content from Y Combinator's Library and YouTube channels, extracts actionable advice, clusters it into narrow principles, and emits versioned skill files (Markdown + YAML) and agent spec files (JSON). The output is a GitHub repository that AI agents consume directly.
 
 **Architecture Pattern:** Batch ETL -> Static Site Generator -> Git Repository
 
@@ -39,7 +39,7 @@ Note the **Link** stage (Section 8.4) is a deferred pass that runs after all ski
 The repository MUST be initialized with this exact structure. No deviations.
 
 ```
-yc-skills-forge/
+openopenyc-skills/
 ├── .github/
 │   └── workflows/
 │       └── validate.yml          # PR validation only. NO generation.
@@ -307,7 +307,7 @@ CREATE INDEX idx_usage_provider ON usage_log(provider, timestamp);
 1. Accept a list of URLs via CLI argument: `--urls url1 url2 url3`
 2. For each URL:
    - HTTP GET with `requests`, timeout=30s
-   - User-Agent: `YC-Skills-Forge/1.0 (Research Project; contact@example.com)`
+   - User-Agent: `OpenYC-Skills/1.0 (Research Project; contact@example.com)`
    - Parse with `BeautifulSoup4`
    - Extract `<article>` or `<main>` content. Fallback: `<div class="content">`
    - Remove: `<nav>`, `<footer>`, `<script>`, `<style>`, `<aside>`, ads, newsletter signup boxes
@@ -1034,7 +1034,7 @@ Activate this skill when a founder asks about:
 If this skill does not match the user's query exactly, the agent MUST:
 1. Return the 3 closest skills (by category proximity and tag overlap)
 2. Provide advice based on the agent's general knowledge, NOT by inventing YC-specific quotes or attributing advice to YC speakers
-3. Clearly state: "No specific YC skill exists for this exact question. Here is general advice, and related YC skills for context:"
+3. Clearly state: "No specific YC skill exists for this exact question. Here is general advice, and related OpenYC Skills for context:"
 ```
 
 ### 10.2 YAML Frontmatter Schema (Pydantic)
@@ -1534,11 +1534,11 @@ Each GitHub release includes:
 #!/bin/bash
 set -e
 
-echo "YC Skills Forge - Local Setup"
+echo "OpenOpenYC Skills - Local Setup"
 
 # 1. Clone
-git clone https://github.com/yourname/yc-skills-forge.git
-cd yc-skills-forge
+git clone https://github.com/yourname/openopenyc-skills.git
+cd openopenyc-skills
 
 # 2. Create venv
 python3.11 -m venv .venv
@@ -1670,7 +1670,7 @@ Edit `config/providers.yml` and add a new block. The system will auto-detect it.
 - Respect YC's `robots.txt` at `https://www.ycombinator.com/robots.txt`
 - Scrape rate: Max 1 request per 2 seconds
 - Use `requests.Session()` with `time.sleep(2)` between requests
-- Identify via User-Agent: `YC-Skills-Forge/1.0 (Research Project; contact@example.com)`
+- Identify via User-Agent: `OpenYC-Skills/1.0 (Research Project; contact@example.com)`
 
 ### 18.2 YouTube Terms
 

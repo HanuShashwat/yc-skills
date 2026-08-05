@@ -7,7 +7,7 @@ set -e
 
 START_DATE=${1:-"2020-01-01"}
 
-echo "YC Skills Forge - Historical Backfill"
+echo "OpenOpenYC Skills - Historical Backfill"
 echo "Start date: $START_DATE"
 echo ""
 

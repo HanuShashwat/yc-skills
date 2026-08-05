@@ -1,5 +1,5 @@
 """
-Clustering stage for YC Skills Forge.
+Clustering stage for OpenOpenYC Skills.
 Groups extracted advice into clusters using local sentence-transformers.
 """
 

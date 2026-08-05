@@ -1,5 +1,5 @@
 """
-Schema Validator for YC Skills Forge.
+Schema Validator for OpenOpenYC Skills.
 Validates skill frontmatter using Pydantic constraints and custom rules.
 """
 

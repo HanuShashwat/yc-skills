@@ -1,5 +1,5 @@
 """
-Hallucination Guard for YC Skills Forge.
+Hallucination Guard for OpenOpenYC Skills.
 Security-critical boundary verifying that no unsupported claims are introduced.
 """
 

@@ -107,7 +107,7 @@ def test_process_single_url_article(mock_get, mock_sleep, db_path, tmp_path, moc
         conn.commit()
 
     # Verify HTTP request
-    mock_get.assert_called_once_with(url, headers={"User-Agent": "YC-Skills-Forge/1.0 (Research Project; contact@example.com)"}, timeout=30)
+    mock_get.assert_called_once_with(url, headers={"User-Agent": "OpenYC-Skills/1.0 (Research Project; contact@example.com)"}, timeout=30)
 
     # Verify ID generation
     url_hash = hashlib.sha256(url.encode("utf-8")).hexdigest()[:12]
@@ -163,7 +163,7 @@ def test_process_urls_deduplication_and_rate_limiting(mock_get, mock_sleep, db_p
         process_urls([url, "https://www.ycombinator.com/library/new-essay"], db_path)
 
     # get should only be called for the new url, since the first is a duplicate
-    mock_get.assert_called_once_with("https://www.ycombinator.com/library/new-essay", headers={"User-Agent": "YC-Skills-Forge/1.0 (Research Project; contact@example.com)"}, timeout=30)
+    mock_get.assert_called_once_with("https://www.ycombinator.com/library/new-essay", headers={"User-Agent": "OpenYC-Skills/1.0 (Research Project; contact@example.com)"}, timeout=30)
     mock_sleep.assert_called_once_with(2)
 
 

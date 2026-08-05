@@ -111,4 +111,4 @@ Activate this skill when a founder asks about:
 If this skill does not match the user's query exactly, the agent MUST:
 1. Return the 3 closest skills (by category proximity and tag overlap)
 2. Provide advice based on the agent's general knowledge, NOT by inventing YC-specific quotes or attributing advice to YC speakers
-3. Clearly state: "No specific YC skill exists for this exact question. Here is general advice, and related YC skills for context:"
+3. Clearly state: "No specific YC skill exists for this exact question. Here is general advice, and related OpenYC Skills for context:"

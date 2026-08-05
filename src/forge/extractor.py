@@ -1,5 +1,5 @@
 """
-Extraction stage for YC Skills Forge.
+Extraction stage for OpenOpenYC Skills.
 Extracts actionable advice from content chunks using an LLM.
 """
 

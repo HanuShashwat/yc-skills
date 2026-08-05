@@ -1,5 +1,5 @@
 """
-Quote Verifier for YC Skills Forge.
+Quote Verifier for OpenOpenYC Skills.
 Performs dual fuzzy matching to verify quote fidelity against source chunks.
 """
 

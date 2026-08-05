@@ -1,5 +1,5 @@
 """
-Configuration loader for YC Skills Forge.
+Configuration loader for OpenOpenYC Skills.
 """
 
 import os

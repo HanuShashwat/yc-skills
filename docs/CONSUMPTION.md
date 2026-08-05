@@ -1,6 +1,6 @@
-# Consuming YC Skills Forge — A Complete Guide
+# Consuming OpenOpenYC Skills — A Complete Guide
 
-> **How to use YC Skills Forge in your AI agent, chatbot, or application. No Python installation, no API keys, no database — just static files from GitHub.**
+> **How to use OpenOpenYC Skills in your AI agent, chatbot, or application. No Python installation, no API keys, no database — just static files from GitHub.**
 
 ---
 
@@ -47,7 +47,7 @@ Everything you need is a set of static files that you download (or clone) from G
 
 ## The Core Idea
 
-YC Skills Forge publishes structured, verified startup advice as **static files** in this GitHub repository. Your AI agent reads these files and uses them to answer founders' questions with accurate, well-attributed YC advice.
+OpenOpenYC Skills publishes structured, verified startup advice as **static files** in this GitHub repository. Your AI agent reads these files and uses them to answer founders' questions with accurate, well-attributed YC advice.
 
 Here's the mental model:
 
@@ -88,23 +88,23 @@ When you download or clone this repository, the files relevant to you as a consu
 ### Option 1: Clone the Entire Repository
 
 ```bash
-git clone https://github.com/HanuShashwat/yc-skills.git
+git clone https://github.com/HanuShashwat/openyc-skills.git
 ```
 
-Then access files at `yc-skills/skills/`, `yc-skills/specs/`, etc.
+Then access files at `openyc-skills/skills/`, `openyc-skills/specs/`, etc.
 
 ### Option 2: Download a Release Bundle
 
-Check the [Releases page](https://github.com/HanuShashwat/yc-skills/releases) for `skills-bundle.zip` containing all skills, specs, and index files.
+Check the [Releases page](https://github.com/HanuShashwat/openyc-skills/releases) for `skills-bundle.zip` containing all skills, specs, and index files.
 
 ### Option 3: Fetch Individual Files via GitHub Raw URLs
 
 You can fetch any file directly over HTTPS:
 
 ```
-https://raw.githubusercontent.com/HanuShashwat/yc-skills/main/skills/fundraising/yc-fundraising-seed-round-timing.md
-https://raw.githubusercontent.com/HanuShashwat/yc-skills/main/specs/mcp/yc-fundraising-seed-round-timing.json
-https://raw.githubusercontent.com/HanuShashwat/yc-skills/main/skills-index.json
+https://raw.githubusercontent.com/HanuShashwat/openyc-skills/main/skills/fundraising/yc-fundraising-seed-round-timing.md
+https://raw.githubusercontent.com/HanuShashwat/openyc-skills/main/specs/mcp/yc-fundraising-seed-round-timing.json
+https://raw.githubusercontent.com/HanuShashwat/openyc-skills/main/skills-index.json
 ```
 
 This is useful for agents that load skills on-demand without cloning the full repo.

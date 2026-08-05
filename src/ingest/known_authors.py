@@ -1,5 +1,5 @@
 """
-Known authors mapping for YC Skills Forge.
+Known authors mapping for OpenOpenYC Skills.
 """
 
 import re

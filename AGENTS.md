@@ -1,7 +1,7 @@
-# AGENTS.md — YC Skills Forge
+# AGENTS.md — OpenOpenYC Skills
 
 > **Authoritative operating manual for AI coding agents.**
-> Derived from [`yc-skills-forge-architecture-v1.1.md`](yc-skills-forge-architecture-v1.1.md).
+> Derived from [`openopenyc-skills-architecture-v1.1.md`](openopenyc-skills-architecture-v1.1.md).
 > Last updated: 2026-07-28.
 
 ---
@@ -32,7 +32,7 @@
 
 ### Purpose
 
-YC Skills Forge is a **static-file generator** that ingests content from Y Combinator's Library and YouTube channels, extracts actionable startup advice, clusters it into narrow principles, and emits versioned skill files (Markdown + YAML frontmatter) and agent spec files (JSON). The output is a GitHub repository that AI agents consume directly — no runtime, no database, no API keys required by end users.
+OpenOpenYC Skills is a **static-file generator** that ingests content from Y Combinator's Library and YouTube channels, extracts actionable startup advice, clusters it into narrow principles, and emits versioned skill files (Markdown + YAML frontmatter) and agent spec files (JSON). The output is a GitHub repository that AI agents consume directly — no runtime, no database, no API keys required by end users.
 
 ### High-Level Goals
 
@@ -150,7 +150,7 @@ CLI
 ### Directory Structure
 
 ```
-yc-skills-forge/
+openopenyc-skills/
 ├── .github/workflows/validate.yml   # PR validation ONLY — never generation
 ├── data/
 │   ├── raw/library/                  # HTML/Markdown of essays (GITIGNORED)
@@ -412,7 +412,7 @@ Any state → failed (on unrecoverable error)
 ```bash
 # Clone and enter repo
 git clone <repo-url>
-cd yc-skills-forge
+cd openopenyc-skills
 
 # Create virtual environment
 python3.11 -m venv .venv
@@ -620,7 +620,7 @@ tests/
 
 - **Respect `robots.txt`** at `https://www.ycombinator.com/robots.txt`.
 - **Rate limit:** Maximum 1 request per 2 seconds. Use `requests.Session()` with `time.sleep(2)`.
-- **User-Agent:** `YC-Skills-Forge/1.0 (Research Project; contact@example.com)`
+- **User-Agent:** `OpenYC-Skills/1.0 (Research Project; contact@example.com)`
 - **YouTube:** Only download captions/subtitles via `yt-dlp --skip-download`. Never download video files.
 
 ### Logging Sensitive Information
@@ -862,7 +862,7 @@ The technology stack is **locked**. The exact tools and versions are specified i
 ### How to Approach a Task
 
 1. **Read this `AGENTS.md` first.** It is the primary source of truth for repository-specific rules.
-2. **Read the architecture doc** (`yc-skills-forge-architecture-v1.1.md`) for detailed specifications on the component you are modifying.
+2. **Read the architecture doc** (`openopenyc-skills-architecture-v1.1.md`) for detailed specifications on the component you are modifying.
 3. **Identify the component** your change belongs to (see Section 3: Repository Organization).
 4. **Verify layering rules** — ensure your change respects the dependency direction (Section 4).
 5. **Check if the file is auto-generated** — if so, modify the generator, not the output (Section 11).
@@ -981,7 +981,7 @@ When facing ambiguity, resolve it using this hierarchy (highest priority first):
 
 1. **Follow the Non-Negotiable Constraints** (Architecture doc Section 0). These are inviolable.
 2. **Follow explicit instructions in this `AGENTS.md`.**
-3. **Follow the architecture doc** (`yc-skills-forge-architecture-v1.1.md`).
+3. **Follow the architecture doc** (`openopenyc-skills-architecture-v1.1.md`).
 4. **Follow established repository conventions** — look at existing code for patterns.
 5. **Prefer consistency over novelty** — match existing style, naming, and patterns.
 6. **Minimize the scope of changes** — do the minimum required to fulfill the task.

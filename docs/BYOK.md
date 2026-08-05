@@ -87,16 +87,16 @@ Forking creates your own copy of the repository on GitHub, so you can make chang
 
 ### How to Fork
 
-1. Go to the repository: `https://github.com/HanuShashwat/yc-skills`
+1. Go to the repository: `https://github.com/HanuShashwat/openyc-skills`
 2. Click the **"Fork"** button in the top right
-3. This creates a copy at `https://github.com/YOUR_USERNAME/yc-skills`
+3. This creates a copy at `https://github.com/YOUR_USERNAME/openyc-skills`
 
 ### How to Clone Your Fork
 
 ```bash
 # Clone YOUR fork (replace YOUR_USERNAME with your GitHub username)
-git clone https://github.com/YOUR_USERNAME/yc-skills.git
-cd yc-skills
+git clone https://github.com/YOUR_USERNAME/openyc-skills.git
+cd openyc-skills
 ```
 
 ---
@@ -291,7 +291,7 @@ python -m src.cli ingest-library --url "https://www.ycombinator.com/library/exam
 
 **What happens behind the scenes:**
 1. Downloads the page HTML using `requests` (with a 30-second timeout)
-2. Identifies itself with User-Agent: `YC-Skills-Forge/1.0 (Research Project; contact@example.com)`
+2. Identifies itself with User-Agent: `OpenYC-Skills/1.0 (Research Project; contact@example.com)`
 3. Parses the HTML with BeautifulSoup4, extracting the article body
 4. Removes navigation, footer, scripts, styles, ads, and newsletter boxes
 5. Converts to Markdown using `markdownify`
@@ -618,7 +618,7 @@ If validation fails, fix the issues and push again.
 
 **Fix:**
 ```bash
-cd /path/to/yc-skills           # Make sure you're in the project root
+cd /path/to/openyc-skills           # Make sure you're in the project root
 source .venv/bin/activate        # Activate the virtual environment
 python -m src.cli init-db        # Try again
 ```
@@ -675,8 +675,8 @@ Here's the entire contributor workflow in one quick reference:
 
 ```bash
 # === ONE-TIME SETUP ===
-git clone https://github.com/YOUR_USERNAME/yc-skills.git
-cd yc-skills
+git clone https://github.com/YOUR_USERNAME/openyc-skills.git
+cd openyc-skills
 python3.11 -m venv .venv
 source .venv/bin/activate                   # or .venv\Scripts\activate on Windows
 pip install --upgrade pip

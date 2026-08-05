@@ -1,4 +1,4 @@
-# YC Skills Forge
+# OpenOpenYC Skills
 
 > **A static-file generator that converts Y Combinator startup advice into composable skill files that AI agents can use directly.**
 
@@ -32,19 +32,19 @@
 
 ## What Is This Project?
 
-**YC Skills Forge** takes the publicly available startup advice from [Y Combinator](https://www.ycombinator.com/) — their blog posts (called "Library essays") and YouTube videos — and turns that advice into structured, machine-readable files that AI agents (like ChatGPT, Claude, Cursor, Copilot, or local models running on your laptop) can use.
+**OpenOpenYC Skills** takes the publicly available startup advice from [Y Combinator](https://www.ycombinator.com/) — their blog posts (called "Library essays") and YouTube videos — and turns that advice into structured, machine-readable files that AI agents (like ChatGPT, Claude, Cursor, Copilot, or local models running on your laptop) can use.
 
 ### A Simple Analogy
 
 Think of it like this:
 
 1. **YC publishes a video** where Paul Graham says: *"The best time to raise money is when you don't need it."*
-2. **YC Skills Forge downloads that video's transcript**, extracts that quote and its context, groups it with similar advice from other YC videos/essays, and then creates a **structured "skill file"** — a Markdown document with YAML metadata.
+2. **OpenOpenYC Skills downloads that video's transcript**, extracts that quote and its context, groups it with similar advice from other YC videos/essays, and then creates a **structured "skill file"** — a Markdown document with YAML metadata.
 3. **An AI agent** (like Claude Code or a GPT) can load that skill file and use it to give founders accurate, well-attributed advice about fundraising timing.
 
 ### What Makes This Different From a Regular Blog Post?
 
-| Feature | Regular Blog Post | YC Skills Forge Skill |
+| Feature | Regular Blog Post | OpenOpenYC Skills Skill |
 |---------|------------------|-----------------------|
 | Format | Free-form prose for humans | Structured Markdown + YAML for both humans AND machines |
 | Attribution | "YC says..." (vague) | Exact verbatim quotes with speaker name, title, source URL, and timestamp |
@@ -326,7 +326,7 @@ git push origin HEAD
 
 ## For AI Agent Consumers (Using the Skills)
 
-If you're building an AI agent and want to use YC Skills Forge's startup advice, you **do not** need to install Python, run any pipelines, or have API keys.
+If you're building an AI agent and want to use OpenOpenYC Skills's startup advice, you **do not** need to install Python, run any pipelines, or have API keys.
 
 ### What You Do
 
@@ -368,8 +368,8 @@ All of these can be resolved using `skills-index.json` (for exact, category, and
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/HanuShashwat/yc-skills.git
-cd yc-skills
+git clone https://github.com/HanuShashwat/openyc-skills.git
+cd openyc-skills
 
 # 2. Create a Python virtual environment
 #    (This isolates the project's dependencies from your system Python)
@@ -458,7 +458,7 @@ All commands are run via `python -m src.cli <command>`. You can always run `pyth
 Here's what every directory and key file in the project does:
 
 ```
-yc-skills/
+openyc-skills/
 │
 ├── .github/workflows/
 │   └── validate.yml              # GitHub Actions: runs validation on PRs
@@ -908,7 +908,7 @@ Run `python -m src.cli quota` to see tokens used and remaining for each provider
 - **Code:** [MIT License](LICENSE) — do whatever you want with the code.
 - **Generated Skill Content:** [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) — attribution required, share alike.
 
-> **Legal Review Note:** YC Library essays and YouTube transcripts are publicly available. YC Skills Forge extracts short, attributed snippets (fair use) and synthesizes the underlying principles. No full essays or transcripts are reproduced in the generated skills. Raw content files are gitignored and never published. By using the BYOK model, contributors act as the operator. Legal review is recommended before commercial use.
+> **Legal Review Note:** YC Library essays and YouTube transcripts are publicly available. OpenOpenYC Skills extracts short, attributed snippets (fair use) and synthesizes the underlying principles. No full essays or transcripts are reproduced in the generated skills. Raw content files are gitignored and never published. By using the BYOK model, contributors act as the operator. Legal review is recommended before commercial use.
 
 ---
 
@@ -920,5 +920,5 @@ Run `python -m src.cli quota` to see tokens used and remaining for each provider
 | [BYOK Guide](docs/BYOK.md) | How to fork, set up, and generate new skills (for contributors) |
 | [Taxonomy Map](docs/TAXONOMY.md) | The complete category and subcategory tree |
 | [AGENTS.md](AGENTS.md) | Operating manual for AI coding agents working on this codebase |
-| [Architecture Spec](yc-skills-forge-architecture-v1.1.md) | The full technical architecture document |
+| [Architecture Spec](openopenyc-skills-architecture-v1.1.md) | The full technical architecture document |
 | [Implementation Plan](IMPLEMENTATION_PLAN.md) | Detailed task-by-task build plan |

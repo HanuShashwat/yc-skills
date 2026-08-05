@@ -18,7 +18,7 @@ from src.ingest.known_authors import lookup_author
 
 logger = logging.getLogger(__name__)
 
-USER_AGENT = "YC-Skills-Forge/1.0 (Research Project; contact@example.com)"
+USER_AGENT = "OpenYC-Skills/1.0 (Research Project; contact@example.com)"
 TIMEOUT = 30
 RAW_DATA_DIR = "data/raw/library"
 

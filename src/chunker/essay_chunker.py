@@ -1,5 +1,5 @@
 """
-Essay chunker for YC Skills Forge.
+Essay chunker for OpenOpenYC Skills.
 """
 
 import logging

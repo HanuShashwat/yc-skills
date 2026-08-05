@@ -1,5 +1,5 @@
 """
-YouTube downloader for YC Skills Forge.
+YouTube downloader for OpenOpenYC Skills.
 """
 
 import hashlib
