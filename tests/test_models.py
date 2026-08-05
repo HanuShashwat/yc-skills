@@ -168,7 +168,7 @@ def test_synthesis_response_parsing():
         name="Build what people want",
         category="product",
         principle="Always talk to users",
-        quotes=["Talk to users", "Build product"],
+        quotes=[{"text": "Talk to users", "speaker": "PG", "source_url": "http"}],
         application={"step1": "do this"},
         edge_cases=["If enterprise"],
         related_skills=["yc-fundraising-seed"],
