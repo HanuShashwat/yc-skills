@@ -1,0 +1,29 @@
+{
+    "extracted_items": [
+        {
+            "in_batch_index": 1,
+            "quote": "Investors can smell desperation. When you're down to 2 months of runway, you have zero leverage.",
+            "speaker": "Garry Tan",
+            "designation": "CEO of YC",
+            "source_id": "lib_a1b2c3d4e5f6",
+            "source_url": "https://www.ycombinator.com/library/test-essay-0",
+            "topic": "fundraising",
+            "type": "advice",
+            "context": "Context",
+            "is_partial": false
+        },
+        {
+            "in_batch_index": 2,
+            "quote": "Raise when you don't need it.",
+            "speaker": "Garry Tan",
+            "designation": "CEO of YC",
+            "source_id": "lib_a1b2c3d4e5f7",
+            "source_url": "https://www.ycombinator.com/library/test-essay-1",
+            "topic": "fundraising",
+            "type": "advice",
+            "context": "Context 2",
+            "is_partial": false
+        }
+    ],
+    "contradictions": []
+}
