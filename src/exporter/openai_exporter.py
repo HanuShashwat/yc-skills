@@ -2,6 +2,7 @@
 OpenAI Function Schema Exporter for YC Skills Forge.
 Reads generated skills and exports OpenAI function JSON spec files.
 """
+
 import os
 import json
 import logging
@@ -13,38 +14,39 @@ from src.exporter.utils import parse_skill_file, extract_skill_metadata
 
 logger = logging.getLogger(__name__)
 
+
 def export_openai(skill_path: str, output_dir: str = "specs/openai") -> str:
     """
     Process a single skill file and generate its OpenAI function JSON schema.
-    
+
     Args:
         skill_path: Path to the skill Markdown file.
         output_dir: Directory where the OpenAI spec should be written.
-        
+
     Returns:
         Path to the generated JSON file.
-        
+
     Raises:
         ValueError: If the skill file cannot be parsed or is invalid.
     """
     frontmatter, body = parse_skill_file(skill_path)
     metadata = extract_skill_metadata(frontmatter, body)
-    
+
     parameters_schema = {
         "type": "object",
         "properties": metadata["input_properties"],
-        "required": ["question"]
+        "required": ["question"],
     }
-    
+
     openai_name = frontmatter.skill_id.replace("-", "_")
     handler_path = f"skills/{frontmatter.category}/{frontmatter.skill_id}.md"
-    
+
     openai_json = {
         "type": "function",
         "function": {
             "name": openai_name,
             "description": metadata["description"],
-            "parameters": parameters_schema
+            "parameters": parameters_schema,
         },
         "metadata": {
             "skill_file": handler_path,
@@ -54,30 +56,33 @@ def export_openai(skill_path: str, output_dir: str = "specs/openai") -> str:
                 "mode": "closest_skills",
                 "count": 3,
                 "use_agent_knowledge": True,
-                "invent_quotes": False
-            }
-        }
+                "invent_quotes": False,
+            },
+        },
     }
-    
+
     os.makedirs(output_dir, exist_ok=True)
     out_path = os.path.join(output_dir, f"{frontmatter.skill_id}.json")
-    
+
     try:
         with open(out_path, "w", encoding="utf-8") as f:
             json.dump(openai_json, f, indent=2)
     except Exception as e:
         raise ValueError(f"Failed to write output to {out_path}: {e}") from e
-        
+
     return out_path
 
-def export_all_openai(skills_dir: str = "skills", output_dir: str = "specs/openai") -> List[str]:
+
+def export_all_openai(
+    skills_dir: str = "skills", output_dir: str = "specs/openai"
+) -> List[str]:
     """
     Process all .md files in the skills directory and generate OpenAI function JSON schemas.
-    
+
     Args:
         skills_dir: Base directory containing skill Markdown files.
         output_dir: Directory where OpenAI specs should be written.
-        
+
     Returns:
         List of generated JSON file paths.
     """
@@ -85,7 +90,7 @@ def export_all_openai(skills_dir: str = "skills", output_dir: str = "specs/opena
     if "openai" not in config.pipeline.export.formats:
         logger.info("OpenAI export is disabled in config/pipeline.yml. Skipping.")
         return []
-        
+
     generated_files = []
     skills_path = Path(skills_dir)
     for p in skills_path.rglob("*.md"):
@@ -94,5 +99,5 @@ def export_all_openai(skills_dir: str = "skills", output_dir: str = "specs/opena
             generated_files.append(out)
         except ValueError as e:
             logger.warning("Skipping %s: %s", p, e)
-            
+
     return generated_files
