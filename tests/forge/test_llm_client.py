@@ -3,6 +3,7 @@ Tests for LLMClient.
 """
 import sqlite3
 from unittest.mock import MagicMock, patch
+from datetime import datetime, timezone
 
 import pytest
 
@@ -41,12 +42,12 @@ def mock_config():
     
     provider1 = ProviderConfig(
         api_key="key1", base_url="url1", model="model1", 
-        daily_token_limit=1000, daily_request_limit=100, 
+        daily_token_limit=1500, daily_request_limit=100, 
         priority=2, timeout=30, max_retries=2
     )
     provider2 = ProviderConfig(
         api_key="key2", base_url="url2", model="model2", 
-        daily_token_limit=1000, daily_request_limit=100, 
+        daily_token_limit=1500, daily_request_limit=100, 
         priority=1, timeout=30, max_retries=2
     )
     
@@ -71,7 +72,7 @@ def test_get_provider(mock_load, db_path, mock_config):
     with sqlite3.connect(db_path) as conn:
         conn.execute(
             "INSERT INTO usage_log (provider, model, prompt_tokens, completion_tokens, total_tokens, call_type, timestamp, success) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            ("provider2", "model2", 400, 450, 850, "extract", "2026-07-31T00:00:00", 1)
+            ("provider2", "model2", 800, 500, 1300, "extract", datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"), 1)
         )
         
     # Now provider2 has 900 - 850 = 50 remaining.

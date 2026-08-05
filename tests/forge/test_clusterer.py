@@ -7,12 +7,6 @@ from unittest.mock import patch, MagicMock
 import numpy as np
 import pytest
 
-# Mock modules that might not be installed
-sys.modules['sentence_transformers'] = MagicMock()
-sys.modules['sklearn'] = MagicMock()
-sys.modules['sklearn.cluster'] = MagicMock()
-sys.modules['sklearn.metrics'] = MagicMock()
-sys.modules['sklearn.metrics.pairwise'] = MagicMock()
 
 # Now we can import
 from src.forge.clusterer import run_clustering  # noqa: E402

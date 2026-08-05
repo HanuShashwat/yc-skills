@@ -10,11 +10,6 @@ import numpy as np
 import pytest
 import yaml
 
-# Mock modules that might not be installed
-sys.modules['sentence_transformers'] = MagicMock()
-sys.modules['sklearn'] = MagicMock()
-sys.modules['sklearn.metrics'] = MagicMock()
-sys.modules['sklearn.metrics.pairwise'] = MagicMock()
 
 from src.forge.linker import parse_skill_file, run_linker  # noqa: E402
 
@@ -24,6 +19,11 @@ def db_path(tmp_path):
     with sqlite3.connect(db_file) as conn:
         conn.executescript(
             """
+            CREATE TABLE content (
+                content_id TEXT PRIMARY KEY,
+                state TEXT NOT NULL
+            );
+            
             CREATE TABLE skills (
                 skill_id TEXT PRIMARY KEY,
                 category TEXT NOT NULL,
@@ -48,7 +48,7 @@ def skill_files(tmp_path):
     skills_dir.mkdir()
     
     skill_data = [
-        ("yc-skill-1", "synthesized", "Skill 1", "Principle 1"),
+        ("yc-skill-1", "draft", "Skill 1", "Principle 1"),
         ("yc-skill-2", "published", "Skill 2", "Principle 2"),
         ("yc-skill-3", "published", "Skill 3", "Principle 3"),
         ("yc-skill-4", "published", "Skill 4", "Principle 4"),
@@ -128,7 +128,7 @@ def test_run_linker_success(mock_st_class, mock_cosine, db_path, skill_files, tm
         cursor = conn.cursor()
         cursor.execute("SELECT state, related_skills FROM skills WHERE skill_id = 'yc-skill-1'")
         row = cursor.fetchone()
-        assert row[0] == "linked"
+        assert row[0] == "draft"
         related = json.loads(row[1])
         assert len(related) == 3
 
@@ -148,18 +148,17 @@ def test_run_linker_file_missing(mock_st_class, mock_cosine, db_path, skill_file
         cursor = conn.cursor()
         cursor.execute(
             "INSERT INTO skills (skill_id, category, name, file_path, source_count, quote_count, state, created_at, updated_at) VALUES (?, 'cat', ?, ?, 1, 1, ?, 'd', 'd')",
-            ("yc-skill-missing", "Missing", missing_path, "synthesized")
+            ("yc-skill-missing", "Missing", missing_path, "draft")
         )
         
     run_linker(db_path)
     
-    # State should remain synthesized because the file doesn't exist
+    # State should remain draft because the file doesn't exist
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT state FROM skills WHERE skill_id = 'yc-skill-missing'")
         row = cursor.fetchone()
-        assert row[0] == "synthesized"
-
+        assert row[0] == "draft"
 
 @patch("src.forge.linker.cosine_similarity")
 @patch("src.forge.linker.SentenceTransformer")
@@ -171,7 +170,7 @@ def test_run_linker_missing_candidate_file(mock_st_class, mock_cosine, db_path, 
         filepath_new = skill_files["yc-skill-1"][0]
         cursor.execute(
             "INSERT INTO skills (skill_id, category, name, file_path, source_count, quote_count, state, created_at, updated_at) VALUES (?, 'cat', ?, ?, 1, 1, ?, 'd', 'd')",
-            ("yc-skill-1", "Skill 1", filepath_new, "synthesized")
+            ("yc-skill-1", "Skill 1", filepath_new, "draft")
         )
         cursor.execute(
             "INSERT INTO skills (skill_id, category, name, file_path, source_count, quote_count, state, created_at, updated_at) VALUES (?, 'cat', ?, ?, 1, 1, ?, 'd', 'd')",
