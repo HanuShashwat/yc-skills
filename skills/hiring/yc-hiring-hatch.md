@@ -12,7 +12,7 @@ related_skills: []
 confidence: 0.55
 provenance:
   batch_id: b2
-  pipeline_run_date: '2026-07-30T20:00:26.828674+00:00'
+  pipeline_run_date: '2026-08-04T20:34:36.020716+00:00'
   github_run_url: null
   sources:
   - content_id: c1
