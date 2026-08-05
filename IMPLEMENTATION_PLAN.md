@@ -2502,17 +2502,17 @@
 | **Title** | Milestone 13 Review — CI/CD, Documentation & Integration |
 
 **Verification Checklist:**
-- [ ] GitHub Actions workflow validates only, never generates
-- [ ] No `schedule:` triggers in any workflow
-- [ ] README has quickstart and CLI reference
-- [ ] `docs/CONSUMPTION.md` covers all 3 spec formats
-- [ ] `docs/BYOK.md` includes cold-start warning
-- [ ] `docs/TAXONOMY.md` matches `config/taxonomy.yml`
-- [ ] Setup script matches architecture doc Section 16.2
-- [ ] E2E integration test passes with mocked externals
-- [ ] All `python -m pytest` tests pass
-- [ ] `ruff check src/` passes
-- [ ] `ruff format --check src/` passes
+- [x] GitHub Actions workflow validates only, never generates
+- [x] No `schedule:` triggers in any workflow
+- [x] README has quickstart and CLI reference
+- [x] `docs/CONSUMPTION.md` covers all 3 spec formats
+- [x] `docs/BYOK.md` includes cold-start warning
+- [x] `docs/TAXONOMY.md` matches `config/taxonomy.yml`
+- [x] Setup script matches architecture doc Section 16.2
+- [x] E2E integration test passes with mocked externals
+- [x] All `python -m pytest` tests pass
+- [x] `ruff check src/` passes
+- [x] `ruff format --check src/` passes
 
 ---
 
