@@ -14,8 +14,10 @@ class TaxonomyCategory(BaseModel):
     description: str
     subcategories: List[str]
 
+
 class TaxonomyConfig(BaseModel):
     taxonomy: Dict[str, TaxonomyCategory]
+
 
 # Provider Models
 class ProviderConfig(BaseModel):
@@ -28,13 +30,16 @@ class ProviderConfig(BaseModel):
     timeout: int
     max_retries: int
 
+
 class RotationStrategyConfig(BaseModel):
     mode: str
     fallback_local: bool
 
+
 class QuotasConfig(BaseModel):
     reset_utc_hour: int
     buffer_percent: int
+
 
 class DedicatedValidatorConfig(BaseModel):
     provider: str
@@ -43,14 +48,17 @@ class DedicatedValidatorConfig(BaseModel):
     temperature: float
     fallback_behavior: str
 
+
 class ValidationConfig(BaseModel):
     dedicated_validator: DedicatedValidatorConfig
+
 
 class ProvidersConfig(BaseModel):
     providers: Dict[str, ProviderConfig]
     rotation_strategy: RotationStrategyConfig
     quotas: QuotasConfig
     validation: ValidationConfig
+
 
 # Pipeline Models
 class ChunkingEssayConfig(BaseModel):
@@ -60,6 +68,7 @@ class ChunkingEssayConfig(BaseModel):
     overlap_sentences: int
     split_header: str
 
+
 class ChunkingTranscriptConfig(BaseModel):
     min_words: int
     max_words: int
@@ -67,9 +76,11 @@ class ChunkingTranscriptConfig(BaseModel):
     merge_same_speaker: bool
     split_on_speaker_change: bool
 
+
 class ChunkingConfig(BaseModel):
     essay: ChunkingEssayConfig
     transcript: ChunkingTranscriptConfig
+
 
 class ClusteringConfig(BaseModel):
     embedding_model: str
@@ -79,11 +90,13 @@ class ClusteringConfig(BaseModel):
     linkage: str
     min_cluster_size: int
 
+
 class ExtractionConfig(BaseModel):
     min_items_per_chunk: int
     max_items_per_chunk: int
     temperature: float
     max_tokens: int
+
 
 class SynthesisConfig(BaseModel):
     temperature: float
@@ -91,9 +104,11 @@ class SynthesisConfig(BaseModel):
     min_confidence: float
     max_quotes: int
 
+
 class LinkingConfig(BaseModel):
     max_related_skills: int
     similarity_threshold: float
+
 
 class PipelineValidationConfig(BaseModel):
     quote_fuzzy_ratio: int
@@ -101,8 +116,10 @@ class PipelineValidationConfig(BaseModel):
     quote_warning_threshold: int
     hallucination_check: bool
 
+
 class ExportConfig(BaseModel):
     formats: List[str]
+
 
 class PipelineConfig(BaseModel):
     chunking: ChunkingConfig
@@ -120,6 +137,7 @@ class AppConfig(BaseModel):
     providers: ProvidersConfig
     pipeline: PipelineConfig
 
+
 def _replace_env_vars(data: Any) -> Any:
     """Recursively replace ${VAR} with environment variables."""
     if isinstance(data, dict):
@@ -127,12 +145,15 @@ def _replace_env_vars(data: Any) -> Any:
     elif isinstance(data, list):
         return [_replace_env_vars(v) for v in data]
     elif isinstance(data, str):
+
         def replacer(match: re.Match) -> str:
             var_name = match.group(1)
             return os.getenv(var_name, f"${{{var_name}}}")
+
         return re.sub(r"\$\{([A-Za-z0-9_]+)\}", replacer, data)
     else:
         return data
+
 
 def load_config(
     taxonomy_path: str = "config/taxonomy.yml",
@@ -142,16 +163,16 @@ def load_config(
     """Load all configurations from YAML files."""
     with open(taxonomy_path, "r", encoding="utf-8") as f:
         taxonomy_data = yaml.safe_load(f)
-    
+
     with open(providers_path, "r", encoding="utf-8") as f:
         providers_data = yaml.safe_load(f)
         providers_data = _replace_env_vars(providers_data)
-        
+
     with open(pipeline_path, "r", encoding="utf-8") as f:
         pipeline_data = yaml.safe_load(f)
-        
+
     return AppConfig(
         taxonomy=TaxonomyConfig(**taxonomy_data),
         providers=ProvidersConfig(**providers_data),
-        pipeline=PipelineConfig(**pipeline_data)
+        pipeline=PipelineConfig(**pipeline_data),
     )
