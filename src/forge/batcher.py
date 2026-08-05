@@ -1,5 +1,5 @@
 """
-Batch selector for OpenOpenYC Skills.
+Batch selector for OpenYC Skills.
 """
 
 import logging

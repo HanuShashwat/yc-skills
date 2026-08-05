@@ -1,5 +1,5 @@
 """
-OpenAI Function Schema Exporter for OpenOpenYC Skills.
+OpenAI Function Schema Exporter for OpenYC Skills.
 Reads generated skills and exports OpenAI function JSON spec files.
 """
 

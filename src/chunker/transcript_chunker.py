@@ -1,5 +1,5 @@
 """
-Transcript chunker for OpenOpenYC Skills.
+Transcript chunker for OpenYC Skills.
 """
 
 import logging

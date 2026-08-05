@@ -1,4 +1,4 @@
-# OpenOpenYC Skills: Complete Technical Architecture Specification
+# OpenYC Skills: Complete Technical Architecture Specification
 
 **Version:** 1.1.0  
 **Date:** 2026-07-16
@@ -21,7 +21,7 @@
 
 ## 1. System Overview
 
-The OpenOpenYC Skills is a static-file generator. It ingests content from Y Combinator's Library and YouTube channels, extracts actionable advice, clusters it into narrow principles, and emits versioned skill files (Markdown + YAML) and agent spec files (JSON). The output is a GitHub repository that AI agents consume directly.
+The OpenYC Skills is a static-file generator. It ingests content from Y Combinator's Library and YouTube channels, extracts actionable advice, clusters it into narrow principles, and emits versioned skill files (Markdown + YAML) and agent spec files (JSON). The output is a GitHub repository that AI agents consume directly.
 
 **Architecture Pattern:** Batch ETL -> Static Site Generator -> Git Repository
 
@@ -39,7 +39,7 @@ Note the **Link** stage (Section 8.4) is a deferred pass that runs after all ski
 The repository MUST be initialized with this exact structure. No deviations.
 
 ```
-openopenyc-skills/
+Openyc-skills/
 ├── .github/
 │   └── workflows/
 │       └── validate.yml          # PR validation only. NO generation.
@@ -1534,11 +1534,11 @@ Each GitHub release includes:
 #!/bin/bash
 set -e
 
-echo "OpenOpenYC Skills - Local Setup"
+echo "OpenYC Skills - Local Setup"
 
 # 1. Clone
-git clone https://github.com/yourname/openopenyc-skills.git
-cd openopenyc-skills
+git clone https://github.com/yourname/Openyc-skills.git
+cd Openyc-skills
 
 # 2. Create venv
 python3.11 -m venv .venv

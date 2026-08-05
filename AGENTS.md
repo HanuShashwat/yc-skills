@@ -1,7 +1,7 @@
-# AGENTS.md — OpenOpenYC Skills
+# AGENTS.md — OpenYC Skills
 
 > **Authoritative operating manual for AI coding agents.**
-> Derived from [`openopenyc-skills-architecture-v1.1.md`](openopenyc-skills-architecture-v1.1.md).
+> Derived from [`openyc-skills-architecture-v1.1.md`](openyc-skills-architecture-v1.1.md).
 > Last updated: 2026-07-28.
 
 ---
@@ -32,7 +32,7 @@
 
 ### Purpose
 
-OpenOpenYC Skills is a **static-file generator** that ingests content from Y Combinator's Library and YouTube channels, extracts actionable startup advice, clusters it into narrow principles, and emits versioned skill files (Markdown + YAML frontmatter) and agent spec files (JSON). The output is a GitHub repository that AI agents consume directly — no runtime, no database, no API keys required by end users.
+OpenYC Skills is a **static-file generator** that ingests content from Y Combinator's Library and YouTube channels, extracts actionable startup advice, clusters it into narrow principles, and emits versioned skill files (Markdown + YAML frontmatter) and agent spec files (JSON). The output is a GitHub repository that AI agents consume directly — no runtime, no database, no API keys required by end users.
 
 ### High-Level Goals
 
@@ -150,7 +150,7 @@ CLI
 ### Directory Structure
 
 ```
-openopenyc-skills/
+openyc-skills/
 ├── .github/workflows/validate.yml   # PR validation ONLY — never generation
 ├── data/
 │   ├── raw/library/                  # HTML/Markdown of essays (GITIGNORED)
@@ -412,7 +412,7 @@ Any state → failed (on unrecoverable error)
 ```bash
 # Clone and enter repo
 git clone <repo-url>
-cd openopenyc-skills
+cd openyc-skills
 
 # Create virtual environment
 python3.11 -m venv .venv
@@ -862,7 +862,7 @@ The technology stack is **locked**. The exact tools and versions are specified i
 ### How to Approach a Task
 
 1. **Read this `AGENTS.md` first.** It is the primary source of truth for repository-specific rules.
-2. **Read the architecture doc** (`openopenyc-skills-architecture-v1.1.md`) for detailed specifications on the component you are modifying.
+2. **Read the architecture doc** (`openyc-skills-architecture-v1.1.md`) for detailed specifications on the component you are modifying.
 3. **Identify the component** your change belongs to (see Section 3: Repository Organization).
 4. **Verify layering rules** — ensure your change respects the dependency direction (Section 4).
 5. **Check if the file is auto-generated** — if so, modify the generator, not the output (Section 11).
@@ -981,7 +981,7 @@ When facing ambiguity, resolve it using this hierarchy (highest priority first):
 
 1. **Follow the Non-Negotiable Constraints** (Architecture doc Section 0). These are inviolable.
 2. **Follow explicit instructions in this `AGENTS.md`.**
-3. **Follow the architecture doc** (`openopenyc-skills-architecture-v1.1.md`).
+3. **Follow the architecture doc** (`openyc-skills-architecture-v1.1.md`).
 4. **Follow established repository conventions** — look at existing code for patterns.
 5. **Prefer consistency over novelty** — match existing style, naming, and patterns.
 6. **Minimize the scope of changes** — do the minimum required to fulfill the task.

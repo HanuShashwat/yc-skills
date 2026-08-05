@@ -1,5 +1,5 @@
 """
-Unified Validator Runner for OpenOpenYC Skills.
+Unified Validator Runner for OpenYC Skills.
 Orchestrates schema validation, quote verification, and hallucination guard.
 """
 
@@ -50,7 +50,7 @@ def move_to_failed(skill_path: Path, skill_id: str) -> None:
 
 def main() -> None:
     """Main entry point for validator runner."""
-    parser = argparse.ArgumentParser(description="Run OpenOpenYC Skills Validators")
+    parser = argparse.ArgumentParser(description="Run OpenYC Skills Validators")
     parser.add_argument(
         "--all", action="store_true", help="Validate all skills in skills/"
     )

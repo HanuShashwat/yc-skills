@@ -32,7 +32,7 @@
 
 ## What Is the Taxonomy?
 
-The taxonomy is the **fixed organizational structure** that determines how every skill in OpenOpenYC Skills is categorized and filed. Think of it like a filing cabinet with 8 labeled drawers, where each drawer has several labeled folders inside it.
+The taxonomy is the **fixed organizational structure** that determines how every skill in OpenYC Skills is categorized and filed. Think of it like a filing cabinet with 8 labeled drawers, where each drawer has several labeled folders inside it.
 
 - **Categories** = the 8 drawers (e.g., `fundraising`, `hiring`, `product`)
 - **Subcategories** = the folders inside each drawer (e.g., `seed-round`, `series-a`, `pitch-deck` inside `fundraising`)

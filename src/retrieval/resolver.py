@@ -1,5 +1,5 @@
 """
-Signal Resolver for OpenOpenYC Skills.
+Signal Resolver for OpenYC Skills.
 Build-time module to generate static indices and similarity matrices.
 """
 

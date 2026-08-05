@@ -1,9 +1,9 @@
 [project]
-name = "yc-skills-forge"
+name = "openyc-skills"
 version = "0.1.0"
-description = "YC Skills Forge is a static-file generator that extracts actionable startup advice."
+description = "OpenYC Skills is a static-file generator that extracts actionable startup advice."
 authors = [
-    {name = "YC Skills Forge Maintainers", email = "maintainers@example.com"}
+    {name = "OpenYC Skills Maintainers", email = "maintainers@example.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.11"

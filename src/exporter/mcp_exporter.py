@@ -1,5 +1,5 @@
 """
-MCP (Model Context Protocol) Spec Exporter for OpenOpenYC Skills.
+MCP (Model Context Protocol) Spec Exporter for OpenYC Skills.
 Reads generated skills and exports MCP JSON spec files.
 """
 

@@ -1,5 +1,5 @@
 """
-Hermes Spec Exporter for OpenOpenYC Skills.
+Hermes Spec Exporter for OpenYC Skills.
 Reads generated skills and exports plain-text system prompt fragments.
 """
 

@@ -1,6 +1,6 @@
-# Consuming OpenOpenYC Skills — A Complete Guide
+# Consuming OpenYC Skills — A Complete Guide
 
-> **How to use OpenOpenYC Skills in your AI agent, chatbot, or application. No Python installation, no API keys, no database — just static files from GitHub.**
+> **How to use OpenYC Skills in your AI agent, chatbot, or application. No Python installation, no API keys, no database — just static files from GitHub.**
 
 ---
 
@@ -47,7 +47,7 @@ Everything you need is a set of static files that you download (or clone) from G
 
 ## The Core Idea
 
-OpenOpenYC Skills publishes structured, verified startup advice as **static files** in this GitHub repository. Your AI agent reads these files and uses them to answer founders' questions with accurate, well-attributed YC advice.
+OpenYC Skills publishes structured, verified startup advice as **static files** in this GitHub repository. Your AI agent reads these files and uses them to answer founders' questions with accurate, well-attributed YC advice.
 
 Here's the mental model:
 

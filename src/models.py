@@ -1,5 +1,5 @@
 """
-Pydantic v2 data models for OpenOpenYC Skills.
+Pydantic v2 data models for OpenYC Skills.
 """
 
 from typing import List, Optional, Dict, Literal, Any

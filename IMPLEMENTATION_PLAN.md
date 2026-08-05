@@ -1,8 +1,8 @@
-# Implementation Plan — OpenOpenYC Skills
+# Implementation Plan — OpenYC Skills
 
 > **Version:** 1.0.0
 > **Date:** 2026-07-28
-> **Source of Truth (WHAT):** [`openopenyc-skills-architecture-v1.1.md`](openopenyc-skills-architecture-v1.1.md)
+> **Source of Truth (WHAT):** [`openyc-skills-architecture-v1.1.md`](openyc-skills-architecture-v1.1.md)
 > **Source of Truth (HOW):** [`AGENTS.md`](AGENTS.md)
 > **Status:** Awaiting Approval
 
@@ -86,7 +86,7 @@
 | **Goal** | Create every directory and placeholder file specified in the architecture doc Section 2. |
 | **Files to Create** | `src/__init__.py`, `src/ingest/__init__.py`, `src/chunker/__init__.py`, `src/forge/__init__.py`, `src/forge/prompts/.gitkeep`, `src/exporter/__init__.py`, `src/validator/__init__.py`, `src/retrieval/__init__.py`, `src/migrations/.gitkeep`, `skills/fundraising/.gitkeep`, `skills/hiring/.gitkeep`, `skills/product/.gitkeep`, `skills/growth/.gitkeep`, `skills/culture/.gitkeep`, `skills/strategy/.gitkeep`, `skills/founder-mental-models/.gitkeep`, `skills/technical/.gitkeep`, `specs/mcp/.gitkeep`, `specs/openai/.gitkeep`, `specs/hermes/.gitkeep`, `data/.gitkeep`, `docs/.gitkeep`, `scripts/.gitkeep`, `config/.gitkeep`, `tests/__init__.py`, `tests/ingest/__init__.py`, `tests/chunker/__init__.py`, `tests/forge/__init__.py`, `tests/exporter/__init__.py`, `tests/validator/__init__.py`, `tests/retrieval/__init__.py`, `tests/fixtures/.gitkeep` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `LICENSE` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `LICENSE` |
 | **Dependencies** | None |
 | **Inputs** | Architecture doc Section 2 (directory tree) |
 | **Outputs** | Complete directory structure with placeholder files |
@@ -97,13 +97,13 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M1-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M1-T1 for the OpenYC Skills project.
 >
-> **Objective:** Create the full repository directory structure as specified in `openopenyc-skills-architecture-v1.1.md` Section 2. Create every directory and placeholder file (`__init__.py` for Python packages, `.gitkeep` for empty non-Python directories).
+> **Objective:** Create the full repository directory structure as specified in `openyc-skills-architecture-v1.1.md` Section 2. Create every directory and placeholder file (`__init__.py` for Python packages, `.gitkeep` for empty non-Python directories).
 >
 > **Files to create:** All `__init__.py` files for `src/`, `src/ingest/`, `src/chunker/`, `src/forge/`, `src/exporter/`, `src/validator/`, `src/retrieval/`, and corresponding `tests/` packages. All `skills/{category}/` directories (fundraising, hiring, product, growth, culture, strategy, founder-mental-models, technical). All `specs/{format}/` directories (mcp, openai, hermes). `data/`, `docs/`, `scripts/`, `config/`, `src/forge/prompts/`, `src/migrations/`, `tests/fixtures/`.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `LICENSE`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `LICENSE`.
 >
 > **Rules:** Follow `AGENTS.md` strictly. Follow the architecture doc Section 2 exactly. All `__init__.py` files should be empty (no code). Use `.gitkeep` for empty non-Python directories. Do not write any production logic. Do not invent directories not in the architecture.
 >
@@ -120,7 +120,7 @@
 | **Goal** | Define all project dependencies with exact pinned versions and configure development tools. |
 | **Files to Create** | `requirements.txt`, `pyproject.toml`, `.env.example` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, existing `__init__.py` files |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, existing `__init__.py` files |
 | **Dependencies** | `M1-T1` |
 | **Inputs** | Architecture doc Section 3 (technology stack), AGENTS.md Section 6 (type checking) |
 | **Outputs** | Installable dependency manifest, project metadata, env template |
@@ -131,7 +131,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M1-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M1-T2 for the OpenYC Skills project.
 >
 > **Objective:** Create `requirements.txt` with exact pinned versions from architecture doc Section 3. Create `pyproject.toml` with project metadata and tool configurations for ruff, mypy (with pydantic plugin), and pytest. Create `.env.example` with placeholder API keys.
 >
@@ -141,7 +141,7 @@
 >
 > **.env.example must include:** DEEPSEEK_API_KEY, KIMI_API_KEY, GLM_API_KEY, GEMINI_API_KEY, GITHUB_TOKEN, BATCH_SIZE, DEFAULT_TEMPERATURE, MAX_RETRIES — all with placeholder values.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, any `__init__.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, any `__init__.py`.
 >
 > **Rules:** Follow `AGENTS.md` Section 12 (Dependency Policy) strictly. No version ranges — exact pins only. Stop after completing ONLY this task.
 
@@ -156,7 +156,7 @@
 | **Goal** | Ensure all gitignored paths from the architecture doc are excluded. |
 | **Files to Create** | `.gitignore` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md` |
 | **Dependencies** | `M1-T1` |
 | **Inputs** | Architecture doc Section 2 (committed vs. gitignored) |
 | **Outputs** | `.gitignore` with all required exclusions |
@@ -167,7 +167,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M1-T3 for the OpenOpenYC Skills project.
+> You are implementing Task M1-T3 for the OpenYC Skills project.
 >
 > **Objective:** Create `.gitignore` that excludes exactly the paths specified in the architecture doc Section 2 (committed vs. gitignored). Also exclude standard Python artifacts.
 >
@@ -175,7 +175,7 @@
 >
 > **Must NOT exclude:** `data/similarity_matrix.json`, `skills/`, `specs/`, `skills-index.json`, `config/`, `src/`, `docs/`, `scripts/`.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`.
 >
 > **Rules:** Follow `AGENTS.md` Section 17 (Completion Checklist — Git section). Stop after completing ONLY this task.
 
@@ -233,7 +233,7 @@
 | **Goal** | Create every domain model specified in the architecture doc Sections 4, 8, and 10. |
 | **Files to Create** | `src/models.py`, `tests/test_models.py` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `config/` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `config/` |
 | **Dependencies** | `M1-T2` (needs pydantic installed) |
 | **Inputs** | Architecture doc Sections 4.1 (schema), 8 (extraction/synthesis response schemas), 10.2 (SkillFrontmatter) |
 | **Outputs** | `src/models.py` with all models, `tests/test_models.py` with validation tests |
@@ -244,7 +244,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M2-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M2-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/models.py` containing all Pydantic v2 data models for the project. Create `tests/test_models.py` with comprehensive validation tests.
 >
@@ -265,7 +265,7 @@
 >
 > **Tests must cover:** Valid skill IDs, invalid skill IDs (too many words, uppercase, no prefix), valid/invalid versions, confidence bounds, tag list length bounds, source_count/quote_count minimum enforcement, extraction response parsing, synthesis response parsing.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `config/`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `config/`.
 >
 > **Self-review:** Run `ruff check src/models.py` and `python -m pytest tests/test_models.py`. Stop after completing ONLY this task.
 
@@ -280,7 +280,7 @@
 | **Goal** | Create `src/config.py` with Pydantic settings classes and all 3 config YAML files. |
 | **Files to Create** | `src/config.py`, `config/taxonomy.yml`, `config/providers.yml`, `config/pipeline.yml`, `tests/test_config.py` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py` |
 | **Dependencies** | `M2-T1` |
 | **Inputs** | Architecture doc Sections 6.1 (taxonomy), 9.1 (providers), Appendix C.3 (pipeline) |
 | **Outputs** | Config loader and YAML files |
@@ -291,7 +291,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M2-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M2-T2 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/config.py` (Pydantic settings loader for all YAML config files), `config/taxonomy.yml` (exact topic tree from architecture doc Section 6.1), `config/providers.yml` (LLM provider configs from Section 9.1), `config/pipeline.yml` (chunking/clustering/validation parameters from Appendix C.3). Create `tests/test_config.py`.
 >
@@ -299,7 +299,7 @@
 >
 > **YAML file contents:** Copy the exact structures from architecture doc Section 6.1 (taxonomy), Section 9.1 (providers), and Appendix C.3 (pipeline). Do not invent or modify any values.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`.
 >
 > **Rules:** Follow `AGENTS.md` Section 5 (Configuration). All thresholds and parameters live in YAML files, not hardcoded in Python. Use `logging` module for any log output.
 >
@@ -316,7 +316,7 @@
 | **Goal** | Create the exact SQL schema from architecture doc Section 4.1. |
 | **Files to Create** | `src/migrations/001_init.sql` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py` |
 | **Dependencies** | `M1-T1` |
 | **Inputs** | Architecture doc Section 4.1 (exact SQL schema) |
 | **Outputs** | SQL file that creates all 7 tables with correct columns, types, constraints, and indices |
@@ -327,13 +327,13 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M2-T3 for the OpenOpenYC Skills project.
+> You are implementing Task M2-T3 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/migrations/001_init.sql` containing the exact SQLite schema from architecture doc Section 4.1. Copy the SQL verbatim. Do not add, remove, or rename any columns.
 >
 > **Critical details:** The `content.state` CHECK constraint must include ALL states: 'discovered', 'downloaded', 'chunked', 'extracting', 'extracted', 'clustered', 'synthesized', 'linked', 'validated', 'published', 'failed'. Use `chunk_index` not `index`. Include `in_batch_index` in `extracted_items`. Include `computed_confidence` and `avg_similarity`. Include all CREATE INDEX statements.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`.
 >
 > **Self-review:** Verify every table, column, constraint, and index matches Section 4.1 exactly. Stop after completing ONLY this task.
 
@@ -348,7 +348,7 @@
 | **Goal** | Create the minimal CLI entry point and the `init-db` subcommand that initializes the SQLite database. |
 | **Files to Create** | `src/cli.py`, `src/__main__.py` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/migrations/001_init.sql` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/migrations/001_init.sql` |
 | **Dependencies** | `M2-T3` |
 | **Inputs** | Architecture doc Section 16.4 (CLI commands), `src/migrations/001_init.sql` |
 | **Outputs** | Working `python -m src.cli init-db` command |
@@ -359,7 +359,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M2-T4 for the OpenOpenYC Skills project.
+> You are implementing Task M2-T4 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/cli.py` as the single CLI entry point using `argparse` (with subcommands). Implement the `init-db` subcommand that reads `src/migrations/001_init.sql` and executes it against `data/registry.db`. Create `src/__main__.py` to enable `python -m src.cli`.
 >
@@ -369,7 +369,7 @@
 >
 > **Do NOT implement other CLI commands yet.** Leave stubs/comments for future commands but only implement `init-db`.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/migrations/001_init.sql`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/migrations/001_init.sql`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4 (layering), 5 (no print, use logging). No bare `Exception`. Use parameterized SQL.
 >
@@ -429,7 +429,7 @@
 | **Goal** | Create the hardcoded mapping of known YC authors for speaker identification. |
 | **Files to Create** | `src/ingest/known_authors.py` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/cli.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/cli.py` |
 | **Dependencies** | `M1-T1` |
 | **Inputs** | Architecture doc Section 5.1 (speaker extraction) |
 | **Outputs** | Module with author → designation mapping |
@@ -440,7 +440,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M3-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M3-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/ingest/known_authors.py` containing a hardcoded mapping of known YC authors/speakers to their designations, and a `lookup_author(url: str) -> tuple[str | None, str | None]` function that checks URL paths for known authors.
 >
@@ -461,7 +461,7 @@
 | **Goal** | Create the scraper that downloads and processes YC Library essays. |
 | **Files to Create** | `src/ingest/library_scraper.py`, `tests/ingest/test_library_scraper.py` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
 | **Dependencies** | `M2-T1` (models), `M2-T2` (config), `M2-T4` (database), `M3-T1` (known_authors) |
 | **Inputs** | Architecture doc Section 5.1 |
 | **Outputs** | Working library scraper with tests |
@@ -472,13 +472,13 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M3-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M3-T2 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/ingest/library_scraper.py` implementing the exact scraping behavior from architecture doc Section 5.1. Create `tests/ingest/test_library_scraper.py` with mocked HTTP responses.
 >
 > **Implementation details:** Accept a list of URLs. For each URL: HTTP GET with `requests`, timeout=30s, User-Agent: `OpenYC-Skills/1.0 (Research Project; contact@example.com)`. Parse with BS4, extract `<article>` or `<main>` content (fallback: `<div class="content">`). Remove `<nav>`, `<footer>`, `<script>`, `<style>`, `<aside>`, ads, newsletter boxes. Convert to Markdown with `markdownify`. Save to `data/raw/library/{content_id}.md`. Compute SHA256 of Markdown text. Generate content_id: `lib_{sha256(url)[:12]}`. Insert into `content` table with state `downloaded`. If speaker is NULL after extraction → set state `discovered`. Rate-limit: `time.sleep(2)` between requests. Use `src/ingest/known_authors.py` for speaker fallback. URL deduplication: skip if URL already in `content` table.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 5, 8. Use parameterized SQL. Use `logging` module. Mock all HTTP calls in tests. No bare `Exception`. Stop after completing ONLY this task.
 
@@ -493,7 +493,7 @@
 | **Goal** | Create the downloader that uses `yt-dlp` to fetch captions and metadata. |
 | **Files to Create** | `src/ingest/youtube_downloader.py`, `tests/ingest/test_youtube_downloader.py` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
 | **Dependencies** | `M2-T1`, `M2-T2`, `M2-T4` |
 | **Inputs** | Architecture doc Section 5.2 |
 | **Outputs** | Working YouTube downloader with tests |
@@ -504,7 +504,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M3-T3 for the OpenOpenYC Skills project.
+> You are implementing Task M3-T3 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/ingest/youtube_downloader.py` implementing the exact behavior from architecture doc Section 5.2. Create `tests/ingest/test_youtube_downloader.py`.
 >
@@ -512,7 +512,7 @@
 >
 > **Post-processing:** Read `.info.json` for title, uploader, upload_date, description (first 500 chars). Read subtitle file for transcript segments. Convert to plain text with timestamps. Speaker guessing from description: regex `with ([A-Z][a-z]+ [A-Z][a-z]+)` or `([A-Z][a-z]+ [A-Z][a-z]+), (CEO|Founder|Partner|...)`. If zero matches → speaker=NULL, state=`discovered`. Save transcript and metadata files. Insert into `content` table.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md`. Use `subprocess.run()` (not async). Use `logging`. Mock subprocess in tests. Stop after completing ONLY this task.
 
@@ -527,7 +527,7 @@
 | **Goal** | Wire the ingestion modules into the CLI. |
 | **Files to Create** | None |
 | **Files to Modify** | `src/cli.py` |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/ingest/*.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/ingest/*.py` |
 | **Dependencies** | `M3-T2`, `M3-T3` |
 | **Inputs** | Architecture doc Section 16.4 |
 | **Outputs** | Working `ingest-library --url <url>` and `ingest-youtube --url <url>` CLI commands |
@@ -538,7 +538,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M3-T4 for the OpenOpenYC Skills project.
+> You are implementing Task M3-T4 for the OpenYC Skills project.
 >
 > **Objective:** Add `ingest-library` and `ingest-youtube` subcommands to `src/cli.py`.
 >
@@ -548,7 +548,7 @@
 >
 > **Files you may modify:** `src/cli.py` ONLY.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/ingest/*.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/config.py`, `src/ingest/*.py`.
 >
 > **Rules:** CLI is Layer 3 — may import from Layer 2 (ingest) and Layer 1 (models, config). Use `logging`. Handle errors gracefully. Stop after completing ONLY this task.
 
@@ -604,7 +604,7 @@
 | **Goal** | Create the essay chunker that splits Markdown essays into sized chunks. |
 | **Files to Create** | `src/chunker/essay_chunker.py`, `tests/chunker/test_essay_chunker.py`, `tests/fixtures/sample_essay.md` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
 | **Dependencies** | `M2-T1`, `M2-T2` |
 | **Inputs** | Architecture doc Section 7.1 |
 | **Outputs** | Working essay chunker with tests |
@@ -615,7 +615,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M4-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M4-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/chunker/essay_chunker.py` implementing the exact algorithm from architecture doc Section 7.1. Create a sample essay fixture and tests.
 >
@@ -623,7 +623,7 @@
 >
 > **Save format:** JSON files at `data/chunks/library/{content_id}_{chunk_index:04d}.json`. Also insert into `chunks` table. Parameters from `config/pipeline.yml`.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md`. Read chunking parameters from config, not hardcoded. Use `chunk_index` not `index`. Stop after completing ONLY this task.
 
@@ -638,7 +638,7 @@
 | **Goal** | Create the transcript chunker that splits video transcripts into sized chunks. |
 | **Files to Create** | `src/chunker/transcript_chunker.py`, `tests/chunker/test_transcript_chunker.py`, `tests/fixtures/sample_transcript.json` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
 | **Dependencies** | `M2-T1`, `M2-T2` |
 | **Inputs** | Architecture doc Section 7.2 |
 | **Outputs** | Working transcript chunker with tests |
@@ -649,7 +649,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M4-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M4-T2 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/chunker/transcript_chunker.py` implementing the exact algorithm from architecture doc Section 7.2. Create a sample transcript fixture and tests.
 >
@@ -657,7 +657,7 @@
 >
 > **Save format:** JSON files at `data/chunks/youtube/{content_id}_{chunk_index:04d}.json`. Also insert into `chunks` table.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md`. Parameters from config. Use `chunk_index`. Stop after completing ONLY this task.
 
@@ -672,7 +672,7 @@
 | **Goal** | Wire the chunking modules into the CLI. |
 | **Files to Create** | None |
 | **Files to Modify** | `src/cli.py` |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/chunker/*.py`, `src/models.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/chunker/*.py`, `src/models.py` |
 | **Dependencies** | `M4-T1`, `M4-T2` |
 | **Inputs** | Architecture doc Section 16.4 |
 | **Outputs** | Working `python -m src.cli chunk --all` command |
@@ -683,13 +683,13 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M4-T3 for the OpenOpenYC Skills project.
+> You are implementing Task M4-T3 for the OpenYC Skills project.
 >
 > **Objective:** Add the `chunk` subcommand to `src/cli.py`. It should accept `--all` flag to chunk all content with state `downloaded`. Route to essay_chunker for library content and transcript_chunker for YouTube content. Update content state to `chunked` after successful chunking.
 >
 > **Files you may modify:** `src/cli.py` ONLY.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/chunker/*.py`, `src/models.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/chunker/*.py`, `src/models.py`.
 >
 > **Rules:** Follow `AGENTS.md`. State transition: `downloaded` → `chunked`. Stop after completing ONLY this task.
 
@@ -745,7 +745,7 @@
 | **Goal** | Create the `LLMClient` class that manages provider rotation and usage logging. |
 | **Files to Create** | `src/forge/llm_client.py`, `tests/forge/test_llm_client.py` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py` |
 | **Dependencies** | `M2-T2` (config), `M2-T4` (database for usage_log) |
 | **Inputs** | Architecture doc Section 9.2 |
 | **Outputs** | Working LLM client with tests |
@@ -756,13 +756,13 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M5-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M5-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/forge/llm_client.py` implementing the exact `LLMClient` class from architecture doc Section 9.2. This is the ONLY module that may `import openai`. Create tests.
 >
 > **Implementation:** `__init__` loads from `config/providers.yml`. `get_provider(estimated_tokens)` queries `usage_log` for today's usage per provider, computes remaining quota with 10% buffer, sorts by (priority, -remaining), returns best candidate. Raises `RuntimeError("All providers exhausted...")` if none available. `call(prompt, call_type, temperature=0.3)` creates `openai.OpenAI(api_key, base_url, timeout)`, calls `chat.completions.create`, logs to `usage_log`, returns response content. Use `response_format={"type": "json_object"}` where supported, fall back to prompt-based JSON extraction. Retry up to `max_retries` (from provider config) on transient errors (HTTP 429, timeouts). On JSON parse failure: retry once with `temperature=0.1`, then fail. Log raw error responses to `data/errors/`.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** This is the ONLY place `import openai` is allowed. Follow `AGENTS.md` Section 5 (LLM Interaction Patterns). Never hardcode API keys. Use `logging`. Stop after completing ONLY this task.
 
@@ -777,7 +777,7 @@
 | **Goal** | Create the exact prompt templates specified in the architecture doc. |
 | **Files to Create** | `src/forge/prompts/extract.j2`, `src/forge/prompts/synthesize.j2`, `src/forge/prompts/validate.j2` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py` |
 | **Dependencies** | `M1-T1` (directory exists) |
 | **Inputs** | Architecture doc Sections 8 (Stage 1, Stage 3), Section 20 (Appendix A) |
 | **Outputs** | Three Jinja2 template files |
@@ -788,7 +788,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M5-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M5-T2 for the OpenYC Skills project.
 >
 > **Objective:** Create the exact Jinja2 prompt templates from the architecture doc. Copy the templates verbatim from the architecture spec — do not modify, improve, or paraphrase them.
 >
@@ -798,7 +798,7 @@
 >
 > **`src/forge/prompts/validate.j2`:** Copy from architecture doc Section 20, Appendix A.3 (the validation/hallucination guard prompt). Ensure template variables (`quotes`, `principle`, `application`) are correct.
 >
-> **Files you must NOT modify:** Any Python files, `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`.
+> **Files you must NOT modify:** Any Python files, `AGENTS.md`, `openyc-skills-architecture-v1.1.md`.
 >
 > **Rules:** Follow `AGENTS.md` Section 5 (Prompt Templates). Never build prompts via string concatenation. Stop after completing ONLY this task.
 
@@ -813,7 +813,7 @@
 | **Goal** | Create the batcher that selects content items for processing. |
 | **Files to Create** | `src/forge/batcher.py`, `tests/forge/test_batcher.py` |
 | **Files to Modify** | None |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/cli.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/cli.py` |
 | **Dependencies** | `M2-T1`, `M2-T4` |
 | **Inputs** | Architecture doc Section 8, Stage 0 |
 | **Outputs** | Working batcher with tests |
@@ -824,13 +824,13 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M5-T3 for the OpenOpenYC Skills project.
+> You are implementing Task M5-T3 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/forge/batcher.py` implementing batch selection from architecture doc Section 8, Stage 0. Create tests.
 >
 > **Algorithm:** 1) Query `content` for `state = 'chunked'`. 2) Filter by topic if `--topic` provided. 3) If no topic → pick topic with most unprocessed chunks. 4) Randomly select up to `batch_size` items (default 15, max 20). 5) If < 5 items → log warning, abort. 6) Set state → `extracting`, update `last_processed`. 7) Return `batch_id` (UUID4) and `content_id` list.
 >
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md`. Parameterized SQL. Atomic transaction. Stop after completing ONLY this task.
 
@@ -845,7 +845,7 @@
 | **Goal** | Create the reaper that recovers items stuck in `extracting` state. |
 | **Files to Create** | `src/forge/reaper.py`, `tests/forge/test_reaper.py` |
 | **Files to Modify** | `src/cli.py` |
-| **Files NOT to Modify** | `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/batcher.py` |
+| **Files NOT to Modify** | `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/batcher.py` |
 | **Dependencies** | `M2-T4`, `M5-T3` |
 | **Inputs** | Architecture doc Section 8, Stage 0 (recovery from crashes) |
 | **Outputs** | Working reaper logic + `python -m src.cli reaper` command |
@@ -856,14 +856,14 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M5-T4 for the OpenOpenYC Skills project.
+> You are implementing Task M5-T4 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/forge/reaper.py` that recovers stale `extracting` items (architecture doc Section 8, Stage 0 — recovery). Add `reaper` subcommand to `src/cli.py`.
 >
 > **Logic:** Find items where `state = 'extracting'` AND `last_processed < now() - 2 hours`. Reset state → `chunked`, increment `retry_count`. If `retry_count > 3` → mark `failed`. Log each recovered item.
 >
 > **Files you may modify:** `src/cli.py` (add reaper subcommand).
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/batcher.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/batcher.py`.
 >
 > **Rules:** Follow `AGENTS.md`. Parameterized SQL. Stop after completing ONLY this task.
 
@@ -926,7 +926,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M6-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M6-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/forge/extractor.py` implementing architecture doc Section 8, Stage 1. Create a fixture LLM response and tests.
 >
@@ -957,7 +957,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M6-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M6-T2 for the OpenYC Skills project.
 >
 > **Objective:** Add the `forge` subcommand to `src/cli.py`. Currently it should run batch selection + extraction only. It will be extended in later milestones.
 >
@@ -1025,7 +1025,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M7-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M7-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/forge/clusterer.py` implementing the exact clustering algorithm from architecture doc Section 8, Stage 2. No LLM calls — pure local computation. Create tests.
 >
@@ -1120,7 +1120,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M8-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M8-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/forge/synthesizer.py` implementing architecture doc Section 8, Stage 3 and Section 10.1 (skill file format). Create tests.
 >
@@ -1152,7 +1152,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M8-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M8-T2 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/forge/linker.py` implementing architecture doc Section 8, Stage 4. No LLM call. Create tests.
 >
@@ -1265,7 +1265,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M9-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M9-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/exporter/mcp_exporter.py` that reads skill Markdown files from the `skills/` directory, parses their YAML frontmatter and Markdown body, and generates MCP (Model Context Protocol) spec JSON files. Create `tests/exporter/test_mcp_exporter.py` with comprehensive tests.
 >
@@ -1304,7 +1304,7 @@
 > 8. Create `specs/mcp/` directory if it doesn't exist.
 >
 > **Files to create:** `src/exporter/mcp_exporter.py`, `tests/exporter/test_mcp_exporter.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4 (layering — exporter is Layer 2, may import from Layer 1 only), 5 (coding standards). Use `logging` module, not `print()`. Docstrings on all public functions. No bare `Exception`. Read export formats from `config/pipeline.yml` (`export.formats` list) to verify MCP is enabled.
 >
@@ -1330,7 +1330,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M9-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M9-T2 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/exporter/openai_exporter.py` that reads skill Markdown files and generates OpenAI function schema JSON files. Create `tests/exporter/test_openai_exporter.py` with comprehensive tests.
 >
@@ -1371,7 +1371,7 @@
 > 7. Output file: `specs/openai/{skill_id}.json` with 2-space indented JSON.
 >
 > **Files to create:** `src/exporter/openai_exporter.py`, `tests/exporter/test_openai_exporter.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4, 5. Layer 2 module — may import from Layer 1 only. Use `logging`, docstrings on all public functions. No bare `Exception`. Consider sharing utility functions with `mcp_exporter.py` (e.g., frontmatter parsing) via an `__init__.py` or a shared helper — but do not import from MCP exporter directly.
 >
@@ -1397,7 +1397,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M9-T3 for the OpenOpenYC Skills project.
+> You are implementing Task M9-T3 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/exporter/hermes_exporter.py` that reads skill Markdown files and generates plain-text system prompt fragments for local models (llama.cpp, Ollama, etc.). Create `tests/exporter/test_hermes_exporter.py` with comprehensive tests.
 >
@@ -1450,7 +1450,7 @@
 > 9. Output file: `specs/hermes/{skill_id}.txt` (plain text, UTF-8, LF line endings).
 >
 > **Files to create:** `src/exporter/hermes_exporter.py`, `tests/exporter/test_hermes_exporter.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4, 5. Layer 2 module. Use `logging`. Docstrings on all public functions. No bare `Exception`. The output is `.txt` not `.json` — this is the only exporter that produces non-JSON output.
 >
@@ -1475,7 +1475,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M9-T4 for the OpenOpenYC Skills project.
+> You are implementing Task M9-T4 for the OpenYC Skills project.
 >
 > **Objective:** Add the `export` subcommand to `src/cli.py` that generates spec files in all three formats (MCP, OpenAI, Hermes) for skill files.
 >
@@ -1497,7 +1497,7 @@
 > 8. Create output directories (`specs/mcp/`, `specs/openai/`, `specs/hermes/`) if they don't exist.
 >
 > **Files you may modify:** `src/cli.py` ONLY.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/exporter/*.py`, `src/models.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/exporter/*.py`, `src/models.py`.
 >
 > **Rules:** CLI is Layer 3 — may import from Layer 2 (exporters) and Layer 1 (models, config). Use `logging` for output. Handle errors gracefully (e.g., missing skill files, invalid frontmatter). The `--help` text should clearly explain what each flag does.
 >
@@ -1558,7 +1558,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M10-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/validator/quote_verifier.py` implementing the dual fuzzy match quote verification algorithm from architecture doc Section 14.1. Create `tests/validator/test_quote_verifier.py` with comprehensive tests.
 >
@@ -1585,7 +1585,7 @@
 > 4. Handle edge cases: skill file with zero quotes (warning, not error), chunk directory missing (fall back to raw), quote with special characters or line breaks.
 >
 > **Files to create:** `src/validator/quote_verifier.py`, `tests/validator/test_quote_verifier.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4 (layering — validator is Layer 2), 5 (coding standards), 8 (security — this is a trust boundary component). Use `logging`. Docstrings on all public functions. No bare `Exception`. Import `rapidfuzz` only in this module. Read thresholds from config, not hardcoded.
 >
@@ -1611,7 +1611,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M10-T2 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/validator/schema_validator.py` implementing the Pydantic-based schema validation from architecture doc Section 14.2. Create `tests/validator/test_schema_validator.py` with comprehensive tests.
 >
@@ -1637,7 +1637,7 @@
 > 4. Handle edge cases: malformed YAML (not valid YAML at all), missing frontmatter delimiters, empty frontmatter, filename with wrong extension.
 >
 > **Files to create:** `src/validator/schema_validator.py`, `tests/validator/test_schema_validator.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/models.py`, `src/forge/*.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/models.py`, `src/forge/*.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4, 5. Layer 2 module — may import `SkillFrontmatter` from `src/models.py` (Layer 1). Use `logging`. Docstrings on all public functions. No bare `Exception`. Import Pydantic `ValidationError` for structured error handling.
 >
@@ -1663,7 +1663,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T3 for the OpenOpenYC Skills project.
+> You are implementing Task M10-T3 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/validator/hallucination_guard.py` implementing the multi-step hallucination detection algorithm from architecture doc Section 14.3. This is a **security-critical** component — a trust boundary between LLM-generated content and published output. Create `tests/validator/test_hallucination_guard.py` with comprehensive tests.
 >
@@ -1689,7 +1689,7 @@
 > 5. Use parameterized SQL queries for all database access.
 >
 > **Files to create:** `src/validator/hallucination_guard.py`, `tests/validator/test_hallucination_guard.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/forge/prompts/validate.j2`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/forge/prompts/validate.j2`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4 (layering — hallucination_guard is the ONLY validator module allowed to import `LLMClient`), 5 (coding standards), 8 (security). This is a TRUST BOUNDARY — the hallucination guard is the last line of defense before publishing. Use `logging`. Docstrings. No bare `Exception`. Parameterized SQL.
 >
@@ -1714,7 +1714,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T4 for the OpenOpenYC Skills project.
+> You are implementing Task M10-T4 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/validator/run.py` as the unified entry point that orchestrates all three validators. This file must be runnable as `python -m src.validator.run --all`.
 >
@@ -1737,7 +1737,7 @@
 > 7. Add `if __name__ == "__main__":` block so the file is runnable as a module.
 >
 > **Files to create:** `src/validator/run.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/validator/quote_verifier.py`, `src/validator/schema_validator.py`, `src/validator/hallucination_guard.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/validator/quote_verifier.py`, `src/validator/schema_validator.py`, `src/validator/hallucination_guard.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4, 5. This is a Layer 2 module that orchestrates other Layer 2 modules (validators). Use `logging` for output. Use `shutil.move()` for moving failed files. Handle the case where `skills/` is empty gracefully. Parameterized SQL for DB state updates.
 >
@@ -1760,7 +1760,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M10-T5 for the OpenOpenYC Skills project.
+> You are implementing Task M10-T5 for the OpenYC Skills project.
 >
 > **Objective:** Add the `validate` subcommand to the CLI entry point at `src/cli.py`.
 >
@@ -1776,7 +1776,7 @@
 > 5. Add clear `--help` text: "Validate skill files against the three-layer validation suite (schema, quotes, hallucination guard)."
 >
 > **Files you may modify:** `src/cli.py` ONLY.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/validator/*.py`, `src/models.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/validator/*.py`, `src/models.py`.
 >
 > **Rules:** CLI is Layer 3 — may import from Layer 2 (validator) and Layer 1. Use `logging`. Handle the case where `--all` and `--skill-id` are both missing with a clear error message.
 >
@@ -1836,7 +1836,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M11-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M11-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `src/retrieval/resolver.py` implementing the build-time-only signal resolution system from architecture doc Sections 12.2 and 13.1. This module generates `skills-index.json` (committed to repo root) and `data/similarity_matrix.json` (committed to `data/`). Create `tests/retrieval/test_resolver.py` with comprehensive tests.
 >
@@ -1870,7 +1870,7 @@
 > The matrix is an NxN cosine similarity matrix where N is the number of skills. `skills` is the ordered list of skill IDs that corresponds to matrix row/column indices. `tag_index` maps each tag to all skill IDs that have that tag.
 >
 > **Files to create:** `src/retrieval/resolver.py`, `tests/retrieval/test_resolver.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/validator/*.py`, `src/models.py`, `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/*.py`, `src/validator/*.py`, `src/models.py`, `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4 (layering — retrieval is Layer 2, build-time only, must NOT be imported by other Layer 2 modules), 5 (coding standards). `sentence-transformers` import is allowed in this module. Use `logging`. Docstrings on all public functions. No bare `Exception`. Cache the `SentenceTransformer` model instance to avoid reloading on every call.
 >
@@ -1894,7 +1894,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M11-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M11-T2 for the OpenYC Skills project.
 >
 > **Objective:** Add the `index` subcommand to the CLI entry point at `src/cli.py` that generates the pre-computed similarity index and matrix.
 >
@@ -1912,7 +1912,7 @@
 > **Important context:** This command MUST be run after synthesizing new skills (`forge`) and before committing. The generated files are committed to the repository. Forgetting to run `index` causes stale `related_skills` in subsequent link passes (see AGENTS.md Section 15, Common Pitfall #12).
 >
 > **Files you may modify:** `src/cli.py` ONLY.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/retrieval/resolver.py`, `src/models.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/retrieval/resolver.py`, `src/models.py`.
 >
 > **Rules:** CLI is Layer 3 — may import from Layer 2 (retrieval) and Layer 1. Use `logging`. Note: this is the ONLY place in the CLI that imports from `src/retrieval/`.
 >
@@ -1967,7 +1967,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M12-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M12-T1 for the OpenYC Skills project.
 >
 > **Objective:** Add the `quota` subcommand to the CLI at `src/cli.py` that displays current LLM provider quota usage and remaining capacity.
 >
@@ -1998,7 +1998,7 @@
 > 9. If `data/registry.db` doesn't exist, print a helpful error: "Database not found. Run 'python -m src.cli init-db' first."
 >
 > **Files you may modify:** `src/cli.py` ONLY.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/models.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/forge/llm_client.py`, `src/models.py`.
 >
 > **Rules:** CLI is Layer 3. Use `logging` for output. Use parameterized SQL queries. Handle the case where `usage_log` is empty (first run) gracefully — show all providers with 0 usage.
 >
@@ -2023,7 +2023,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M12-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M12-T2 for the OpenYC Skills project.
 >
 > **Objective:** Add the `backfill` subcommand to the CLI at `src/cli.py` that orchestrates historical content ingestion for bulk processing of YC content.
 >
@@ -2042,7 +2042,7 @@
 > 7. Log a summary of what would be backfilled and the date range.
 >
 > **Files you may modify:** `src/cli.py` ONLY.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, `src/ingest/*.py`, `src/models.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, `src/ingest/*.py`, `src/models.py`.
 >
 > **Rules:** CLI is Layer 3. Use `logging`. Validate date format with `datetime.strptime`. Handle invalid dates gracefully with a clear error message. The `--help` text should explain the cold-start warning from architecture doc Section 17: "Warning: A fresh clone has no registry.db history. Scope your first run to avoid duplicating existing skills."
 >
@@ -2065,7 +2065,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M12-T3 for the OpenOpenYC Skills project.
+> You are implementing Task M12-T3 for the OpenYC Skills project.
 >
 > **Objective:** Perform a final review and polish of `src/cli.py` to ensure all 12 CLI commands are present, correctly wired, have consistent help text, and handle errors gracefully. Create `tests/test_cli.py` with comprehensive smoke tests for every command.
 >
@@ -2091,7 +2091,7 @@
 > 5. Verify all imports follow layering rules (CLI is Layer 3 → may import Layer 2 and Layer 1).
 > 6. Verify no `print()` statements — all output goes through `logging`.
 > 7. Verify `python -m src.cli --help` shows all 12 commands with descriptions.
-> 8. Add a top-level description to the argparse ArgumentParser: "OpenOpenYC Skills — Static skill file generator for AI agents."
+> 8. Add a top-level description to the argparse ArgumentParser: "OpenYC Skills — Static skill file generator for AI agents."
 >
 > **Test file `tests/test_cli.py`:**
 > Write smoke tests that verify:
@@ -2104,7 +2104,7 @@
 >
 > **Files you may modify:** `src/cli.py`.
 > **Files to create:** `tests/test_cli.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, any `src/` module other than `src/cli.py`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, any `src/` module other than `src/cli.py`.
 >
 > **Rules:** Follow `AGENTS.md` Sections 4, 5, 17 (Completion Checklist). Use `subprocess.run` or `argparse` parsing in tests to verify CLI behavior. No bare `Exception`. Consistent `logging` usage.
 >
@@ -2162,7 +2162,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T1 for the OpenOpenYC Skills project.
+> You are implementing Task M13-T1 for the OpenYC Skills project.
 >
 > **Objective:** Create `.github/workflows/validate.yml` — the ONLY GitHub Actions workflow for this project. It validates skill and spec files on pull requests. It NEVER generates, synthesizes, or modifies any content.
 >
@@ -2201,7 +2201,7 @@
 > - Consider adding `--tb=short` to pytest for cleaner CI output.
 >
 > **Files to create:** `.github/workflows/validate.yml`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, any `src/` file.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, any `src/` file.
 >
 > **Rules:** Follow `AGENTS.md` Sections 7 (Testing), 15 (Common Pitfall #4 — no scheduled GitHub Actions). This is the ONLY workflow file allowed in `.github/workflows/`. If any other workflow exists, flag it for removal.
 >
@@ -2224,12 +2224,12 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T2 for the OpenOpenYC Skills project.
+> You are implementing Task M13-T2 for the OpenYC Skills project.
 >
 > **Objective:** Create (or update) `README.md` as the primary entry point for the repository. It should give a reader complete understanding of what the project does, how to set it up, how to use it, and where to find detailed documentation.
 >
 > **Sections to include (in this order):**
-> 1. **Project Title & Badges:** "OpenOpenYC Skills" with brief tagline: "A static-file generator that converts Y Combinator knowledge into composable skill files for AI agents."
+> 1. **Project Title & Badges:** "OpenYC Skills" with brief tagline: "A static-file generator that converts Y Combinator knowledge into composable skill files for AI agents."
 > 2. **Overview:** Based on architecture doc Section 1. Explain: what it does (ingests YC content, extracts advice, clusters into skills, emits static files), who it's for (AI agents — Claude, GPT, local models), what makes it different (zero-cost static files, exact quote fidelity, no runtime dependencies).
 > 3. **How It Works:** Brief description of the pipeline: Discover → Download → Chunk → Extract → Cluster → Synthesize → Link → Export → Validate → Commit → Tag. Include the ASCII diagram from architecture doc Section 1.
 > 4. **For AI Agent Consumers:** Link to `docs/CONSUMPTION.md`. Brief example of loading a skill. Mention all 3 spec formats (MCP, OpenAI, Hermes).
@@ -2242,7 +2242,7 @@
 > 11. **Links:** `docs/CONSUMPTION.md`, `docs/BYOK.md`, `docs/TAXONOMY.md`, `AGENTS.md`.
 >
 > **Files to create (or update):** `README.md`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, any `src/` file.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, any `src/` file.
 >
 > **Rules:** Follow `AGENTS.md` Section 13 (Documentation Policy). If a `README.md` already exists with meaningful content, update it rather than overwriting. Use proper Markdown formatting with headers, code blocks, and tables. Include the cold-start warning from architecture doc Section 17 in the quickstart section. Do NOT include any API keys or credentials.
 >
@@ -2266,7 +2266,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T3 for the OpenOpenYC Skills project.
+> You are implementing Task M13-T3 for the OpenYC Skills project.
 >
 > **Objective:** Create three detailed documentation files in `docs/`. Each document serves a different audience and must be comprehensive enough to be used without reading the architecture doc.
 >
@@ -2302,7 +2302,7 @@
 > 4. **Adding New Categories:** Requires a PR modifying `config/taxonomy.yml`, creating the directory, and updating this doc.
 >
 > **Files to create:** `docs/CONSUMPTION.md`, `docs/BYOK.md`, `docs/TAXONOMY.md`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, any `src/` file, `config/taxonomy.yml`.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, any `src/` file, `config/taxonomy.yml`.
 >
 > **Rules:** Follow `AGENTS.md` Section 13 (Documentation Policy — these docs must stay synchronized with their source files). Use proper Markdown formatting. Include code blocks for all CLI commands and JSON/YAML examples. The cold-start warning in BYOK.md is non-negotiable — it must be prominently displayed (use an admonition or bold text).
 >
@@ -2326,7 +2326,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T4 for the OpenOpenYC Skills project.
+> You are implementing Task M13-T4 for the OpenYC Skills project.
 >
 > **Objective:** Create two shell scripts in the `scripts/` directory. These are convenience wrappers for local development setup and historical data backfill.
 >
@@ -2335,12 +2335,12 @@
 > #!/bin/bash
 > set -e
 >
-> echo "OpenOpenYC Skills - Local Setup"
+> echo "OpenYC Skills - Local Setup"
 >
 > # 1. Clone (skip if already in repo)
 > if [ ! -d ".git" ]; then
->   git clone https://github.com/yourname/openopenyc-skills.git
->   cd openopenyc-skills
+>   git clone https://github.com/yourname/openyc-skills.git
+>   cd openyc-skills
 > fi
 >
 > # 2. Create venv
@@ -2383,7 +2383,7 @@
 >
 > START_DATE=${1:-"2020-01-01"}
 >
-> echo "OpenOpenYC Skills - Historical Backfill"
+> echo "OpenYC Skills - Historical Backfill"
 > echo "Start date: $START_DATE"
 > echo ""
 >
@@ -2403,7 +2403,7 @@
 > 5. `backfill.sh` activates the venv if not already active.
 >
 > **Files to create:** `scripts/setup.sh`, `scripts/backfill.sh`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, any `src/` file.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, any `src/` file.
 >
 > **Rules:** Follow `AGENTS.md`. Shell scripts only (bash). Use `set -e` for safety. Include comments explaining each step. Use `echo` for user-facing output (these are shell scripts, not Python — `logging` doesn't apply here).
 >
@@ -2426,7 +2426,7 @@
 
 **Execution Prompt:**
 
-> You are implementing Task M13-T5 for the OpenOpenYC Skills project.
+> You are implementing Task M13-T5 for the OpenYC Skills project.
 >
 > **Objective:** Create `tests/test_integration.py` — a comprehensive end-to-end integration test that exercises the full pipeline from ingestion to validation using fixture data and mocked external calls. This test proves the entire system works together.
 >
@@ -2486,7 +2486,7 @@
 > - Database state is consistent: content state progressed through all stages.
 >
 > **Files to create:** `tests/test_integration.py`.
-> **Files you must NOT modify:** `AGENTS.md`, `openopenyc-skills-architecture-v1.1.md`, any `src/` file.
+> **Files you must NOT modify:** `AGENTS.md`, `openyc-skills-architecture-v1.1.md`, any `src/` file.
 >
 > **Rules:** Follow `AGENTS.md` Section 7 (Testing). This test must be SELF-CONTAINED — no API keys, no network access, no external dependencies beyond the locked requirements. Use `pytest` fixtures and `tmp_path` for isolation. Use `unittest.mock.patch` for mocking. The test must be deterministic and repeatable.
 >
