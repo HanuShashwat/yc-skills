@@ -43,6 +43,7 @@ KNOWN_AUTHORS: dict[str, tuple[str, str]] = {
     "sama": ("Sam Altman", "Former President of YC"),
 }
 
+
 def lookup_author(url: str) -> tuple[str | None, str | None]:
     """
     Looks up a known author and their designation from a URL.
@@ -56,16 +57,16 @@ def lookup_author(url: str) -> tuple[str | None, str | None]:
     try:
         parsed_url = urlparse(url)
         path = unquote(parsed_url.path).lower()
-        
+
         # Order keys by length descending to match longest possible names first
         keys_by_length = sorted(KNOWN_AUTHORS.keys(), key=len, reverse=True)
-        
+
         for key in keys_by_length:
             # Use word boundaries to prevent partial matches like 'pg' in 'page'
-            pattern = r'\b' + re.escape(key) + r'\b'
+            pattern = r"\b" + re.escape(key) + r"\b"
             if re.search(pattern, path):
                 return KNOWN_AUTHORS[key]
-                
+
         return None, None
     except Exception:
         return None, None
